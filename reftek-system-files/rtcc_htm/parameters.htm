@@ -1,0 +1,2142 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family:  sans-serif; font-size: 80%;color: #000000}
+select {font-family: sans-serif; font-size: 80%; color: #000000}
+th {font-family:  sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family:  sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+h1   {font-family: sans-serif; font-weight:bold;font-size: 85%; color: #000000;text-align:left;background-color: #F5f5dc}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var contype="";
+var empt="parameters-";
+var savep="save-";
+var loadp="load-";
+var deletep="delete-";
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+function filsp(str,num)
+{
+var nstr="";
+for(i=0;i<num;i++)
+{
+if(i<str.length)nstr+=str.substring(i,i+1);
+else nstr+=" ";
+}
+return nstr;
+}
+function done()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/";
+}
+function d_w(f)
+{
+document.write(f);
+}
+var TarnsTrig;
+function strip_string(str)
+{
+var i;
+var nstr="";
+var left=0;
+var right=0;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+left=i;
+for(i=str.length-1;i>=0;i--)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+right=i;
+if(left<=right)nstr=str.substring(left,right+1);
+return nstr;
+}
+var PS="";
+var PL1="        PRPL1                                                           PR18B0";
+var PL2="        PRPL2                                                           PR18B0";
+var PC1="";
+var PC2="";
+var PC3="";
+var PC4="";
+var PC5="";
+var PC6="";
+var PD1="";
+var PD2="";
+var PD3="";
+var PD4="";
+var PD5="";
+var PD6="";
+var PD7="";
+var PD8="";
+var PQ1="";
+var PQ2="";
+var PK1="";
+var PK2="";
+var PA="";
+var PT="";
+var CONDEF="CON 3600.00 2001001000000                                                                                                                                             ";
+          
+var config;
+var SOFTWAREDEVINED;
+var dasid=PC1.substring(0,4);
+//config=new Array("config1","config2","config3");
+function fill_cfg()
+{
+var i;
+if(!config)return;
+for(i=0;i<config.length;i++)
+	{
+	d_w("<OPTION VALUE='"+config[i]+"'>"+config[i]+"\n");
+	}
+}
+
+
+function init_pttrca(f)
+{
+var csn=0;
+var i;
+var enb=0;
+enb=parseInt(PT.substring(14,16),10);
+if(isNaN(enb)||enb==0)f.elements[0].checked=false;
+else f.elements[0].checked=true;
+f.elements[1].value=strip_string(PT.substring(16,24));
+if(parseInt(PT.substring(24,28),10)==100)f.elements[2].selectedIndex=1;
+else f.elements[2].selectedIndex=0;
+csn=parseInt(PT.substring(32,34),10);
+if(isNaN(csn)||csn>8)f.elements[3].selectedIndex=0;
+else  f.elements[3].selectedIndex=csn;
+f.elements[4].value=strip_string(PT.substring(34,42));
+f.elements[5].value=strip_string(PT.substring(42,46));
+for(i=0;i<8;i++)
+{
+f.elements[6+i].value=strip_string(PT.substring(50+i*4,54+i*4));
+}
+
+}
+
+function init_plcomd(f)
+{
+var i;
+var pl;
+var tmp="";
+var i=0;
+var k=0;
+var n=1;
+/* MODE130B- */n=2;
+
+for(i=0;i<n;i++)
+{
+if(i==0)pl=PL1;
+else pl=PL2;
+if(pl.substring(15,16)!=" ")f.elements[i*6+1].checked=true;
+else f.elements[i*6+1].checked=false;
+if(pl.substring(18,19)!=" ")k=0;
+else k=1;
+tmp="";
+tmp+=pl.substring(18+k,18+4+k);
+tmp+=":";
+tmp+=pl.substring(22+k,22+3+k);
+tmp+=":";
+tmp+=pl.substring(25+k,25+2+k);
+tmp+=":";
+tmp+=pl.substring(27+k,27+2+k);
+tmp+=":";
+tmp+=pl.substring(29+k,31+k);
+f.elements[i*6+2].value=tmp;
+tmp="";
+tmp+=pl.substring(32,34)+":"+pl.substring(34,36)+":"+pl.substring(36,38)+":"+pl.substring(38,40);
+f.elements[i*6+3].value=tmp;
+f.elements[i*6+4].value=pl.substring(40,42);
+f.elements[i*6+5].value=pl.substring(42,50);
+}
+}
+function init_paaux(f)
+{
+var i;
+var skip130a=0;
+var b=3;
+/* MODEREN- *//* MODE130B- */b=6;
+
+if(PA.substring(51,52)==" ")f.elements[0].checked=false;
+else  f.elements[0].checked=true;
+if(PA.substring(52,53)==" ")f.elements[1].checked=false;
+else  f.elements[1].checked=true;
+if(PA.substring(53,54)==" ")f.elements[2].checked=false;
+else  f.elements[2].checked=true;
+j=0;
+for(i=0;i<16;i++)
+{
+if(PA.substring(16+i,17+i)==" ") f.elements[4+j].checked=false;
+else  f.elements[4+j].checked=true;
+if(i<b)j+=1;
+if(i>11)j+=1;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */if(i>=b&&j<=11)j++;
+}
+skip130a=0;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */skip130a=4;
+for(i=0;i<skip130a;i++)
+{
+if(PA.substring(58+i,59+i)==" ")f.elements[20+i].checked=false;
+else  f.elements[20+i].checked=true;
+}
+skip130a=10;
+/* MODE130- *//* MODE130Q- */skip130a=13;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */skip130a=0;
+if(parseInt(PA.substring(32,40),10)==1)f.elements[24-skip130a].selectedIndex=0;
+else   f.elements[24-skip130a].selectedIndex=1;
+f.elements[26-skip130a].value=strip_string(PA.substring(42,50));
+}
+function init_psta(f)
+{
+f.elements[0].value=strip_string(PS.substring(84,108));
+f.elements[1].value=strip_string(PS.substring(80,84));
+f.elements[2].value=strip_string(PS.substring(108,148));
+f.elements[3].value=strip_string(PS.substring(16,40));
+f.elements[4].value=strip_string(PS.substring(14,16));
+f.elements[5].value=strip_string(PS.substring(40,80));
+}
+
+
+function do_mod(i)
+{
+var l=14;
+var i;
+var f=document.forms['PC'];
+if(f.elements[10+i*l].selectedIndex!=4&&f.elements[10+i*l].selectedIndex!=5)
+{
+if(i==0||i==1)
+f.elements[11+2*l].value=f.elements[11+i*l].value;
+if(i==1||i==2)
+f.elements[11+0*l].value=f.elements[11+i*l].value;
+if(i==0||i==2)
+f.elements[11+1*l].value=f.elements[11+i*l].value;
+if(i==3||i==4)
+f.elements[11+5*l].value=f.elements[11+i*l].value;
+if(i==4||i==5)
+f.elements[11+3*l].value=f.elements[11+i*l].value;
+if(i==3||i==5)
+f.elements[11+4*l].value=f.elements[11+i*l].value;
+}
+
+}
+
+
+
+
+
+
+
+
+
+function do_sen(i)
+{
+var l=14;
+var i;
+var f=document.forms['PC'];
+
+if(i<3)
+{
+if(f.elements[10+i*l].selectedIndex!=5&&f.elements[10+i*l].selectedIndex!=6)
+	{
+	f.elements[11+1*l].value=f.elements[11+0*l].value;
+	f.elements[11+2*l].value=f.elements[11+0*l].value;
+	f.elements[11+1*l].disabled=true;
+	f.elements[11+2*l].disabled=true;
+	f.elements[11+1*l].readOnly=true;
+	f.elements[11+2*l].readOnly=true;
+	}
+else 
+{
+	f.elements[11+1*l].disabled=false;
+	f.elements[11+2*l].disabled=false;
+	f.elements[11+1*l].readOnly=false;
+	f.elements[11+2*l].readOnly=false;
+}
+
+
+}
+else 
+{
+if(f.elements[10+i*l].selectedIndex!=5&&f.elements[10+i*l].selectedIndex!=6)
+	{
+	f.elements[11+4*l].value=f.elements[11+3*l].value;
+	f.elements[11+5*l].value=f.elements[11+3*l].value;
+	f.elements[11+5*l].disabled=true;
+	f.elements[11+4*l].disabled=true;
+	f.elements[11+4*l].readOnly=true;
+	f.elements[11+5*l].readOnly=true;
+	}
+else 
+{
+	f.elements[11+4*l].disabled=false;
+	f.elements[11+5*l].disabled=false;
+	f.elements[11+4*l].readOnly=false;
+	f.elements[11+5*l].readOnly=false;
+}
+
+
+}
+//if(f.elements[10+i*l].selectedIndex!=4&&f.elements[10+i*l].selectedIndex!=5)
+{
+if(i==0||i==1)
+f.elements[10+2*l].selectedIndex=f.elements[10+i*l].selectedIndex;
+if(i==1||i==2)
+f.elements[10+0*l].selectedIndex=f.elements[10+i*l].selectedIndex;
+if(i==0||i==2)
+f.elements[10+1*l].selectedIndex=f.elements[10+i*l].selectedIndex;
+if(i==3||i==4)
+f.elements[10+5*l].selectedIndex=f.elements[10+i*l].selectedIndex;
+if(i==4||i==5)
+f.elements[10+3*l].selectedIndex=f.elements[10+i*l].selectedIndex;
+if(i==3||i==5)
+f.elements[10+4*l].selectedIndex=f.elements[10+i*l].selectedIndex;
+}
+
+}
+
+function init_pchan(f)
+{
+var i;
+var l=14;
+var styps;
+var pc;
+var numchan=3;
+/* MODEREN- *//* MODE130B- */numchan=6;
+var ggain;
+var mode130qh=1;
+var ffilter;
+var kfilter=0;
+var mode130q=2;
+var fgain;
+for(i=0;i<numchan;i++)
+{
+if(i==0)pc=PC1;
+else if(i==1)pc=PC2;
+else  if(i==2)pc=PC3;
+else  if(i==3)pc=PC4;
+else  if(i==4)pc=PC5;
+else  if(i==5)pc=PC6;
+if(parseInt(pc.substring(14,16),10)==i+1)f.elements[i*l].checked=true;
+else f.elements[i*l].checked=false;
+f.elements[i*l+1].value=strip_string(pc.substring(16,26));
+f.elements[i*l+2].value=strip_string(pc.substring(26,36));
+f.elements[i*l+3].value=strip_string(pc.substring(36,46));
+f.elements[i*l+4].value=strip_string(pc.substring(46,56));
+f.elements[i*l+5].value=strip_string(pc.substring(56,66));
+f.elements[i*l+6].value=strip_string(pc.substring(66,76));
+f.elements[i*l+7].value=strip_string(pc.substring(76,80));
+f.elements[i*l+8].value=strip_string(pc.substring(80,84));
+
+ggain=parseInt(pc.substring(84,87),10);
+fgain=parseFloat(pc.substring(84,87));
+/* MODE130QH- */mode130qh=0;
+
+if(mode130qh==1)
+{
+f.elements[i*l+9].options.length=0;
+f.elements[i*l+9].options[0]=new Option("0.1-A", "0.1A", false, false);
+f.elements[i*l+9].options[1]=new Option("0.7-A", "0.7A", false, false);
+f.elements[i*l+9].options[2]=new Option("2.5-A", "2.5A", false, false);
+f.elements[i*l+9].options[3]=new Option("20-A", "20 A", false, false);
+f.elements[i*l+9].options[4]=new Option("160-A", "160A", false, false);
+f.elements[i*l+9].options[5]=new Option("0.1-B", "0.1B", false, false);
+f.elements[i*l+9].options[6]=new Option("0.7-B", "0.7B", false, false);
+f.elements[i*l+9].options[7]=new Option("2.5-B", "2.5B", false, false);
+f.elements[i*l+9].options[8]=new Option("20-B", "20 B", false, false);
+f.elements[i*l+9].options[9]=new Option("160-B", "160B", false, false);
+f.elements[i*l+9].options[10]=new Option("0.1-C", "0.1C", false, false);
+f.elements[i*l+9].options[11]=new Option("0.7-C", "0.7C", false, false);
+f.elements[i*l+9].options[12]=new Option("2.5-C", "2.5C", false, false);
+f.elements[i*l+9].options[13]=new Option("20-C", "20 C", false, false);
+f.elements[i*l+9].options[14]=new Option("160-C", "160C", false, false);
+f.elements[i*l+9].options[15]=new Option("0.1-D", "0.1D", false, false);
+f.elements[i*l+9].options[16]=new Option("0.7-D", "0.7D", false, false);
+f.elements[i*l+9].options[17]=new Option("2.5-D", "2.5D", false, false);
+f.elements[i*l+9].options[18]=new Option("20-D", "20 D", false, false);
+f.elements[i*l+9].options[19]=new Option("160-D", "160D", false, false);
+}
+
+ffilter=pc.substring(87,88);
+f.elements[i*l+9].selectedIndex=0;
+/* MODE130Q- *//* MODE130B- */if(ggain==100||ggain==32)f.elements[i*l+9].selectedIndex=1;
+/* MODE130Q- *//* MODE130B- */else f.elements[i*l+9].selectedIndex=0;
+/* MODE130Q- */mode130q=0;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ffilter=="A")kfilter=2-mode130q;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ffilter=="B")kfilter=7-mode130q;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ffilter=="C")kfilter=12-mode130q;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ffilter=="D")kfilter=17-mode130q;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ggain==1||fgain==0.1)f.elements[i*l+9].selectedIndex=kfilter;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ggain==4||fgain==0.7)f.elements[i*l+9].selectedIndex=kfilter+1;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ggain==16||fgain==2.5)f.elements[i*l+9].selectedIndex=kfilter+2;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ggain==64||fgain==20)f.elements[i*l+9].selectedIndex=kfilter+3
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130G- */if(ggain==256||fgain==160)f.elements[i*l+9].selectedIndex=kfilter+4;
+f.elements[i*l+11].value=strip_string(pc.substring(88,99));
+
+styps=strip_string(pc.substring(99,100));
+
+f.elements[i*l+10].selectedIndex=6;
+
+if(styps=="C")f.elements[i*l+10].selectedIndex=0;
+else if(styps=="R")f.elements[i*l+10].selectedIndex=1;
+else if(styps=="G")f.elements[i*l+10].selectedIndex=2;
+else if(styps=="S")f.elements[i*l+10].selectedIndex=3;
+else if(styps=="T")f.elements[i*l+10].selectedIndex=4;
+else if(styps=="O")f.elements[i*l+10].selectedIndex=5;
+f.elements[i*l+12].value=strip_string(pc.substring(100,112));
+f.elements[i*l+13].value=strip_string(pc.substring(112,152));
+if(i!=0&&i!=3)
+{
+f.elements[i*l+10].disabled=true;
+if(f.elements[i*l+10].selectedIndex<5)
+	{
+	f.elements[11+i*l].disabled=true;
+	f.elements[11+i*l].readOnly=true;
+	}
+else 
+	{
+	f.elements[11+i*l].disabled=false;
+	f.elements[11+i*l].readOnly=false;
+	}
+
+}
+
+
+
+if(f.elements[i*l+10].selectedIndex<7)f.elements[i*l+10].options.length=7;
+}
+}
+function init_pqcen(f)
+{
+var i;
+var k;
+var pq;
+var n=1;
+/* MODEREN- *//* MODE130B- */n=2;
+for(i=0;i<n;i++)
+	{
+if(i==0)pq=PQ1;
+if(i==1)pq=PQ2;
+if(pq.substring(15,16)==" ")f.elements[i*7+1].checked=false;
+else  f.elements[i*7+1].checked=true;
+/*
+if(parseInt(pq.substring(16,20),10)==100)f.elements[i*7+2].selectedIndex=1;
+else  f.elements[i*7+2].selectedIndex=0;
+*/
+f.elements[i*7+2].value=strip_string(pq.substring(16,20));
+f.elements[i*7+6].value=strip_string(pq.substring(20,22));
+f.elements[i*7+3].value=strip_string(pq.substring(22,26));
+f.elements[i*7+4].value=strip_string(pq.substring(26,28));
+f.elements[i*7+5].value=strip_string(pq.substring(28,30));
+
+
+	}
+}
+function init_pkcal(f)
+{
+var i;
+var k;
+var pk;
+var rate=new Array(1,2,4,5,8,10,20,25,40,50,100);
+var n=1;
+/* MODEREN- *//* MODE130B- */n=2;
+for(i=0;i<n;i++)
+	{
+if(i==0)pk=PK1;
+if(i==1)pk=PK2;
+if(pk.substring(15,16)==" ")f.elements[i*8+1].checked=false;
+else  f.elements[i*8+1].checked=true;
+f.elements[i*8+2].value=strip_string(pk.substring(18,22));
+f.elements[i*8+3].value=strip_string(pk.substring(22,26));
+if(pk.substring(26,30)=="STEP")f.elements[i*8+4].selectedIndex=0;
+else if(pk.substring(26,30)=="SINE")f.elements[i*8+4].selectedIndex=1;
+else if(pk.substring(26,30)=="NOIS")f.elements[i*8+4].selectedIndex=2;
+else if(pk.substring(26,30)=="RNSP")f.elements[i*8+4].selectedIndex=3;
+else if(pk.substring(26,30)=="RNLP")f.elements[i*8+4].selectedIndex=4;
+else if(pk.substring(26,30)=="RNBB")f.elements[i*8+4].selectedIndex=5;
+else if(pk.substring(26,30)=="SWSP")f.elements[i*8+4].selectedIndex=6;
+else if(pk.substring(26,30)=="SWLP")f.elements[i*8+4].selectedIndex=7;
+else if(pk.substring(26,30)=="SWBB")f.elements[i*8+4].selectedIndex=8;
+f.elements[i*8+5].value=strip_string(pk.substring(30,34));
+f.elements[i*8+6].value=strip_string(pk.substring(34,38));
+for(k=0;k<11;k++)
+{
+if(parseInt(pk.substring(38,42),10)==rate[k])f.elements[i*8+7].selectedIndex=k;
+}
+	}
+}
+function init_pstream(f)
+{
+var i;
+var k;
+var pd;
+var trig;
+var rate= new Array(1000,500,250,200,125,100,50,40,20,10,5,1,0.1);
+//var rate=   new Array(1000,500,250,200,125,100,50,40,20,10,5,1,0.1);
+var skip1=12;
+var skip2=3;
+var nstream=4;
+var nrate=10;
+var mode_mrf=1;
+
+/* MODEMRF- */mode_mrf=0;
+/* MODEREN- *//* MODE130B- */skip1=15;
+/* MODEREN- *//* MODE130B- */skip2=0;
+/* MODE130- *//* MODEMRF- *//* MODEREN- */nstream=8;
+/* MODEMRF- *//* MODEREN- */nrate=rate.length;
+for(i=0;i<nstream;i++)
+{
+if(i==0)pd=PD1;
+else if(i==1)pd=PD2;
+else  if(i==2)pd=PD3;
+else  if(i==3)pd=PD4;
+else  if(i==4)pd=PD5;
+else  if(i==5)pd=PD6;
+else  if(i==6)pd=PD7;
+else  if(i==7)pd=PD8;
+f.elements[i*skip1].value=strip_string(pd.substring(16,32));
+if(pd.substring(33,34)!=" ")f.elements[i*skip1+1].checked=true;
+else f.elements[i*skip1+1].checked=false;
+if(pd.substring(34,35)!=" ")f.elements[i*skip1+2].checked=true;
+else f.elements[i*skip1+2].checked=false;
+if(pd.substring(35,36)!=" ")f.elements[i*skip1+3].checked=true;
+else f.elements[i*skip1+3].checked=false;
+for(k=0;k<6-skip2;k++)
+{
+if(pd.substring(40+k,41+k)!=" ")f.elements[i*skip1+4+k].checked=true;
+else f.elements[i*skip1+4+k].checked=false;
+}
+for(k=0;k<nrate;k++)
+{
+//alert(""+parseFloat(pd.substring(56,60))+":"+rate[k]);
+if(parseFloat(pd.substring(56,60))==rate[k])
+{f.elements[i*skip1+10-skip2].selectedIndex=k;break;}
+}
+
+
+if(mode_mrf==1)
+{
+f.elements[i*skip1+11-skip2].options.length=0;
+f.elements[i*skip1+11-skip2].options[0]=new Option("32", "32", false, false);
+f.elements[i*skip1+11-skip2].options[1]=new Option("CF", "CF", false, false);
+}
+
+f.elements[i*skip1+11-skip2].selectedIndex=0;
+if(pd.substring(60,62)=="C2")f.elements[i*skip1+11-skip2].selectedIndex=2;
+else if(pd.substring(60,62)=="CF")f.elements[i*skip1+11-skip2].selectedIndex=1;
+else if(pd.substring(60,62)=="C3")f.elements[i*skip1+11-skip2].selectedIndex=2;
+else if(pd.substring(60,62)=="CO")f.elements[i*skip1+11-skip2].selectedIndex=1;
+ else if(pd.substring(60,62)=="C0")f.elements[i*skip1+11-skip2].selectedIndex=1;
+else if(pd.substring(60,62)=="C1")f.elements[i*skip1+11-skip2].selectedIndex=1;
+
+trig=strip_string(pd.substring(62,66));
+f.elements[i*skip1+12-skip2].selectedIndex=0;
+if(trig=="CRS")f.elements[i*skip1+12-skip2].selectedIndex=1;
+else  if(trig=="EVT")f.elements[i*skip1+12-skip2].selectedIndex=2;
+else  if(trig=="EXT")f.elements[i*skip1+12-skip2].selectedIndex=3;
+else  if(trig=="LEV")f.elements[i*skip1+12-skip2].selectedIndex=4;
+else  if(trig=="TIM")f.elements[i*skip1+12-skip2].selectedIndex=5;
+else  if(trig=="TML")f.elements[i*skip1+12-skip2].selectedIndex=6;
+else  if(trig=="VOT")f.elements[i*skip1+12-skip2].selectedIndex=7;
+else  if(trig=="DIF")f.elements[i*skip1+12-skip2].selectedIndex=8;
+f.elements[i*skip1+14-skip2].value=pd.substring(62,228);
+if(trig==0)f.elements[i*skip1+14-skip2].value=CONDEF;
+}
+}
+function process_pd(f,num)
+{
+var slocation;
+var k;
+var skip1=12;
+var skip2=3;
+/* MODEREN- *//* MODE130B- */skip1=15;
+/* MODEREN- *//* MODE130B- */skip2=0;
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==0)slocation="con_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==1)slocation="crs_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==2)slocation="evt_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==3)slocation="ext_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==4)slocation="lev_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==5)slocation="tim_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==6)slocation="tml_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==7)slocation="vot_trig.htm";
+else 
+if(f.elements[(num-1)*skip1+12-skip2].selectedIndex==8)slocation="dif_trig.htm";
+else return;
+TarnsTrig="";
+TarnsTrig+=PD1.substring(0,12);
+TarnsTrig+=num+" ";
+TarnsTrig+=num+" ";
+TarnsTrig+=filsp(f.elements[(num-1)*skip1].value,16);
+TarnsTrig+=" ";
+if(f.elements[(num-1)*skip1+1].checked)TarnsTrig+="D";
+else TarnsTrig+=" ";
+if(f.elements[(num-1)*skip1+2].checked)TarnsTrig+="E";
+else TarnsTrig+=" ";
+if(f.elements[(num-1)*skip1+3].checked)TarnsTrig+="S";
+else TarnsTrig+=" ";
+TarnsTrig+="    ";
+for(k=0;k<6-skip2;k++)
+{
+if(f.elements[(num-1)*skip1+4+k].checked)TarnsTrig+="Y";
+else TarnsTrig+=" ";
+}
+for(k=0;k<10+skip2;k++)TarnsTrig+=" ";
+TarnsTrig+=filsp(f.elements[(num-1)*skip1+10-skip2].options[f.elements[(num-1)*skip1+10-skip2].selectedIndex].value,4);
+TarnsTrig+=filsp(f.elements[(num-1)*skip1+11-skip2].options[f.elements[(num-1)*skip1+11-skip2].selectedIndex].value,2);
+TarnsTrig+=f.elements[(num-1)*skip1+14-skip2].value;
+wintrig=window.open("","TRIGGER","status=0,rtoolbar=0,location=0,menubar=0");
+if (!wintrig.opener){wintrig.opener = self;}
+wintrig.location=slocation;
+wintrig.focus();
+}
+function undo()
+{
+init_psta(document.forms['PS']);
+init_pchan(document.forms['PC']);
+init_pstream(document.forms['PDst']);
+/* MODEREN- *//* MODE130Q- */init_pkcal(document.forms['PK']);
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */init_pttrca(document.forms['PT']);
+/* MODEREN- */init_pqcen(document.forms['PQ']);
+init_paaux(document.forms['PA']); 
+/* MODEREN- */init_plcomd(document.forms['PL']);
+}
+function get_from_das()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/parameters-"+dasid+contype;
+}
+function go_to_status()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/status-control-"+dasid+contype;
+}
+function send_parameters(f,param)
+{
+var eck=0;
+var timpl="";
+var durpl="";
+var timpl1="";
+var sskip130a=1;
+var b=3;
+/* MODEREN- *//* MODE130B- */b=6;
+var s=14;
+var g;
+var l;
+var i;
+var k;
+var j=0;
+var pkdur;
+var pkamp;
+var numchan=3; 
+var skip1=12;
+var skip2=3;
+var n=1;
+var nstream=4;
+/* MODE130- *//* MODEREN- */nstream=8;
+/* MODEREN- *//* MODE130B- */n=2;
+/* MODEREN- *//* MODE130B- */skip1=15;
+/* MODEREN- *//* MODE130B- */skip2=0;
+f.action="http://"+self.location.host+"/"+param+dasid;
+f.elements[10].value=s_lbl;
+if(param=="parameters-")
+{
+f.elements[10].value+="AQ&"+dasid+"&H&0000\n";
+f.elements[10].value+="PE&"+dasid+"\n";
+}
+else if(param=="delete-"){if(f.elements[4].options.length<=0)return; f.action+=f.elements[4].options[f.elements[4].selectedIndex].value;}
+else if(param=="load-"){if(f.elements[4].options.length<=0)return; f.action+=f.elements[4].options[f.elements[4].selectedIndex].value;}
+else if(param=="save-"){if(f.elements[7].value.length<=0){alert("Invalid Config Name");return;}f.action+=f.elements[7].value;}
+g=document.forms['PS'];
+f.elements[10].value+="PS&"+dasid+"&"+g.elements[4].value+"&"+g.elements[3].value+"&"+g.elements[5].value;
+f.elements[10].value+="&"+g.elements[1].value+"&"+g.elements[0].value+"&"+g.elements[2].value +"\n";
+g=document.forms['PC'];
+/* MODEREN- *//* MODE130B- */numchan=6;
+for(i=0;i<numchan;i++)
+{
+if(g.elements[i*s].checked==false)continue;
+f.elements[10].value+="PC&"+dasid+"&"+(i+1);
+for(k=1;k<=8;k++)f.elements[10].value+="&"+g.elements[i*s+k].value;
+f.elements[10].value+="&"+g.elements[i*s+9].options[g.elements[i*s+9].selectedIndex].value;
+for(k=10;k<s;k++)
+	{
+	if(k==10) f.elements[10].value+="&"+g.elements[i*s+11].value;
+	else if(k==11) f.elements[10].value+="&"+g.elements[i*s+10].options[g.elements[i*s+10].selectedIndex].value;
+	else 	  f.elements[10].value+="&"+g.elements[i*s+k].value;
+	
+	}
+f.elements[10].value+="\n";
+}
+g=document.forms['PDst'];
+for(i=0;i<nstream;i++)
+{
+if(g.elements[i*skip1+1].checked==false&&g.elements[i*skip1+2].checked==false&&g.elements[i*skip1+3].checked==false)continue;
+f.elements[10].value+="PD&"+dasid+"&"+(i+1);
+f.elements[10].value+="&"+g.elements[i*skip1].value;
+f.elements[10].value+="& ";
+if(g.elements[i*skip1+1].checked)f.elements[10].value+="Y";
+else f.elements[10].value+=" ";
+if(g.elements[i*skip1+2].checked)f.elements[10].value+="Y";
+else f.elements[10].value+=" ";
+if(g.elements[i*skip1+3].checked)f.elements[10].value+="Y";
+else f.elements[10].value+=" ";
+f.elements[10].value+="&";
+for(k=0;k<6-skip2;k++)
+{
+if(g.elements[i*skip1+4+k].checked)f.elements[10].value+="Y";
+else f.elements[10].value+=" ";
+}
+f.elements[10].value+="&"+g.elements[i*skip1+10-skip2].options[g.elements[i*skip1+10-skip2].selectedIndex].value;
+f.elements[10].value+="&"+g.elements[i*skip1+11-skip2].options[g.elements[i*skip1+11-skip2].selectedIndex].value;
+f.elements[10].value+="&"+g.elements[i*skip1+14-skip2].value+"\n";
+}
+/* MODEREN- *//* MODE130Q- */g=document.forms['PK'];
+
+/* MODEREN- *//* MODE130Q- */for(i=0;i<n;i++)
+/* MODEREN- *//* MODE130Q- */{
+/* MODEREN- *//* MODE130Q- */eck=g.elements[i*8+4].selectedIndex;
+/* MODEREN- *//* MODE130Q- */if(g.elements[i*8+1].checked==false)continue;
+/* MODEREN- *//* MODE130Q- */f.elements[10].value+="PK&"+dasid+"&"+g.elements[i*8].value+"&Y";
+/* MODEREN- *//* MODE130Q- */f.elements[10].value+="&"+g.elements[i*8+2].value;
+/* MODEREN- *//* MODE130Q- */pkdur=parseInt(g.elements[i*8+2].value,10);
+/* MODEREN- *//* MODE130Q- */if((isNaN(pkdur)||pkdur<1||pkdur>9999)&&eck<=5){alert("Valid Sensor Calibration field duration:(1-9999)seconds");return;}
+/* MODEREN- *//* MODE130Q- */f.elements[10].value+="&"+g.elements[i*8+3].value;
+/* MODEREN- *//* MODE130Q- */pkamp=parseFloat(g.elements[i*8+3].value);
+/* MODEREN- *//* MODE130Q- */if((isNaN(pkamp)||pkamp<0.01||pkamp>3.75)&&eck<=2){alert("Valid Sensor Calibration field Amplitude:(0.01-3.75)volts");return;}
+/* MODEREN- *//* MODE130Q- */f.elements[10].value+="&"+g.elements[i*8+4].options[g.elements[i*8+4].selectedIndex].value;
+/* MODEREN- *//* MODE130Q- */f.elements[10].value+="&"+g.elements[i*8+5].value;
+/* MODEREN- *//* MODE130Q- */pkdur=parseInt(g.elements[i*8+5].value,10);
+/* MODEREN- *//* MODE130Q- */if((isNaN(pkdur)||pkdur<1||pkdur>1000)&&eck==0){alert("Valid Sensor Calibration field Step Interval:(1-1000)seconds");return;}
+/* MODEREN- *//* MODE130Q- */f.elements[10].value+="&"+g.elements[i*8+6].value;
+/* MODEREN- *//* MODE130Q- */pkdur=parseInt(g.elements[i*8+6].value,10);
+/* MODEREN- *//* MODE130Q- */if((isNaN(pkdur)||pkdur<1||pkdur>1000)&&eck==0){alert("Valid Sensor Calibration field Step Width:(1-1000)seconds");return;}
+/* MODEREN- *//* MODE130Q- */f.elements[10].value+="&"+g.elements[i*8+7].options[g.elements[i*8+7].selectedIndex].value+"\n";
+/* MODEREN- *//* MODE130Q- */}
+/* MODEREN- */g=document.forms['PQ'];
+/* MODEREN- */for(i=0;i<n;i++)
+/* MODEREN- */{
+/* MODEREN- */if(g.elements[i*7+1].checked==false)continue;
+/* MODEREN- */f.elements[10].value+="PQ&"+dasid+"&"+g.elements[i*7].value+"&Y";
+/* MODEREN- */f.elements[10].value+="&"+g.elements[i*7+2].value;
+/* MODEREN- */f.elements[10].value+="&"+ g.elements[i*7+6].value;
+/* MODEREN- *///pkdur=parseInt(g.elements[i*7+3].value,10);
+/* MODEREN- *///if(isNaN(pkdur)||pkdur<0||pkdur>99){alert("Valid Sensor Re-center field Center Interval:(0-99)days");return;}
+/* MODEREN- */f.elements[10].value+="&"+ g.elements[i*7+3].value;
+/* MODEREN- *///pkamp=parseFloat(g.elements[i*7+4].value);
+/* MODEREN- *///if(isNaN(pkamp)||pkamp<0.1||pkamp>9.9){alert("Valid Sensor Re-center field  Threshold:(0.1-9.9)Volts");return;}
+/* MODEREN- */f.elements[10].value+="&"+ g.elements[i*7+4].value;
+/* MODEREN- *///pkdur=parseInt(g.elements[i*7+5].value,10);
+/* MODEREN- *///if(isNaN(pkdur)||pkdur<0||pkdur>99){alert("Valid Sensor Re-center field  Attempts:(0-99)");return;}
+/* MODEREN- */f.elements[10].value+="&"+ g.elements[i*7+5].value;
+/* MODEREN- *///pkdur=parseInt(g.elements[i*7+6].value,10);
+/* MODEREN- *///if(isNaN(pkdur)||pkdur<0||pkdur>99){alert("Valid Sensor Re-center field  Attempts Interval:(0-99)minutes");return;}
+/* MODEREN- */f.elements[10].value+="\n";
+/* MODEREN- */}
+/* MODEREN- */g=document.forms['PL'];
+/* MODEREN- */for(i=0;i<n;i++)
+/* MODEREN- */{
+/* MODEREN- */if(g.elements[1+i*6].checked==false)continue;
+/* MODEREN- */timpl=g.elements[i*6+2].value;
+/* MODEREN- */if(timpl.charAt(4)!=':'||timpl.charAt(8)!=':'||timpl.charAt(11)!=':'||timpl.charAt(14)!=':'){alert("Valid Date-Time format: YYYY:DDD:HH:MM:SS");return;}
+/* MODEREN- */timpl1=timpl.substring(0,4);
+/* MODEREN- */timpl1+=timpl.substring(5,8);
+/* MODEREN- */timpl1+=timpl.substring(9,11);
+/* MODEREN- */timpl1+=timpl.substring(12,14);
+/* MODEREN- */timpl1+=timpl.substring(15,17);
+/* MODEREN- */timpl1+=" ";
+/* MODEREN- */f.elements[10].value+="PL&"+dasid+"&"+g.elements[i*6].value+"&Y&"+timpl1;
+/* MODEREN- */timpl=g.elements[i*6+3].value;
+/* MODEREN- */if(timpl.charAt(2)!=':'||timpl.charAt(5)!=':'||timpl.charAt(8)!=':'){alert("Valid Interval format: DD:HH:MM:SS");return;}
+/* MODEREN- */timpl1=timpl.substring(0,2);
+/* MODEREN- */timpl1+=timpl.substring(3,5);
+/* MODEREN- */timpl1+=timpl.substring(6,8);
+/* MODEREN- */timpl1+=timpl.substring(9,11);
+/* MODEREN- */f.elements[10].value+="&"+timpl1+"&"+g.elements[i*6+4].value+"&"+g.elements[i*6+5].value;
+/* MODEREN- */f.elements[10].value+="\n";
+/* MODEREN- */}
+
+
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */g=document.forms['PT'];
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */if(g.elements[0].checked==true)
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */{
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */f.elements[10].value+="PT&"+dasid+"&01&"+g.elements[1].value;
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */f.elements[10].value+="&"+g.elements[2].options[g.elements[2].selectedIndex].value;
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */f.elements[10].value+="&"+g.elements[3].options[g.elements[3].selectedIndex].value;
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */f.elements[10].value+="&"+g.elements[4].value;
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */f.elements[10].value+="&"+g.elements[5].value;
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */for(l=1;l<=8;l++)f.elements[10].value+="&"+g.elements[5+l].value;
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */f.elements[10].value+="\n";
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */}
+
+g=document.forms['PA'];
+if(g.elements[0].checked||g.elements[1].checked||g.elements[2].checked)
+{
+f.elements[10].value+="PA&"+dasid+"&" +g.elements[3].value+"&";
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */sskip130a=0;
+j=0;
+for(k=0;k<16;k++)
+{
+if(sskip130a==1&&k>=b&&k<=11){f.elements[10].value+=" ";}
+else if(g.elements[4+j].checked)f.elements[10].value+="Y";
+else 	f.elements[10].value+=" ";
+if(k<b)j++;
+if(k>11)j++;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */if(k>=b&&k<=11)j++;
+}
+sskip130a=10;
+/* MODE130- *//* MODE130Q- */sskip130a=13;
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */sskip130a=0;
+f.elements[10].value+="&"+g.elements[24-sskip130a].options[g.elements[24-sskip130a].selectedIndex].value;
+f.elements[10].value+="&"+g.elements[25-sskip130a].value;
+f.elements[10].value+="&"+g.elements[26-sskip130a].value;
+f.elements[10].value+="& ";
+if(g.elements[0].checked)f.elements[10].value+="Y";
+else  f.elements[10].value+=" ";
+if(g.elements[1].checked)f.elements[10].value+="Y";
+else  f.elements[10].value+=" ";
+if(g.elements[2].checked)f.elements[10].value+="Y";
+else  f.elements[10].value+=" ";
+f.elements[10].value+="&";
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */for(k=0;k<4;k++)
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */{
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */if(g.elements[20+k].checked)f.elements[10].value+="Y";
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */else f.elements[10].value+=" ";
+/* MODEREN- *//* MODE130B- *//* MODE130- *//* MODE130Q- */}
+f.elements[10].value+="\n";
+}
+//alert (f.elements[10].value);
+if(param=="parameters-")
+{
+f.elements[10].value+="PI&"+dasid+"\n";
+f.elements[10].value+="AQ&"+dasid+"&S&0000\n";
+if(confirm("Send Parameters to "+dasid)==false)return;
+}
+else if(param=="delete-"){if(confirm("Delete Configuration "+f.elements[4].options[f.elements[4].selectedIndex].value)==false)return;}
+else if(param=="load-"){if(confirm("Load Configuration "+f.elements[4].options[f.elements[4].selectedIndex].value)==false)return;}
+else if(param=="save-"){if(confirm("Save Configuration as "+f.elements[7].value)==false)return;}
+f.elements[10].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.action+=contype;
+f.submit();
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="PARAMETERS" enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>
+<!--
+d_w("UNIT#: "+dasid);
+//-->
+</SCRIPT> 
+</TH>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Status/Control" onclick="go_to_status()">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="From Das" onclick="get_from_das()">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Send To Das" onclick="send_parameters(this.form,empt)">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Load From" onclick="send_parameters(this.form,loadp)">
+<SELECT><SCRIPT language='JavaScript'>fill_cfg();</SCRIPT></SELECT>
+<INPUT TYPE=BUTTON  VALUE="Delete" onclick="send_parameters(this.form,deletep)">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Save As ..." onclick="send_parameters(this.form,savep)">
+<INPUT TYPE=TEXT size='12' MAXLENGTH="12" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Done" onclick="done()">
+<INPUT TYPE=BUTTON  VALUE="Undo" onclick="undo()">
+<INPUT TYPE=HIDDEN  VALUE="" NAME="GO_PARAM">
+</TD>
+</TR>
+</FORM>
+</TABLE>
+<H1> Station Parameters 
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM name="PS">
+<TR>
+<TH>Station Name</TH>
+<TH>Station Number</TH>
+<TH>Station Comment</TH>
+</TR>
+<TR>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="24" MAXLENGTH='24' name="StName"> 
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" VALUE="" MAXLENGTH='4' name="StNum"> 
+</TD>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="40" MAXLENGTH='40' name="StCom">
+</TD>
+</TR>
+<TR>
+<TH>Experiment Name</TH>
+<TH>Experiment Number</TH>
+<TH>Experiment Comment</TH>
+</TR><TR>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="24" MAXLENGTH='24'  name="ExName"> 
+</TD>
+<TD>
+ <INPUT TYPE=TEXT SIZE="4" MAXLENGTH='2' VALUE="" name="ExNum"> 
+</TD>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="40" MAXLENGTH='40' name="ExCom"> 
+</TD>
+</TR>
+</FORM>
+</TABLE>
+Channel Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="PC">
+<TR>
+<TH>Channel Name</TH>
+<TH>Azimuth</TH>
+<TH>Incline</TH>
+<TH>Location-X</TH>
+<TH>Location-Y</TH>
+<TH>Location-Z</TH>
+<TH>Units-X & Y</TH>
+<TH>Units-Z</TH>
+<TH>Gain</TH>
+<TH>Sensor type</TH>
+<TH>Sensor model</TH>
+<TH>Serial number</TH>
+<TH>Comment</TH>
+</TR>
+<TR>
+<TD>
+<INPUT TYPE=CHECKBOX NAME="ChNumb1">1
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="ChName1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Azm1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10'  NAME="Inc1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lx1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Ly1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lz1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uxy1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uz1" VALUE="">
+</TD>
+<TD>
+<SELECT NAME="Gain1">
+<!-- MODE130Q- //--><OPTION VALUE="1">Unity
+<!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="32">High
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  A">1-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  A">4-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 A">16-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 A">64-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256A">256-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  B">1-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  B">4-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 B">16-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 B">64-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256B">256-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  C">1-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  C">4-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 C">16-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 C">64-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256C">256-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  D">1-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  D">4-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 D">16-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 D">64-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256D">256-D
+</SELECT>
+
+	<TD>
+	<SELECT NAME="sype1" onchange="do_sen(0)">
+	<OPTION VALUE="C">REF TEK Colt
+	<OPTION VALUE="R">REF TEK 151
+	<OPTION VALUE="G">Guralp 3T
+	<OPTION VALUE="S">STS Family
+	<OPTION VALUE="T">Trillium
+	<OPTION VALUE="O">Other
+	<OPTION VALUE=" ">
+	</SELECT>
+	</TD>
+
+<TD>
+<INPUT TYPE=TEXT SIZE="11" MAXLENGTH='11'  NAME="Smod1" VALUE="" onchange="do_mod(0)">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="12" MAXLENGTH='12' NAME="Sser1" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="30" MAXLENGTH='40' NAME="Scom1" VALUE="">
+</TD>
+</TR>
+<TR>
+<TD>
+<INPUT TYPE=CHECKBOX NAME="ChNumb2">2
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="ChName2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Azm2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Inc2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lx2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Ly2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lz2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uxy2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uz2" VALUE="">
+</TD>
+<TD>
+<SELECT NAME="Gain2">
+<!-- MODE130Q- //--><OPTION VALUE="1">Unity
+<!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="32">High
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  A">1-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  A">4-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 A">16-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 A">64-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256A">256-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  B">1-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  B">4-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 B">16-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 B">64-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256B">256-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  C">1-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  C">4-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 C">16-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 C">64-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256C">256-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  D">1-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  D">4-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 D">16-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 D">64-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256D">256-D
+</SELECT>
+	<TD>
+	<SELECT NAME="sype2" onchange="do_sen(1)">
+	<OPTION VALUE="C">REF TEK Colt
+	<OPTION VALUE="R">REF TEK 151
+	<OPTION VALUE="G">Guralp 3T
+	<OPTION VALUE="S">STS Family
+	<OPTION VALUE="T">Trillium
+	<OPTION VALUE="O">Other
+	<OPTION VALUE=" ">
+	</SELECT>
+	</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="11" MAXLENGTH='11'  NAME="Smod2" VALUE="" onchange="do_mod(1)">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="12" MAXLENGTH='12'  NAME="Sser2" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="30" MAXLENGTH='40' NAME="Scom2" VALUE="">
+</TD>
+</TR>
+<TR>
+<TD>
+<INPUT TYPE=CHECKBOX NAME="ChNumb3">3
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10'  NAME="ChName3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Azm3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Inc3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lx3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Ly3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lz3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uxy3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uz3" VALUE="">
+</TD>
+<TD>
+<SELECT NAME="Gain3">
+<!-- MODE130Q- //--><OPTION VALUE="1">Unity
+<!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="32">High
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  A">1-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  A">4-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 A">16-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 A">64-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256A">256-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  B">1-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  B">4-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 B">16-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 B">64-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256B">256-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  C">1-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  C">4-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 C">16-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 C">64-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256C">256-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  D">1-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  D">4-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 D">16-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 D">64-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256D">256-D
+</SELECT>
+	<TD>
+	<SELECT NAME="sype3" onchange="do_sen(2)">
+	<OPTION VALUE="C">REF TEK Colt
+	<OPTION VALUE="R">REF TEK 151
+	<OPTION VALUE="G">Guralp 3T
+	<OPTION VALUE="S">STS Family
+	<OPTION VALUE="T">Trillium
+	<OPTION VALUE="O">Other
+	<OPTION VALUE=" ">
+	</SELECT>
+	</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="11" MAXLENGTH='11' NAME="Smod3" VALUE="" onchange="do_mod(2)">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="12" MAXLENGTH='12' NAME="Sser3" VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="30" MAXLENGTH='40' NAME="Scom3" VALUE="">
+</TD>
+</TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX NAME="ChNumb4">4
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="ChName4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Azm4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Inc4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lx4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Ly4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lz4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uxy4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uz4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><SELECT NAME="Gain4">
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="1">Unity
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="32">High
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  A">1-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  A">4-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 A">16-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 A">64-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256A">256-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  B">1-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  B">4-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 B">16-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 B">64-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256B">256-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  C">1-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  C">4-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 C">16-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 C">64-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256C">256-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  D">1-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  D">4-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 D">16-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 D">64-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256D">256-D
+<!-- MODEREN- //--><!-- MODE130B- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><SELECT NAME="sype4" onchange="do_sen(3)">
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="C">REF TEK Colt
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="R">REF TEK 151
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="G">Guralp 3T
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="S">STS Family
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="T">Trillium
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="O">Other
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE=" ">
+<!-- MODEREN- //--><!-- MODE130B- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="11" MAXLENGTH='11' NAME="Smod4" VALUE="" onchange="do_mod(3)">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="12" MAXLENGTH='12' NAME="Sser4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="30" MAXLENGTH='40' NAME="Scom4" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX NAME="ChNumb5">5
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="ChName5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Azm5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Inc5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lx5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Ly5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lz5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uxy5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uz5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><SELECT NAME="Gain5">
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="1">Unity
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="32">High
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  A">1-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  A">4-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 A">16-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 A">64-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256A">256-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  B">1-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  B">4-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 B">16-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 B">64-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256B">256-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  C">1-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  C">4-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 C">16-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 C">64-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256C">256-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  D">1-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  D">4-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 D">16-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 D">64-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256D">256-D
+<!-- MODEREN- //--><!-- MODE130B- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><SELECT NAME="sype5" onchange="do_sen(4)">
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="C">REF TEK Colt
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="R">REF TEK 151
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="G">Guralp 3T
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="S">STS Family
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="T">Trillium
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="O">Other
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE=" ">
+<!-- MODEREN- //--><!-- MODE130B- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="11" MAXLENGTH='11' NAME="Smod5" VALUE="" onchange="do_mod(4)">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="12" MAXLENGTH='12' NAME="Sser5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="30" MAXLENGTH='40' NAME="Scom5" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX NAME="ChNumb6">6
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="ChName6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Azm6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Inc6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lx6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Ly6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="10" MAXLENGTH='10' NAME="Lz6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uxy6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="4" MAXLENGTH='4' NAME="Uz6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><SELECT NAME="Gain6">
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="1">Unity
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE="32">High
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  A">1-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  A">4-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 A">16-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 A">64-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256A">256-A
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  B">1-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  B">4-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 B">16-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 B">64-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256B">256-B
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  C">1-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  C">4-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 C">16-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 C">64-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256C">256-C
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="1  D">1-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="4  D">4-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="16 D">16-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="64 D">64-D
+<!-- MODEREN- //--><!-- MODE130G- //--><!-- MODE130- //--><!-- MODE130B- //--><OPTION VALUE="256D">256-D
+<!-- MODEREN- //--><!-- MODE130B- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><SELECT NAME="sype6" onchange="do_sen(5)">
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="C">REF TEK Colt
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="R">REF TEK 151
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="G">Guralp 3T
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="S">STS Family
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="T">Trillium
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE="O">Other
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE=" ">
+<!-- MODEREN- //--><!-- MODE130B- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="11" MAXLENGTH='11' NAME="Smod6" VALUE="" onchange="do_mod(5)">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="12" MAXLENGTH='12' NAME="Sser6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE="30" MAXLENGTH='40' NAME="Scom6" VALUE="">
+<!-- MODEREN- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+</FORM>
+</TABLE>
+Stream Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="PDst">
+<TR>
+<TH>Stream</TH>
+<TH>Name</TH>
+<TH>Recording Destination</TH>
+<TH>Channels in Stream</TH>
+<TH>Sample Rate</TH>
+<TH>Data Format</TH>
+<TH>Trigger Type</TH>
+</TR>
+<TR>
+<TD>
+1
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16'  VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>Disk
+<INPUT TYPE=CHECKBOX>RTP1
+<INPUT TYPE=CHECKBOX>RTP2
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>1
+<INPUT TYPE=CHECKBOX>2
+<INPUT TYPE=CHECKBOX>3
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="1000">1000
+<OPTION VALUE="500">500
+<OPTION VALUE="250">250
+<OPTION VALUE="200">200
+<OPTION VALUE="125">125
+<OPTION VALUE="100">100
+<OPTION VALUE="50">50
+<OPTION VALUE="40">40
+<OPTION VALUE="20">20
+<OPTION VALUE="10">10
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="5">5
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="0.1">0.1
+</SELECT>
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="32">32
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="CF">CF
+</SELECT>
+</TD>
+<TD>
+<SELECT onchange="process_pd(this.form,1)">
+<OPTION VALUE="CON">Continuous
+<OPTION VALUE="CRS">Cross
+<OPTION VALUE="EVT">Event
+<OPTION VALUE="EXT">External
+<OPTION VALUE="LEV">Level
+<OPTION VALUE="TIM">Time Interval
+<OPTION VALUE="TML">Time List
+<OPTION VALUE="VOT">Vote
+<!-- MODEMRF+ //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+</SELECT>
+<INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,1)">
+<INPUT TYPE=HIDDEN VALUE="" NAME=pdst1>
+</TD>
+</TR>
+<TR>
+<TD>
+2
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16' VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>Disk
+<INPUT TYPE=CHECKBOX>RTP1
+<INPUT TYPE=CHECKBOX>RTP2
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>1
+<INPUT TYPE=CHECKBOX>2
+<INPUT TYPE=CHECKBOX>3
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="1000">1000
+<OPTION VALUE="500">500
+<OPTION VALUE="250">250
+<OPTION VALUE="200">200
+<OPTION VALUE="125">125
+<OPTION VALUE="100">100
+<OPTION VALUE="50">50
+<OPTION VALUE="40">40
+<OPTION VALUE="20">20
+<OPTION VALUE="10">10
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="5">5
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="0.1">0.1
+</SELECT>
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="32">32
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="CF">CF
+</SELECT>
+</TD>
+<TD>
+<SELECT  onchange="process_pd(this.form,2)">
+<OPTION VALUE="CON">Continuous
+<OPTION VALUE="CRS">Cross
+<OPTION VALUE="EVT">Event
+<OPTION VALUE="EXT">External
+<OPTION VALUE="LEV">Level
+<OPTION VALUE="TIM">Time Interval
+<OPTION VALUE="TML">Time List
+<OPTION VALUE="VOT">Vote
+<!-- MODEMRF+ //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+</SELECT>
+<INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,2)">
+<INPUT TYPE=HIDDEN VALUE="" NAME=pdst2>
+</TD>
+</TR>
+<TR>
+<TD>
+3
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16' VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>Disk
+<INPUT TYPE=CHECKBOX>RTP1
+<INPUT TYPE=CHECKBOX>RTP2
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>1
+<INPUT TYPE=CHECKBOX>2
+<INPUT TYPE=CHECKBOX>3
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="1000">1000
+<OPTION VALUE="500">500
+<OPTION VALUE="250">250
+<OPTION VALUE="200">200
+<OPTION VALUE="125">125
+<OPTION VALUE="100">100
+<OPTION VALUE="50">50
+<OPTION VALUE="40">40
+<OPTION VALUE="20">20
+<OPTION VALUE="10">10
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="5">5
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="0.1">0.1
+</SELECT>
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="32">32
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="CF">CF
+</SELECT>
+</TD>
+<TD>
+<SELECT  onchange="process_pd(this.form,3)">
+<OPTION VALUE="CON">Continuous
+<OPTION VALUE="CRS">Cross
+<OPTION VALUE="EVT">Event
+<OPTION VALUE="EXT">External
+<OPTION VALUE="LEV">Level
+<OPTION VALUE="TIM">Time Interval
+<OPTION VALUE="TML">Time List
+<OPTION VALUE="VOT">Vote
+<!-- MODEMRF+ //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+</SELECT>
+<INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,3)">
+<INPUT TYPE=HIDDEN VALUE="" NAME=pdst3>
+</TD>
+</TR>
+<TR>
+<TD>
+4
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16' VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>Disk
+<INPUT TYPE=CHECKBOX>RTP1
+<INPUT TYPE=CHECKBOX>RTP2
+</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>1
+<INPUT TYPE=CHECKBOX>2
+<INPUT TYPE=CHECKBOX>3
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="1000">1000
+<OPTION VALUE="500">500
+<OPTION VALUE="250">250
+<OPTION VALUE="200">200
+<OPTION VALUE="125">125
+<OPTION VALUE="100">100
+<OPTION VALUE="50">50
+<OPTION VALUE="40">40
+<OPTION VALUE="20">20
+<OPTION VALUE="10">10
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="5">5
+<!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODEMRF- //--><OPTION VALUE="0.1">0.1
+</SELECT>
+</TD>
+<TD>
+<SELECT>
+<OPTION VALUE="32">32
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="CF">CF
+</SELECT>
+</TD>
+<TD>
+<SELECT  onchange="process_pd(this.form,4)">
+<OPTION VALUE="CON">Continuous
+<OPTION VALUE="CRS">Cross
+<OPTION VALUE="EVT">Event
+<OPTION VALUE="EXT">External
+<OPTION VALUE="LEV">Level
+<OPTION VALUE="TIM">Time Interval
+<OPTION VALUE="TML">Time List
+<OPTION VALUE="VOT">Vote
+<!-- MODEMRF+ //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+</SELECT>
+<INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,4)">
+<INPUT TYPE=HIDDEN VALUE="" NAME=pdst4>
+</TD>
+</TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //-->5
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16' VALUE="">
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>Disk
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP2
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>2
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>3
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1000">1000
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="500">500
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="250">250
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="200">200
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="125">125
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="100">100
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="50">50
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="40">40
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="20">20
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="10">10
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="5">5
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="0.1">0.1
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="32">32
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><!-- MODEREN- //--><OPTION VALUE="CF">CF
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT  onchange="process_pd(this.form,5)">
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CON">Continuous
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CRS">Cross
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EVT">Event
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EXT">External
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="LEV">Level
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TIM">Time Interval
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TML">Time List
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="VOT">Vote
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,5)">
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=HIDDEN VALUE="" NAME=pdst5>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--></TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //-->6
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16' VALUE="">
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>Disk
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP2
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>2
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>3
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1000">1000
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="500">500
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="250">250
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="200">200
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="125">125
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="100">100
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="50">50
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="40">40
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="20">20
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="10">10
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="5">5
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="0.1">0.1
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="32">32
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><!-- MODEREN- //--><OPTION VALUE="CF">CF
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT  onchange="process_pd(this.form,6)">
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CON">Continuous
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CRS">Cross
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EVT">Event
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EXT">External
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="LEV">Level
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TIM">Time Interval
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TML">Time List
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="VOT">Vote
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,6)">
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=HIDDEN VALUE="" NAME=pdst6>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--></TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //-->7
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16' VALUE="">
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>Disk
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP2
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>2
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>3
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1000">1000
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="500">500
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="250">250
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="200">200
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="125">125
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="100">100
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="50">50
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="40">40
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="20">20
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="10">10
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="5">5
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="0.1">0.1
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="32">32
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><!-- MODEREN- //--><OPTION VALUE="CF">CF
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT  onchange="process_pd(this.form,7)">
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CON">Continuous
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CRS">Cross
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EVT">Event
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EXT">External
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="LEV">Level
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TIM">Time Interval
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TML">Time List
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="VOT">Vote
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,7)">
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=HIDDEN VALUE="" NAME=pdst7>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--></TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TR>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //-->8
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=TEXT SIZE="16" MAXLENGTH='16' VALUE="">
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>Disk
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>RTP2
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>1
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>2
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=CHECKBOX>3
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1000">1000
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="500">500
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="250">250
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="200">200
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="125">125
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="100">100
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="50">50
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="40">40
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="20">20
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="10">10
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="5">5
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="1">1
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="0.1">0.1
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="32">32
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="CO">CO
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE="C2">C2
+<!-- MODE130- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><!-- MODEREN- //--><OPTION VALUE="CF">CF
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD>
+<!-- MODE130- //--><!-- MODEREN- //--><SELECT  onchange="process_pd(this.form,8)">
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CON">Continuous
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="CRS">Cross
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EVT">Event
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="EXT">External
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="LEV">Level
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TIM">Time Interval
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="TML">Time List
+<!-- MODE130- //--><!-- MODEREN- //--><OPTION VALUE="VOT">Vote
+<!-- MODE130- //--><!-- MODEREN- //--><!-- MODE130QH- //--><!-- MODE130G- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><OPTION VALUE="DIF">Difference
+<!-- MODE130- //--><!-- MODEREN- //--></SELECT>
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=BUTTON  VALUE="Details" onclick="process_pd(this.form,8)">
+<!-- MODE130- //--><!-- MODEREN- //--><INPUT TYPE=HIDDEN VALUE="" NAME=pdst8>
+<!-- MODE130- //--><!-- MODEREN- //--></TD>
+<!-- MODE130- //--><!-- MODEREN- //--></TR>
+</FORM>
+</TABLE>
+
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //-->MT Transmitter and Calibration Parameters 
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><FORM NAME="PT">
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TH>Trans. Enable</TH>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TH>Trans. Freq.</TH>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TH>Duty Cycle</TH>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TH>Cal. Stream #</TH>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TH>Cal. Freq. #</TH>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TH># of Cals</TH>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><INPUT TYPE=CHECKBOX></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><SELECT><OPTION VALUE='50'>50<OPTION VALUE='100'>100</SELECT></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><SELECT><OPTION VALUE='00'>Off
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><OPTION VALUE='01'>1<OPTION VALUE='02'>2<OPTION VALUE='03'>3<OPTION VALUE='04'>4
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><OPTION VALUE='05'>5<OPTION VALUE='06'>6<OPTION VALUE='07'>7<OPTION VALUE='08'>8
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--></SELECT></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD COLSPAN=3>Stage 1: Duration/Amplitude(HEX)</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD>Stage 2: Duration/Amplitude(HEX)</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD>Stage 3: Duration/Amplitude(HEX)</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD>Stage 4: Duration/Amplitude(HEX)</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD COLSPAN=3><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>/
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>/
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>/
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>/
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--></FORM>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--></TABLE>
+
+<!-- MODEREN- //--><!-- MODE130Q- //-->Sensor Calibration Signal Parameters
+<!-- MODEREN- //--><!-- MODE130Q- //--><table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<!-- MODEREN- //--><!-- MODE130Q- //--><FORM NAME="PK">
+<!-- MODEREN- //--><!-- MODE130Q- //--><TR>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Channel Group</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Enable</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Duration (sec.)</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Amplitude (volts)</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Signal</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Step interval (sec.)</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Step width (sec.)</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TH>Sine Frequency (Hz)</TH>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TR>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TR>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><INPUT TYPE=HIDDEN VALUE="1" NAME="PKH1">1-3
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><INPUT TYPE=CHECKBOX>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><SELECT>
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='STEP'>STEP<OPTION VALUE='SINE'>SINE<OPTION VALUE='NOIS'>NOISE
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='RNSP'>Random-SP
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='RNLP'>Random-LP
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='RNBB'>Random-BB
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='SWSP'>Sweep-SP
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='SWLP'>Sweep-LP
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='SWBB'>Sweep-BB
+<!-- MODEREN- //--><!-- MODE130Q- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><SELECT>
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='1'>1
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='2'>2
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='4'>4
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='5'>5
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='8'>8
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='10'>10
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='20'>20
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='25'>25
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='40'>40
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VALUE='50'>50
+<!-- MODEREN- //--><!-- MODE130Q- //--><OPTION VAL='100'>100
+<!-- MODEREN- //--><!-- MODE130Q- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TR>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><INPUT TYPE=HIDDEN VALUE="2" NAME="PKH2">4-6
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><SELECT><OPTION VALUE='STEP'>STEP<OPTION VALUE='SINE'>SINE<OPTION VALUE='NOIS'>NOISE
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='RNSP'>Random-SP
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='RNLP'>Random-LP
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='RNBB'>Random-BB
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='SWSP'>Sweep-SP
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='SWLP'>Sweep-LP
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='SWBB'>Sweep-BB
+<!-- MODEREN- //--><!-- MODE130Q- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><INPUT TYPE=TEXT  SIZE='4' MAXLENGTH='4' VALUE=''>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><SELECT>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='1'>1
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='2'>2
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='4'>4
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='5'>5
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='8'>8
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='10'>10
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='20'>20
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='25'>25
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='40'>40
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='50'>50
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--><OPTION VALUE='100'>100
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></SELECT>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TD>
+<!-- MODEREN- //--><!-- MODE130Q- //--><!-- MODE130B- //--></TR>
+<!-- MODEREN- //--><!-- MODE130Q- //--></FORM>
+<!-- MODEREN- //--><!-- MODE130Q- //--></TABLE>
+
+<!-- MODEREN- //-->Sensor Calibration Schedule Parameters
+<!-- MODEREN- //--><table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<!-- MODEREN- //--><FORM NAME="PL">
+<!-- MODEREN- //--><TR>
+<!-- MODEREN- //--><TH>Channel Group</TH>
+<!-- MODEREN- //--><TH>Enable</TH>
+<!-- MODEREN- //--><TH>Start Time(YYYY:DDD:HH:MM:SS)</TH>
+<!-- MODEREN- //--><TH>Repeat Interval (DD:HH:MM:SS)</TH>
+<!-- MODEREN- //--><TH>Number Of Calibrations (0-infinite)</TH>
+<!-- MODEREN- //--><TH>Record Length(sec.)</TH>
+<!-- MODEREN- //--></TR>
+<!-- MODEREN- //--><TR>
+<!-- MODEREN- //--><TD><INPUT TYPE=HIDDEN VALUE="1" NAME="PLH1">1-3</TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=CHECKBOX></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='17' MAXLENGTH='17' VALUE=''></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='11' MAXLENGTH='11' VALUE=''></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<!-- MODEREN- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=HIDDEN VALUE="2" NAME="PLH2">4-6</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=CHECKBOX></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='17' MAXLENGTH='17' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='11' MAXLENGTH='11' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+<!-- MODEREN- //--></FORM>
+<!-- MODEREN- //--></TABLE>
+<!-- MODEREN- //-->Sensor Auto Re-center Parameters
+<!-- MODEREN- //--><table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<!-- MODEREN- //--><FORM NAME="PQ">
+<!-- MODEREN- //--><TR>
+<!-- MODEREN- //--><TH>Channel Group</TH>
+<!-- MODEREN- //--><TH>Enable</TH>
+<!-- MODEREN- //--><TH>Level Vertical (0.1-9.9 volts)</TH>
+<!-- MODEREN- //--><TH>Level Horizontal (0.1-9.9 volts)</TH>
+<!-- MODEREN- //--><TH>Attempts (1-20)</TH>
+<!-- MODEREN- //--><TH>Attempt Interval (5-59 minutes)</TH>
+<!-- MODEREN- //--><TH>Cycle Interval (1-99 days)</TH>
+<!-- MODEREN- //-->
+<!-- MODEREN- //--></TR>
+<!-- MODEREN- //--><TR>
+<!-- MODEREN- //--><TD>
+<!-- MODEREN- //--><INPUT TYPE=HIDDEN VALUE='1' NAME="PQH1">1-3</TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=CHECKBOX></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE='9.9' NAME="PQH11"></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE='9.9'  NAME="PQH12"></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE='0'    NAME="PQH13"></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE='0'    NAME="PQH14"></TD>
+<!-- MODEREN- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE='99'></TD>
+<!-- MODEREN- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=HIDDEN VALUE='2' NAME="PQH2">4-6</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=CHECKBOX></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE='9.9' NAME="PQH21"></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' VALUE='9.9' NAME="PQH22"></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE='0' NAME="PQH23"></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE='0' NAME="PQH24"></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE='99'></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+<!-- MODEREN- //--></FORM>
+<!-- MODEREN- //--></TABLE>
+Auxiliary Data Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="PA">
+<TR>
+<TH>Recording Destination</TH>
+<TH>Channels</TH>
+<TH>Sample Period (sec.)</TH>
+<TH>Record Length (sec.)</TH>
+</TR>
+<TR>
+<TD>
+<INPUT TYPE=CHECKBOX>Disk
+<INPUT TYPE=CHECKBOX>RTP1
+<INPUT TYPE=CHECKBOX>RTP2
+</TD>
+<TD><INPUT TYPE=HIDDEN VALUE='99' NAME="PA99">
+<INPUT TYPE=CHECKBOX>1
+<INPUT TYPE=CHECKBOX>2
+<INPUT TYPE=CHECKBOX>3
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>5
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>6
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><INPUT TYPE=CHECKBOX>7
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><INPUT TYPE=CHECKBOX>8
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><INPUT TYPE=CHECKBOX>9
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><INPUT TYPE=CHECKBOX>10
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><INPUT TYPE=CHECKBOX>11
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><INPUT TYPE=CHECKBOX>12
+<INPUT TYPE=CHECKBOX>13
+<INPUT TYPE=CHECKBOX>14
+<INPUT TYPE=CHECKBOX>15
+<INPUT TYPE=CHECKBOX>16
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //--><BR>
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130Q- //-->Check Box for Differential input:  <INPUT TYPE=CHECKBOX>7/11  <INPUT TYPE=CHECKBOX>8/12  <INPUT TYPE=CHECKBOX>9/13 <INPUT TYPE=CHECKBOX>10/14
+</TD>
+<TD><SELECT><OPTION VALUE="1">1<OPTION VALUE="10">10</SELECT></TD>
+<TD><INPUT TYPE=HIDDEN VALUE='16' NAME='PAHID'>
+<INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8'  VALUE=''></TD>
+</TR>
+</FORM>
+</TABLE>
+<SCRIPT language='JavaScript'>
+<!--
+var test;
+test=""+self.location;
+contype=test.substring(test.length-1,test.length);
+init_psta(document.forms['PS']);
+init_pchan(document.forms['PC']);
+init_pstream(document.forms['PDst']);
+/* MODEREN- *//* MODE130Q- */init_pkcal(document.forms['PK']);
+/* MODEREN- */init_pqcen(document.forms['PQ']);
+/* MODEREN- */init_plcomd(document.forms['PL']);
+init_paaux(document.forms['PA']);
+/* MODEREN- *//* MODE130- *//* MODE130B- *//* MODE130G- */init_pttrca(document.forms['PT']);
+//-->
+</SCRIPT>
+<!-- CHANGES AT 20Aug2014 //-->
+</BODY>
+</HTML>

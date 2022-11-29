@@ -1,0 +1,200 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV='Pragma' CONTENT="no-cache">
+<STYLE type='text/css'>
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var contype="";
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+var hex = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+function 
+DectoHex(A) 
+{
+var i=0;
+fin="";
+trn="";
+if(A<0){ A+=(0xFFFFFFFF)+1;}
+s = "";
+while (A >= 16) {
+s += hex[A % 16];  
+A = Math.floor(A / 16); 
+}
+trn=transpose(s += hex[A]);
+for(i=0;i<8-trn.length;i++)
+{
+fin+="0";
+}
+return fin+trn;
+}
+function transpose(s) {
+N = s.length;
+for (i = 0,t = ""; i < N; i++)
+t += s.substring(N-i-1, N-i); 
+return t;
+}
+
+var SD;
+var SOFTWAREDEVINED;
+var dasid=SD.substring(0,4);
+var sensorNumber=SD.substring(10,11);
+var resultCode=parseInt("0x"+SD.substring(11,13));
+var calTime=SD.substring(13,30);
+function d_w(f)
+{
+document.write(f);
+}
+function fill_values(f)
+{
+var chy1;
+var chy2;
+var tbw;
+var sig1;
+var sig2
+var cht;
+var dampc=0;
+var ldampc=0;
+var i;
+for(i=0;i<3;i++)
+{
+sig1="";
+sig2="";
+
+tbw=parseFloat(SSCH1.substring(50+i*26,58+i*26));
+if(SSCH1.substring(56+i*26,58+i*26)=='uV')tbw/=1000.;
+if(SSCH1.substring(56+i*26,58+i*26)=='nV')tbw/=1000000.;
+//alert("!"+SSCH1.substring(50+i*26,58+i*26)+"!");
+chy1=parseInt("0x"+SD.substring(30+i*20,38+i*20));
+chy2=parseInt("0x"+SD.substring(38+i*20,46+i*20));
+if(chy1&0x80000000){chy1^=0xFFFFFFFF;chy1+=1;sig1="-";}
+if(chy2&0x80000000){chy2^=0xFFFFFFFF;chy2+=1;sig2="-";}
+cht=parseInt(SD.substring(46+i*20,50+i*20),10);
+cht/=10;
+if(chy1>0&&chy2>0)
+{
+ldampc=Math.log(chy1/chy2);
+dampc=ldampc/Math.sqrt(3.14159265*3.14159265+ldampc*ldampc);
+dampc=dampc.toFixed(3);
+}
+chy1*=tbw;
+chy2*=tbw;
+chy1=chy1.toFixed(3);
+chy2=chy2.toFixed(3);
+
+d_w("<TR>");
+d_w("<TD>"+(i+1)+"</TD><TD>"+sig1+chy1+"</TD><TD>"+sig2+chy2+"</TD><TD>"+cht+"</TD><TD>"+dampc+"</TD>");
+d_w("</TR>");
+}
+}
+function done(f)
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[2].value=s_lbl;
+f.elements[2].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[2].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[2].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function  update_dump(f)
+{
+f.action="http://"+self.location.host+"/sensor-dump-"+dasid+contype;
+f.elements[2].value=s_lbl;
+f.elements[2].value+="SS&"+dasid+"&CH&1\n";
+f.elements[2].value+="SD&"+dasid+"&"+sensorNumber+"&Q"+"\n";
+f.elements[2].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function  update_auto()
+{
+if(resultCode==255)
+{
+setTimeout(function() {update_dump(document.forms['dump']);},15000);
+}
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000" onload="update_auto()">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="dump" enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>d_w("UNIT# "+dasid+";SensorNumber#"+sensorNumber);</SCRIPT> 
+</TH>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Update"  onclick="update_dump(this.form)">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Done"  onclick="done(this.form)">
+<INPUT TYPE=HIDDEN NAME="dump" VALUE="">
+</TD>
+</TR>
+</FORM>
+</TABLE>
+<BR>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>
+Result Code
+</TH>
+<TD>
+<SCRIPT language='JavaScript'>
+
+if(resultCode==255)d_w("In Progress.....Please Wait!");
+else if(resultCode==0)d_w("Done");
+else if(resultCode==1)d_w("Invalid sensor");
+else if(resultCode==2)d_w("Command Not Supprorted by Hardware");
+else if(resultCode==3)d_w("rejected (busy)");
+else if(resultCode==4)d_w("No Data (Calibration never performed)");
+else                 d_w("UNKNOWN");
+
+</SCRIPT> 
+</TD>
+</TR>
+</TABLE>
+<BR>
+
+
+
+<FORM NAME="DUMPVALUES">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TD colspan="5">
+<b>Calibration Time:</b>&nbsp;&nbsp;
+<SCRIPT language='JavaScript'>d_w(""+calTime);</SCRIPT> 
+</TD>
+</TR>
+<TR>
+<TH>Channel#</TH>
+<TH>Y1 Amplitude (mVolts)</TH>
+<TH>Y2 Amplitude (mVolts)</TH>
+<TH>Period (msec)</TH>
+<TH>Damping Coefficient</TH>
+</TR>
+<SCRIPT language='JavaScript'>
+<!--
+var test;
+test=""+self.location;
+contype=test.substring(test.length-1,test.length);
+fill_values(this.from);
+//-->
+</SCRIPT>
+</TABLE>
+</FORM>
+<!-- CHANGES AT 30.10.2012 //-->
+</BODY>
+</HTML>

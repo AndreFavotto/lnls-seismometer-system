@@ -1,0 +1,1133 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css"> 
+input {font-family:Arial, Verdana,  Helvetica,  sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family:  Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #FF9D6F}
+td {font-family:  Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+.al {font-family:  Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:Left;background-color: #FFFFFF}
+h1   {font-family: Arial, Verdana,  Helvetica, sans-serif; font-weight:bold;font-size: 85%; color: #000000;text-align:left;background-color: #F5f5dc}
+</STYLE>
+<SCRIPT language='JavaScript'> 
+<!--
+var contype="";
+var empt="parameters-";
+var savep="save-";
+var loadp="load-";
+var deletep="delete-";
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+function check_ch(s,n)
+{
+var i;
+var k;
+var ss;
+k=parseInt(s,10);
+if(k==n){return 1;}
+for(i=0;i<s.length;i++)
+{
+if(s.substring(i,i+1)==".")
+{
+k=parseInt(s.substring(i+1,i+3),10);
+if(k==n)return 1;
+}
+}
+return 0;
+}
+function filsp(str,num)
+{
+var nstr="";
+for(i=0;i<num;i++)
+{
+if(i<str.length)nstr+=str.substring(i,i+1);
+else nstr+=" ";
+}
+return nstr;
+}
+function done()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/";
+}
+function d_w(f)
+{
+document.write(f);
+}
+function strip_string(str)
+{
+var i;
+var nstr="";              
+var left=0;
+var right=0;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+ 
+left=i;
+for(i=str.length-1;i>=0;i--)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+right=i;
+if(left<=right)nstr=str.substring(left,right+1);
+return nstr;
+}
+ 
+ 
+function get_resp_str(str,pos,nr)
+{
+var nstr="";
+var ustr="";
+var i,k;
+var j=0;
+ 
+if(str.length<1)return nstr;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)=="}")j++;
+if(j==nr)break;
+}
+//alert(""+j+","+i);
+j=1;
+for(k=i+1;k<str.length;k++)
+{
+if(str.substring(k,k+1)=="}"){break;}
+if(str.substring(k,k+1)==","){j+=1;}
+else if(pos==j)
+	{
+	nstr+=str.substring(k,k+1);
+	}
+}
+ustr=strip_string(nstr);
+return ustr; 
+}
+ 
+ 
+ 
+var TarnsTrig;
+var PS="";
+var PC1="";
+var PC2="";
+var PC3="";
+var PC4="";
+var PC5="";
+var PC6="";
+var PC7="";
+var PC8="";
+var PC9="";
+var PC10="";
+var PC11="";
+var PC12="";
+var PC13="";
+var PC14="";
+var PC15="";
+var PC16="";
+var PC17="";
+var PC18="";
+var PD="";
+var US="";
+        
+var config;
+var SOFTWAREDEVINED; 
+
+config=new Array();
+var dasid=get_resp_str(PS,2,1).toUpperCase();
+
+function num_pd()
+{
+var n=0;
+var i;
+for(i=0;i<PD.length-1;i++)
+{
+if(PD.substring(i,i+1)=="}")n++;
+}
+return n;
+}
+ 
+function fill_cfg()
+{
+var i;
+if(!config)return;
+for(i=0;i<config.length;i++)
+	{
+	d_w("<OPTION VALUE='"+config[i]+"'>"+config[i]+"\n");
+	}
+}
+ 
+ 
+function wr_pdchan(n)
+{ 
+var nchan=parseInt(get_resp_str(US,12,1),10);
+d_w("<TR>");
+if(n==1)s="Triggered";
+if(n==2)s="Continuous";
+if(n==3)s="External Trigger";
+ 
+d_w("<TD>"+s+"</TD>");
+ 
+d_w("<TD><INPUT TYPE=CHECKBOX"+" NAME='D"+n+"'>Disk<INPUT TYPE=CHECKBOX"+" NAME='E"+n+"'>Ethernet</TD>");
+d_w("<TD>");
+for(var k=1;k<=nchan;k++)
+d_w("<INPUT TYPE=CHECKBOX>"+k);
+d_w("</TD>");
+d_w("<TD><SELECT>");
+d_w("<OPTION VALUE='1000'>1000");
+d_w("<OPTION VALUE='500'>500");
+d_w("<OPTION VALUE='250'>250");
+d_w("<OPTION VALUE='200'>200");
+d_w("<OPTION VALUE='125'>125");
+d_w("<OPTION VALUE='100'>100");
+d_w("<OPTION VALUE='50'>50");
+d_w("</SELECT></TD>");
+d_w("<TD><SELECT>");
+d_w("<OPTION VALUE='32'>32");
+d_w("<OPTION VALUE='C0'>C0");
+d_w("<OPTION VALUE='C2'>C2");
+d_w("</SELECT></TD>");
+if(n!=2)d_w("<TD><INPUT TYPE=TEXT SIZE='10' MAXLENGTH='10' VALUE='3600.00'></TD>");
+else d_w("<TD><INPUT TYPE=TEXT SIZE='10' MAXLENGTH='10' VALUE='3600.00' DISABLED></TD>");
+d_w("</TR>");
+}
+ 
+function wr_channels()
+{
+var nchan=parseInt(get_resp_str(US,12,1),10);
+for(var k=1;k<=nchan;k++)
+{
+ 
+{
+d_w("<TR><TD class='al'>")
+d_w(""+(k)+"<INPUT TYPE=CHECKBOX NAME='ChNumb"+(k)+"'>"+"&nbsp;");
+d_w("<INPUT TYPE=TEXT SIZE='4' MAXLENGTH='10' NAME='ChName"+(k)+"' VALUE=''>");
+d_w("</TD><TD><INPUT TYPE=TEXT SIZE='6' MAXLENGTH='10' NAME='Azm"+(k)+"' VALUE=''>");
+d_w("<INPUT TYPE=TEXT SIZE='6' MAXLENGTH='10'  NAME='Inc"+(k)+"' VALUE=''>");
+d_w("</TD><TD><INPUT TYPE=TEXT SIZE='6' MAXLENGTH='10' NAME='Lx"+(k)+"' VALUE=''>");
+d_w("<INPUT TYPE=TEXT SIZE='6' MAXLENGTH='10' NAME='Ly"+(k)+"' VALUE=''>");
+d_w("<INPUT TYPE=TEXT SIZE='6' MAXLENGTH='10' NAME='Lz"+(k)+"' VALUE=''>");
+d_w("</TD><TD><INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' NAME='Uxy"+(k)+"' VALUE=''>");
+d_w("<INPUT TYPE=TEXT SIZE='4' MAXLENGTH='4' NAME='Uz"+(k)+"' VALUE=''>");
+d_w("<INPUT TYPE=HIDDEN  VALUE='1' NAME='gain"+k+"'</TD>");
+d_w("<TD><INPUT TYPE=TEXT SIZE='10' MAXLENGTH='12'  NAME='Smod"+(k)+"' VALUE=''>");
+d_w("</TD><TD><INPUT TYPE=TEXT SIZE='10' MAXLENGTH='12' NAME='Sser"+(k)+"' VALUE=''>");
+d_w("</TD><TD><INPUT TYPE=TEXT SIZE='20' MAXLENGTH='40' NAME='Scom1"+(k)+"' VALUE=''>");
+d_w("<TD><INPUT TYPE=TEXT SIZE='5' MAXLENGTH='8' VALUE='0.0'>");
+d_w("<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>");
+d_w("<TD><INPUT TYPE=TEXT SIZE='5' MAXLENGTH='8' VALUE='0.0'>");
+d_w("<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>");
+d_w("<TD><INPUT TYPE=TEXT SIZE='5' MAXLENGTH='8' VALUE='0'>");
+d_w("<INPUT TYPE=TEXT SIZE='5' MAXLENGTH='8' VALUE='0'>");
+d_w("<INPUT TYPE=TEXT SIZE='5' MAXLENGTH='8' VALUE='0'>");
+d_w("<INPUT TYPE=TEXT SIZE='5' MAXLENGTH='8' VALUE='0'>");
+d_w("</TD></TR>");
+}
+ 
+}
+ 
+}
+ 
+ 
+ 
+function init_pttrca(f)
+{
+var csn=0;
+var i;
+var enb=0;
+enb=parseInt(PT.substring(14,16),10);
+if(isNaN(enb)||enb==0)f.elements[0].checked=false;
+else f.elements[0].checked=true;
+f.elements[1].value=strip_string(PT.substring(16,24));
+if(parseInt(PT.substring(24,28),10)==100)f.elements[2].selectedIndex=1;
+else f.elements[2].selectedIndex=0;
+csn=parseInt(PT.substring(32,34),10);
+if(isNaN(csn)||csn>8)f.elements[3].selectedIndex=0;
+else  f.elements[3].selectedIndex=csn;
+f.elements[4].value=strip_string(PT.substring(34,42));
+f.elements[5].value=strip_string(PT.substring(42,46));
+for(i=0;i<8;i++)
+{
+f.elements[6+i].value=strip_string(PT.substring(50+i*4,54+i*4));
+}
+ 
+}
+ 
+
+function init_psta(f)
+{
+f.elements[0].value=get_resp_str(PS,9,1);
+f.elements[1].value=get_resp_str(PS,8,1);
+f.elements[2].value=get_resp_str(PS,10,1);
+f.elements[3].value=get_resp_str(PS,6,1);
+f.elements[4].value=get_resp_str(PS,5,1);
+f.elements[5].value=get_resp_str(PS,7,1);
+}
+ 
+ 
+function do_mod(i)
+{
+var l=14;
+var i;
+var f=document.forms['PC'];
+if(f.elements[10+i*l].selectedIndex!=4&&f.elements[10+i*l].selectedIndex!=5)
+{
+if(i==0||i==1)
+f.elements[11+2*l].value=f.elements[11+i*l].value;
+if(i==1||i==2)
+f.elements[11+0*l].value=f.elements[11+i*l].value;
+if(i==0||i==2)
+f.elements[11+1*l].value=f.elements[11+i*l].value;
+if(i==3||i==4)
+f.elements[11+5*l].value=f.elements[11+i*l].value;
+if(i==4||i==5)
+f.elements[11+3*l].value=f.elements[11+i*l].value;
+if(i==3||i==5)
+f.elements[11+4*l].value=f.elements[11+i*l].value;
+}
+ 
+}
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+function init_relay(f)
+{
+
+var nchan=parseInt(get_resp_str(US,12,1),10);
+var i;
+var cchan=0;
+var thresh=0.;
+var j,k;
+var pc=document.forms['PCC'];
+for(i=1;i<=3;i++)
+{
+
+	if(get_resp_str(RL,7,i).toUpperCase()=="VL")
+	{
+	if(get_resp_str(RL,5,i).toUpperCase()==""+(i))
+		{
+		f.elements[3+(i-1)*2].checked=true;
+		f.elements[4+(i-1)*2].value=get_resp_str(RL,8,i);
+		f.elements[(i-1)].value=get_resp_str(RL,6,i);
+		}
+	}
+	else if(get_resp_str(RL,7,i).toUpperCase()=="CT")
+	{                                          
+		if(get_resp_str(RL,5,i).toUpperCase()==(i))
+		{
+		f.elements[(i-1)+9].checked=true;
+		f.elements[(i-1)].value=get_resp_str(RL,6,i);
+		}
+		
+		for(k=0;k<nchan;k++)
+		for(j=1;j<=nchan;j++)
+		{
+		//alert("K"+k+";"+get_resp_str(RL,8+k*2,i));
+		if(get_resp_str(RL,8+k*2,i)==""+j)
+		{
+		cchan=j;	
+		thresh=parseFloat(get_resp_str(RL,9+k*2,i));
+		if(isNaN(thresh))thresh=0;
+		pc.elements[(j-1)*21+18+(i-1)].value=thresh;
+		
+		}
+
+		
+		}
+	}
+
+	else if(get_resp_str(RL,7,i).toUpperCase()=="EV")
+	{
+	if(get_resp_str(RL,5,i).toUpperCase()==(i))
+		{
+		f.elements[12+(i-1)].checked=true;
+		f.elements[(i-1)].value=get_resp_str(RL,6,i);
+		}
+	}
+}
+
+}  
+ 
+function init_pchan(f)
+{
+var i,k;
+var l=21;
+var styps;
+var pc;
+var numchan=3;
+var ggain;
+var ffilter;
+var kfilter=0;
+var fgain;
+var nchan=parseInt(get_resp_str(US,12,1),10);
+var numpd=num_pd();
+for(i=1;i<=nchan;i++)
+{
+ 
+if(i==1)pc=PC1;
+else  if(i==2)pc=PC2;
+else  if(i==3)pc=PC3;
+else  if(i==4)pc=PC4;
+else  if(i==5)pc=PC5;
+else  if(i==6)pc=PC6;
+else  if(i==7)pc=PC7;
+else  if(i==8)pc=PC8;
+else  if(i==9)pc=PC9;
+else  if(i==10)pc=PC10;
+else  if(i==11)pc=PC11;
+else  if(i==12)pc=PC12;
+else  if(i==13)pc=PC13;
+else  if(i==14)pc=PC14;
+else  if(i==15)pc=PC15;
+else  if(i==16)pc=PC16;
+else  if(i==17)pc=PC17;
+else  if(i==18)pc=PC18;
+ 
+if(pc.lenght<1)continue;
+ 
+ 
+if(get_resp_str(pc,5,1)==i)
+{
+f.elements[(i-1)*l].checked=true;
+}
+else f.elements[(i-1)*l].checked=false;
+ 
+f.elements[(i-1)*l+1].value=get_resp_str(pc,6,1);
+f.elements[(i-1)*l+2].value=get_resp_str(pc,7,1);
+f.elements[(i-1)*l+3].value=get_resp_str(pc,8,1);
+f.elements[(i-1)*l+4].value=get_resp_str(pc,9,1);
+f.elements[(i-1)*l+5].value=get_resp_str(pc,10,1);
+f.elements[(i-1)*l+6].value=get_resp_str(pc,11,1);
+f.elements[(i-1)*l+7].value=get_resp_str(pc,12,1);
+f.elements[(i-1)*l+8].value=get_resp_str(pc,13,1);
+f.elements[(i-1)*l+10].value=get_resp_str(pc,15,1);
+f.elements[(i-1)*l+11].value=get_resp_str(pc,16,1);
+f.elements[(i-1)*l+12].value=get_resp_str(pc,17,1);
+
+for(k=7;k<=numpd-9;k++)
+{
+
+if(get_resp_str(PD,5,k).toUpperCase()=="TC"&&i==parseInt(get_resp_str(PD,6,k),10))
+{
+f.elements[(i-1)*l+13].value=get_resp_str(PD,8,k);
+f.elements[(i-1)*l+14].value=get_resp_str(PD,7,k);
+f.elements[(i-1)*l+15].value=get_resp_str(PD,10,k);
+f.elements[(i-1)*l+16].value=get_resp_str(PD,9,k);
+}
+}
+}
+
+}
+ 
+
+function init_timet(f)
+{
+var n,i,j;
+n=num_pd();
+j=0;
+for(i=n-8;i<=n;i++)
+{
+f.elements[(j)*2].value=get_resp_str(PD,7,i);
+f.elements[(j)*2+1].value=get_resp_str(PD,8,i);
+j++;
+}
+}
+
+function init_trigpar(f)
+{
+var n;
+n=num_pd();
+
+if(get_resp_str(PD,5,4).toUpperCase()=="TG")
+{
+f.elements[0].value=get_resp_str(PD,6,4);
+f.elements[3].value=get_resp_str(PD,9,4);
+f.elements[4].value=get_resp_str(PD,10,4);
+f.elements[1].value=get_resp_str(PD,11,4);
+f.elements[2].value=get_resp_str(PD,12,4);
+if(get_resp_str(PD,7,4)=="0")f.elements[6].selectedIndex=1;
+else f.elements[6].selectedIndex=0;
+if(get_resp_str(PD,8,4)=="0")f.elements[5].selectedIndex=2;
+else if(get_resp_str(PD,8,4)=="0.1")f.elements[5].selectedIndex=0;
+else f.elements[5].selectedIndex=1;
+
+}
+
+if(get_resp_str(PD,5,5).toUpperCase()=="CT")
+{
+f.elements[7].value=get_resp_str(PD,6,5);
+}
+if(get_resp_str(PD,5,6).toUpperCase()=="XT")
+{
+f.elements[8].value=get_resp_str(PD,6,6);
+}
+
+}
+
+function ver_relay(f,i,j,k)
+{
+if(f.elements[i].checked==true)
+{f.elements[i].checked=true;
+ f.elements[k].checked=false;
+ f.elements[j].checked=false;
+}
+
+}
+
+function init_pstream(f)
+{
+var i;
+var n;
+var k=5;
+var nk;
+var nc;
+var pd;
+var rate= new Array(1000,500,250,200,125,100,50);
+n=num_pd();
+
+
+
+nc=parseInt(get_resp_str(US,12,1),10);
+nk=nc+k;
+
+if(get_resp_str(PD,11,1).toUpperCase()=="T")
+{
+
+if(get_resp_str(PD,6,1).toUpperCase()=="ED"){f.elements[0].checked=true;f.elements[1].checked=true;}
+if(get_resp_str(PD,6,1).toUpperCase()=="DE"){f.elements[0].checked=true;f.elements[1].checked=true;}
+if(get_resp_str(PD,6,1).toUpperCase()=="D")f.elements[0].checked=true;
+if(get_resp_str(PD,6,1).toUpperCase()=="E")f.elements[1].checked=true;
+f.elements[4+nc].value=get_resp_str(PD,10,1);
+if(get_resp_str(PD,7,1)=="32")f.elements[3+nc].selectedIndex=0;
+else if(get_resp_str(PD,7,1).toUpperCase()=="C2")f.elements[3+nc].selectedIndex=2;
+else f.elements[3+nc].selectedIndex=1;
+for(i=0;i<7;i++)
+{if(parseInt(get_resp_str(PD,8,1),10)==rate[i])f.elements[2+nc].selectedIndex=i;}
+for(i=1;i<=nc;i++)if(check_ch(get_resp_str(PD,9,1),i)==1)f.elements[i+1].checked=true;
+}
+
+if(get_resp_str(PD,11,2).toUpperCase()=="C")
+{
+if(get_resp_str(PD,6,2).toUpperCase()=="ED"){f.elements[0+nk].checked=true;f.elements[1+nk].checked=true;}
+if(get_resp_str(PD,6,2).toUpperCase()=="DE"){f.elements[0+nk].checked=true;f.elements[1+nk].checked=true;}
+if(get_resp_str(PD,6,2).toUpperCase()=="D")f.elements[0+nk].checked=true;
+if(get_resp_str(PD,6,2).toUpperCase()=="E")f.elements[1+nk].checked=true;
+f.elements[4+nc+nk].value="3600";//get_resp_str(PD,10,2);
+if(get_resp_str(PD,7,2)=="32")f.elements[3+nc+nk].selectedIndex=0;
+else if(get_resp_str(PD,7,2)=="C2")f.elements[3+nc+nk].selectedIndex=2;
+else f.elements[3+nc+nk].selectedIndex=1;
+for(i=0;i<7;i++)
+{if(parseInt(get_resp_str(PD,8,2),10)==rate[i])f.elements[2+nc+nk].selectedIndex=i;}
+for(i=1;i<=nc;i++){if(check_ch(get_resp_str(PD,9,2),i)==1)f.elements[i+nk+1].checked=true;}
+}
+if(get_resp_str(PD,11,3).toUpperCase()=="X")
+{
+if(get_resp_str(PD,6,3).toUpperCase()=="ED"){f.elements[0+2*nk].checked=true;f.elements[2*nk+1].checked=true;}
+if(get_resp_str(PD,6,3).toUpperCase()=="DE"){f.elements[0+2*nk].checked=true;f.elements[2*nk+1].checked=true;}
+if(get_resp_str(PD,6,3).toUpperCase()=="D")f.elements[0+2*nk].checked=true;
+if(get_resp_str(PD,6,3).toUpperCase()=="E")f.elements[1+2*nk].checked=true;
+f.elements[4+nc+2*nk].value=get_resp_str(PD,10,3);
+if(get_resp_str(PD,7,3)=="32")f.elements[3+nc+2*nk].selectedIndex=0;
+else if(get_resp_str(PD,7,3).toUpperCase()=="C2")f.elements[3+nc+2*nk].selectedIndex=2;
+else f.elements[3+nc+3*nk].selectedIndex=1;
+for(i=0;i<7;i++)
+{if(parseInt(get_resp_str(PD,8,3),10)==rate[i])f.elements[2+nc+2*nk].selectedIndex=i;}
+for(i=1;i<=nc;i++)if(check_ch(get_resp_str(PD,9,3),i)==1)f.elements[i+nk*2+1].checked=true;
+}
+
+
+}
+
+function undo()
+{
+init_psta(document.forms['PS']);
+init_pchan(document.forms['PC']);
+init_pstream(document.forms['PDst']);
+init_trigpar(document.forms['Trigpar']); 
+init_timet(document.forms['TTIME']); 
+}
+function get_from_das()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/parameters-"+dasid+contype;
+}
+function go_to_status()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/status-control-"+dasid+contype;
+}
+function send_parameters(f,param)
+{
+var k=5;
+var thre=0.;
+var fl=0;
+var m=21;
+var nchan=parseInt(get_resp_str(US,12,1),10);
+var i,l;
+var ee;
+var n;
+var pc=document.forms['PCC'];
+var ps=document.forms['PSS'];
+var pd=document.forms['PDD'];
+var tr=document.forms['TRR'];
+var tt=document.forms['TTT'];
+var rr=document.forms['RRR'];
+var aa=document.forms['AAA'];
+
+f.action="http://"+self.location.host+"/"+param+dasid;
+f.elements[k].value=s_lbl;
+f.elements[k].value+="{PE,"+dasid+"\r\n";
+f.elements[k].value+="{PS,"+dasid+","+ps.elements[4].value+","+ps.elements[3].value+","+ps.elements[5].value+",";
+f.elements[k].value+=ps.elements[1].value+","+ps.elements[0].value+","+ps.elements[2].value+"\r\n";
+
+for(i=1;i<=nchan;i++)
+{
+if(pc.elements[(i-1)*m].checked==false)continue;
+	{                                   
+	f.elements[k].value+="{PC,"+dasid+","+i+",";
+	for(l=1;l<=12;l++)
+	{
+	f.elements[k].value+=pc.elements[(i-1)*m+l].value;
+	if(l<12)f.elements[k].value+=",";
+	else f.elements[k].value+="\r\n";
+	}
+	
+	}
+}
+f.elements[k].value+="{PD,"+dasid+",RC,";
+if(pd.elements[1].checked==true)f.elements[k].value+="E";
+if(pd.elements[0].checked==true)f.elements[k].value+="D";
+f.elements[k].value+=",";
+f.elements[k].value+=pd.elements[3+nchan].options[pd.elements[3+nchan].selectedIndex].value+",";
+f.elements[k].value+=pd.elements[2+nchan].options[pd.elements[2+nchan].selectedIndex].value+",";
+for(i=1;i<=nchan;i++)
+{
+if(pd.elements[2+(i-1)].checked==true)
+{
+if(fl==0)f.elements[k].value+=""+i;
+else f.elements[k].value+="."+i;
+fl=1;
+}
+}
+f.elements[k].value+=",";
+f.elements[k].value+=pd.elements[4+nchan].value+",T\r\n";
+
+f.elements[k].value+="{PD,"+dasid+",RC,";
+if(pd.elements[1+nchan+5].checked==true)f.elements[k].value+="E";
+if(pd.elements[0+nchan+5].checked==true)f.elements[k].value+="D";
+f.elements[k].value+=",";
+f.elements[k].value+=pd.elements[3+nchan*2+5].options[pd.elements[3+nchan*2+5].selectedIndex].value+",";
+f.elements[k].value+=pd.elements[2+nchan*2+5].options[pd.elements[2+nchan*2+5].selectedIndex].value+",";
+fl=0;
+for(i=1;i<=nchan;i++)
+{
+if(pd.elements[2+(i-1)+5+nchan].checked==true)
+{
+if(fl==0)f.elements[k].value+=""+i;
+else f.elements[k].value+="."+i;            
+fl=1;
+}
+}
+f.elements[k].value+=",";
+f.elements[k].value+=pd.elements[4+nchan*2+5].value+",C\r\n";
+
+
+f.elements[k].value+="{PD,"+dasid+",RC,";
+if(pd.elements[2+nchan*2+9].checked==true)f.elements[k].value+="E";
+if(pd.elements[1+nchan*2+9].checked==true)f.elements[k].value+="D";
+f.elements[k].value+=",";
+f.elements[k].value+=pd.elements[3+nchan*3+10].options[pd.elements[3+nchan*3+10].selectedIndex].value+",";
+f.elements[k].value+=pd.elements[2+nchan*3+10].options[pd.elements[2+nchan*3+10].selectedIndex].value+",";
+fl=0;
+for(i=1;i<=nchan;i++)
+{
+if(pd.elements[2+(i-1)+10+nchan*2].checked==true)
+{
+if(fl==0)f.elements[k].value+=""+i;
+else f.elements[k].value+="."+i;            
+fl=1;
+}
+}
+f.elements[k].value+=",";
+f.elements[k].value+=pd.elements[4+nchan*3+10].value+",X\r\n";
+
+
+
+f.elements[k].value+="{AL,"+dasid+",CI,"+aa.elements[0].value+","
++aa.elements[1].options[aa.elements[1].selectedIndex].value+","
++aa.elements[2].options[aa.elements[2].selectedIndex].value+"\r\n";;
+f.elements[k].value+="{AL,"+dasid+",EV,"+aa.elements[3].options[aa.elements[3].selectedIndex].value+"\r\n";
+f.elements[k].value+="{AL,"+dasid+",TM,"+aa.elements[4].value+"\r\n";
+f.elements[k].value+="{AL,"+dasid+",TO,"+aa.elements[5].value+","+aa.elements[6].value+"\r\n";
+f.elements[k].value+="{AL,"+dasid+",EV,"+aa.elements[7].value+","+aa.elements[8].value+","+aa.elements[9].value+"\r\n";
+f.elements[k].value+="{AL,"+dasid+",CT";
+
+
+for(i=1;i<=nchan;i++)
+{
+thre=parseFloat(pc.elements[(i-1)*m+17].value);
+if(pc.elements[(i-1)*m].checked==false||thre==0.||isNaN(thre))
+	{                                   
+//	f.elements[k].value+=",";
+	;
+	f.elements[k].value+=","+i+",";	
+	}
+else 
+	{                                   
+	f.elements[k].value+=","+i+","+pc.elements[(i-1)*m+17].value;
+	}
+	
+	
+}
+
+f.elements[k].value+="\r\n";
+
+for(i=1;i<=3;i++)
+{
+if(rr.elements[3+(i-1)*2].checked==true)
+{
+f.elements[k].value+="{RL,"+dasid+","+i+","+rr.elements[i-1].value+",VL,"+rr.elements[4+(i-1)*2].value+"\r\n";
+}
+if(rr.elements[12+i-1].checked==true)
+{
+f.elements[k].value+="{RL,"+dasid+","+i+","+rr.elements[i-1].value+",EV\r\n";
+}
+if(rr.elements[9+i-1].checked==true)
+{
+f.elements[k].value+="{RL,"+dasid+","+i+","+rr.elements[i-1].value+",CT";
+for(ee=1;ee<=nchan;ee++)
+{
+thre=parseFloat(pc.elements[(ee-1)*m+17+i].value);
+if(pc.elements[(ee-1)*m].checked==false||thre==0.||isNaN(thre))
+	{                                   
+//	f.elements[k].value+=",";
+	f.elements[k].value+=","+ee+",";	
+	;
+	}
+else 
+	{                                   
+	f.elements[k].value+=","+ee+","+pc.elements[(ee-1)*m+17+i].value;
+	}
+	
+	
+}
+f.elements[k].value+="\r\n";
+
+}
+
+
+
+}
+
+
+//alert(f.elements[k].value);
+
+f.elements[k].value+="{PD,"+dasid+",TG,"+tr.elements[0].value+",";
+f.elements[k].value+=tr.elements[6].options[tr.elements[6].selectedIndex].value+",";
+f.elements[k].value+=tr.elements[5].options[tr.elements[5].selectedIndex].value+",";
+f.elements[k].value+=tr.elements[3].value+","+tr.elements[4].value+",";
+f.elements[k].value+=tr.elements[1].value+","+tr.elements[2].value+"\r\n";
+f.elements[k].value+="{PD,"+dasid+",CT,"+tr.elements[7].value+"\r\n";
+f.elements[k].value+="{PD,"+dasid+",XT,"+tr.elements[8].value+"\r\n";
+
+
+for(i=1;i<=nchan;i++)
+{
+if(pc.elements[(i-1)*m].checked==false)continue;
+f.elements[k].value+="{PD,"+dasid+",TC,"+i+","+pc.elements[(i-1)*m+14].value+",";
+f.elements[k].value+=pc.elements[(i-1)*m+13].value+","+ pc.elements[(i-1)*m+16].value;
+f.elements[k].value+=","+pc.elements[(i-1)*m+15].value+"\r\n"
+}
+
+
+for(n=1;n<=9;n++)
+{
+f.elements[k].value+="{PD,"+dasid+",TT,"+n+","+tt.elements[(n-1)*2].value+","+tt.elements[(n-1)*2+1].value+"\r\n";
+}
+
+
+
+f.elements[k].value+="{PI,"+dasid+"\r\n";
+f.elements[k].value+="{PR,"+dasid+",PS,,,B\r\n";
+f.elements[k].value+="{PR,"+dasid+",PD,,,B\r\n";
+f.elements[k].value+="{PR,"+dasid+",AL,,,B\r\n";
+f.elements[k].value+="{PR,"+dasid+",RL,,,B\r\n";
+f.elements[k].value+="{SS,"+dasid+",US,B\r\n";
+for(i=1;i<=nchan;i++)
+f.elements[k].value+="{PR,"+dasid+",PC,,"+i+",B\r\n";
+
+
+
+
+
+
+
+f.elements[k].value+=e_lbl;
+f.action+=contype;
+
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function init_alert(f)
+{
+var i,k,j;
+var thresh;
+var nchan=parseInt(get_resp_str(US,12,1),10);
+var pc=document.forms['PCC'];
+for(i=1;i<=6;i++)
+{
+if(get_resp_str(AL,5,i)=="EV")
+{
+if(get_resp_str(AL,6,i).toUpperCase()=="N")f.elements[3].selectedIndex=1;
+else f.elements[3].selectedIndex=0;
+}
+else if(get_resp_str(AL,5,i)=="TO")
+{
+f.elements[5].value=get_resp_str(AL,6,i);
+f.elements[6].value=get_resp_str(AL,7,i);
+}
+else if(get_resp_str(AL,5,i)=="VL"){
+f.elements[7].value=get_resp_str(AL,6,i);
+f.elements[8].value=get_resp_str(AL,7,i);
+f.elements[9].value=get_resp_str(AL,8,i);
+}
+else if(get_resp_str(AL,5,i)=="CT")
+{
+
+		for(k=0;k<nchan;k++)
+		for(j=1;j<=nchan;j++)
+		{
+		if(get_resp_str(AL,6+k*2,i)==""+j)
+			{
+			thresh=parseFloat(get_resp_str(AL,7+k*2,i));
+			if(isNaN(thresh))thresh=0;
+			pc.elements[(j-1)*21+17].value=thresh;
+			}
+
+		
+		}
+
+
+}
+else if(get_resp_str(AL,5,i)=="TM")
+{f.elements[4].value=get_resp_str(AL,6,i);}
+else if(get_resp_str(AL,5,i)=="CI")
+{
+f.elements[0].value=get_resp_str(AL,6,i);
+if(get_resp_str(AL,7,i)=="M")f.elements[1].selectedIndex=0;
+else if(get_resp_str(AL,7,i)=="H")f.elements[1].selectedIndex=1;
+else f.elements[1].selectedIndex=2;
+if(get_resp_str(AL,8,i)=="S")f.elements[2].selectedIndex=1;
+else f.elements[2].selectedIndex=0;
+}
+
+
+}
+
+}
+
+
+
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="PARAMETERS" enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>
+<SCRIPT language='JavaScript'> 
+<!--
+d_w("UNIT#: "+dasid);
+//-->
+</SCRIPT> 
+</TH>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Status/Control" onclick="go_to_status()">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="From Das" onclick="get_from_das()">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Send To Das" onclick="send_parameters(this.form,empt)">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Done" onclick="done()">
+<INPUT TYPE=BUTTON  VALUE="Undo" onclick="undo()">
+<INPUT TYPE=HIDDEN  VALUE="" NAME="GO_PARAM">
+</TD>
+</TR>
+</FORM>
+</TABLE>
+<H1> Station Parameters 
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM name="PSS">
+<TR>
+<TH>Station Name</TH>
+<TH>Station Number</TH>
+<TH>Station Comment</TH>
+</TR>
+<TR>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="24" MAXLENGTH='24' name="StName"> 
+</TD>
+<TD>
+<INPUT TYPE=TEXT SIZE="4" VALUE="" MAXLENGTH='4' name="StNum"> 
+</TD>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="40" MAXLENGTH='40' name="StCom">
+</TD>
+</TR>
+<TR>
+<TH>Experiment Name</TH>
+<TH>Experiment Number</TH>
+<TH>Experiment Comment</TH>
+</TR><TR>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="24" MAXLENGTH='24'  name="ExName"> 
+</TD>
+<TD>
+ <INPUT TYPE=TEXT SIZE="4" MAXLENGTH='2' VALUE="" name="ExNum"> 
+</TD>
+<TD>
+<INPUT TYPE=TEXT VALUE="" size="20" MAXLENGTH='40' name="ExCom"> 
+</TD>
+</TR>
+</FORM>
+</TABLE>
+Channel Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="PCC">
+<TR>
+<TH>Channel Name</TH>
+<TH>Azimuth/Incline</TH>
+<TH>Location X/Y/Z</TH>
+<TH>Units XY/Z</TH>
+<TH>Sensor model</TH>
+<TH>Serial number</TH>
+<TH>Comment</TH>
+<TH>Trigger Level(mG)/Votes</TH>
+<TH>De-Trigger Level(mG)/Votes</TH>
+<TH>Alert/Relay1/Relay2/Relay3 Thresholds</TH>
+</TR>
+<SCRIPT language='JavaScript'> 
+<!-- 
+wr_channels();
+//-->
+</SCRIPT>
+</FORM>
+</TABLE>
+Trigger Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="TRR">
+<TR>
+<TH>Triggered</TH>
+<TD>Trigger Window:<INPUT Type=TEXT SIZE="6" MAXLENGTH='6' VALUE=></TD>
+<TD>Pre-trigger length:<INPUT Type=TEXT SIZE="6" MAXLENGTH='6' VALUE=></TD>
+<TD>Post-trigger length:<INPUT Type=TEXT SIZE="6" MAXLENGTH='6' VALUE=></TD>
+<TD>Trigger votes:<INPUT Type=TEXT SIZE="6" MAXLENGTH='6' VALUE=></TD>
+<TD>De-Trigger votes:<INPUT Type=TEXT SIZE="6" MAXLENGTH='6' VALUE=></TD>
+<TD>Hi-pass filter:<SELECT><OPTION VALUE='0.1'>0.1Hz<OPTION VALUE='2'>2 Hz<OPTION VALUE='0'>Off</SELECT></TD>
+<TD>Low-pass filter:<SELECT><OPTION VALUE='12'>12Hz<OPTION VALUE='0'>Off</SELECT></TD>
+</TR>
+<TR>
+<TH>Continuous</TH><TD COLSPAN='7'>First Trigger Time> (YYYY:DDD:HH:MM:SS):
+<INPUT TYPE=TEXT  VALUE="1999:001:01:01"  MAXLENGTH="14">
+</TD>
+</TR>
+<TR>
+<TH>External</TH>
+<TD COLSPAN='7'>Pre-trigger length:<INPUT Type=TEXT SIZE="6" MAXLENGTH='6' VALUE=></TD>
+</TR>
+</FORM>
+</table>
+ 
+ 
+Stream Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="PDD">
+<TR>
+<TH>Stream</TH>
+<TH>Recording Destination</TH>
+<TH>Channels in Stream</TH>
+<TH>Sample Rate</TH>
+<TH>Data Format</TH>
+<TH>Record Length</TH>
+</TR>
+<SCRIPT language='JavaScript'> 
+<!--
+wr_pdchan(1);
+wr_pdchan(2);
+wr_pdchan(3);
+//-->
+</SCRIPT>
+</FORM>
+</TABLE>
+
+Time Trigger Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="TTT"  enctype="text/plain"  ACTION="" METHOD="POST">
+<TR><TH>Trigger#</TH>
+    <TH>Time Information# (DDD:HH:MM:SS)</TH>
+    <TH>Record Length#</TH>
+<TH>Trigger#</TH>
+    <TH>Time Information# (DDD:HH:MM:SS)</TH>
+    <TH>Record Length#</TH>
+<TH>Trigger#</TH>
+    <TH>Time Information# (DDD:HH:MM:SS)</TH>
+    <TH>Record Length#</TH>
+</TR>
+<TR>
+<TD><b>1</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+<TD><b>2</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+<TD><b>3</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+</TR>
+<TR>
+<TD><b>4</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+<TD><b>5</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+<TD><b>6</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+</TR>
+<TR>
+<TD><b>7</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+<TD><b>8</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'></TD>
+<TD><b>9</b></TD>
+<TD><INPUT TYPE=TEXT VALUE='002:001:00:00:00' MAXLENGTH='14'></TD>
+<TD><INPUT TYPE=TEXT VALUE='0' MAXLENGTH='8'>
+
+<INPUT TYPE=HIDDEN VALUE='' Name='timelist'></TD></TR>
+</FORM>
+</TABLE>
+Relays Parameters:
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="RRR"  enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>Condition</TH>
+<TH>RELAY#1 (TIME_ON=<INPUT TYPE=TEXT VALUE='0' MAXLENGTH='9' SIZE='9'>) </TH>
+<TH>RELAY#2 (TIME_ON=<INPUT TYPE=TEXT VALUE='0' MAXLENGTH='9' SIZE='9'>) </TH>
+<TH>RELAY#3 (TIME_ON=<INPUT TYPE=TEXT VALUE='0' MAXLENGTH='9' SIZE='9'>)</TH>
+</TR>
+<TR>
+<TD>
+(VL)-Charger Input voltage level has dropped below threshold
+</TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,3,9,12)'>VL
+<INPUT TYPE=TEXT VALUE='0' MAXLENGTH='6' SIZE='4'></TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,5,10,13)'>VL
+<INPUT TYPE=TEXT VALUE='0' MAXLENGTH='6' SIZE='4'></TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,7,11,14)'>VL
+<INPUT TYPE=TEXT VALUE='0' MAXLENGTH='6' SIZE='4'></TD>
+</TR>
+
+<TR>
+<TD>
+(CT)-One of the channels has gone above threshold
+</TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,9,3,12)'>CT</TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,10,5,13)'>CT</TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,11,7,14)'>CT</TD>
+</TD>
+</TR>
+
+<TR>
+<TD>
+ (EV)-Event has been triggered
+</TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,12,9,3)'>EV</TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,13,5,10)'>EV</TD>
+<TD><INPUT TYPE=CHECKBOX  onclick='ver_relay(this.form,14,7,11)'>EV</TD>
+</TD>
+</TR>
+
+
+
+</FORM>
+</TABLE>
+
+
+
+
+
+
+
+Alert Parameters
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="AAA"  enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>Callout Interval (CI)</TH>
+<TH>Alert for Events (EV)</TH>
+<TH>Timed YYYY:DDD:HH:MM:SS (TM)</TH>
+<TH>Time-out Limits seconds (TO)</TH>
+<TH>Voltage Level Threshold (VL)</TH>
+</TR>
+<TR><TD>Interval:<INPUT TYPE=TEXT VALUE='0' SIZE='3' MAXLENGTH='2'>
+<SELECT><OPTION VALUE='M'>Minutes<OPTION VALUE='H'>Hours<OPTION VALUE='D'>Days</SELECT>
+<SELECT><OPTION VALUE='R'>Retry calling<OPTION VALUE='S'>Stop retrying</SELECT>
+</TD>
+<TD>
+<SELECT><OPTION VALUE='Y'>On
+<OPTION VALUE='N'>Off</SELECT>
+</TD>
+<TD>
+<INPUT TYPE=TEXT  VALUE=""  SIZE="17" MAXLENGTH="17">
+</TD>
+<TD>
+Login timeout:<INPUT TYPE=TEXT  VALUE=""  SIZE="9" MAXLENGTH="9">
+Command timeout:<INPUT TYPE=TEXT  VALUE=""  SIZE="9" MAXLENGTH="9">
+</TD>
+<TD>
+Backup:<INPUT TYPE=TEXT  VALUE=""  SIZE="5" MAXLENGTH="5">
+Charger:<INPUT TYPE=TEXT  VALUE=""  SIZE="5" MAXLENGTH="5">
+Main:<INPUT TYPE=TEXT  VALUE=""  SIZE="5" MAXLENGTH="5">
+</TD>
+</TR>
+</FORM>
+</TABLE>
+
+
+
+ 
+<SCRIPT language='JavaScript'> 
+<!--
+var test;
+test=""+self.location;
+contype=test.substring(test.length-1,test.length);
+init_psta(document.forms['PSS']);
+init_pchan(document.forms['PCC']);
+init_pstream(document.forms['PDD']);
+init_trigpar(document.forms['TRR']); 
+init_timet(document.forms['TTT']); 
+init_relay(document.forms['RRR']); 
+init_alert(document.forms['AAA']); 
+//-->
+</SCRIPT>
+</BODY>
+</HTML>
+ 

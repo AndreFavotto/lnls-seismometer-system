@@ -1,0 +1,318 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+.hi  {font-family: Arial, Verdana,  Helvetica, sans-serif; font-weight:bold;font-size: 85%; color: #000000;text-align:left;background-color: #00f5dc}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var PD=window.opener.TarnsTrig;
+
+function strip_string(str)
+{
+var i;
+var nstr="";
+var left=0;
+var right=0;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+left=i;
+for(i=str.length-1;i>=0;i--)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+right=i;
+if(left<=right)nstr=str.substring(left,right+1);
+return nstr;
+}
+
+
+
+function cancel_contrig()
+{
+var num=0;
+var k=0;
+num=parseInt(PD.substring(12,14),10);
+var trt=PD.substring(62,66);
+var l1=12;
+var l2=9;
+/* MODEREN- *//* MODE130B- */l1=15;
+/* MODEREN- *//* MODE130B- */l2=12;
+if(trt=="CON "||trt==" CON")k=0;
+else if(trt=="CRS "||trt==" CRS")k=1;
+else if(trt=="EVT "||trt==" EVT")k=2;
+else if(trt=="EXT "||trt==" EXT")k=3;
+else if(trt=="LEV "||trt==" LEV")k=4;
+else if(trt=="TIM "||trt==" TIM")k=5;
+else if(trt=="TML "||trt==" TML")k=6;
+else if(trt=="VOT "||trt==" VOT")k=7;
+else if(trt=="DIF "||trt==" DIF")k=8;
+window.opener.document.forms['PDst'].elements[(num-1)*l1+l2].selectedIndex=k;
+self.close();
+}
+var dasid=PD.substring(0,4);
+var stream=PD.substring(12,14);
+function d_w(f)
+{
+document.write(f);
+}
+
+function checkunit(f)
+{
+var l1=3;
+/* MODEREN- *//* MODE130B- */l1=0;
+if(f.elements[13-l1].selectedIndex==0)
+{
+f.elements[14-l1].maxLength=7;
+f.elements[15-l1].maxLength=7;
+f.elements[14-l1].size=7;
+f.elements[15-l1].size=7;
+}
+else
+{
+f.elements[14-l1].maxLength=8;
+f.elements[15-l1].maxLength=8;
+f.elements[14-l1].size=8;
+f.elements[15-l1].size=8;
+}
+
+}
+
+function init_dif(f)
+{
+var i;
+var l1=3;
+/* MODEREN- *//* MODE130B- */l1=0;
+if(PD.substring(62,66)=="DIF "||PD.substring(62,66)==" DIF")
+{
+var lfreq;
+var hfreq;
+for(i=0;i<6-l1;i++)
+{
+if(PD.substring(66+i,67+i)==" ")f.elements[i].checked=false;
+else f.elements[i].checked=true;
+}
+f.elements[6-l1].value=strip_string(PD.substring(82,84));
+f.elements[7-l1].value=strip_string(PD.substring(84,92));
+f.elements[8-l1].value=strip_string(PD.substring(92,100));
+f.elements[9-l1].value=strip_string(PD.substring(100,108));
+f.elements[10-l1].value=strip_string(PD.substring(108,116));
+f.elements[11-l1].value=strip_string(PD.substring(124,132));
+f.elements[12-l1].value=strip_string(PD.substring(132,140));
+if(PD.substring(148,149)=="V"||PD.substring(148,149)=="v")
+{
+f.elements[14-l1].value=strip_string(PD.substring(149,156));
+f.elements[15-l1].value=strip_string(PD.substring(157,164));
+f.elements[13-l1].selectedIndex=0;
+}
+else 
+{
+f.elements[14-l1].value=strip_string(PD.substring(148,156));
+f.elements[15-l1].value=strip_string(PD.substring(156,164));
+f.elements[13-l1].selectedIndex=1;
+}
+
+if(PD.substring(164,168)=="OFF "||PD.substring(164,168)==" OFF")f.elements[16-l1].checked=false;
+else f.elements[16-l1].checked=true;
+lfreq=parseFloat(PD.substring(168,172));
+hfreq=parseFloat(PD.substring(172,176));
+if(isNaN(lfreq)||lfreq==0)f.elements[18-l1].selectedIndex=0;
+else  f.elements[18-l1].selectedIndex=1;
+if(isNaN(hfreq)||hfreq==0)f.elements[17-l1].selectedIndex=0;
+else  if(hfreq==0.1)f.elements[17-l1].selectedIndex=1;
+else   f.elements[17-l1].selectedIndex=2;
+}
+else return;
+}
+function set_diftrig(f)
+{
+var i;
+var check;
+var mn;
+var sta;
+var lta;
+var n=0;
+var TarnsTrig="DIF ";
+var k;
+var num;
+var l1=12;
+var l2=11;
+var l3=3;
+/* MODEREN- *//* MODE130B- */l1=15;
+/* MODEREN- *//* MODE130B- */l2=14;
+/* MODEREN- *//* MODE130B- */l3=0;
+num=parseInt(PD.substring(12,14),10);
+for(i=0;i<6-l3;i++)
+{
+if(f.elements[i].checked){TarnsTrig+="Y";n++;}
+else  TarnsTrig+=" ";
+}
+for(i=0;i<10+l3;i++)TarnsTrig+=" ";
+mn=parseInt(f.elements[6-l3].value,10);
+if(isNaN(mn)||mn<=0||mn>n){alert("Invalid Field Minimum Channels");return;}
+check=parseFloat(f.elements[7-l3].value);
+if(isNaN(check)||check<=0){alert("Invalid Field Trigger Window");return;}
+check=parseFloat(f.elements[8-l3].value);
+if(isNaN(check)||check<0){alert("Invalid Field Pre-Trigger Window");return;}
+check=parseFloat(f.elements[9-l3].value);
+if(isNaN(check)||check<0){alert("Invalid Field Post-Trigger Window");return;}
+check=parseFloat(f.elements[10-l3].value);
+if(isNaN(check)||check<0){alert("Invalid Field Record-Length");return;}
+sta=parseFloat(f.elements[11-l3].value);
+if(isNaN(sta)||sta<=0){alert("Invalid Field STA Length");return;}
+lta=parseFloat(f.elements[12-l3].value);
+if(isNaN(lta)||lta<=0){alert("Invalid Field LTA Length");return;}
+if(sta>lta) {alert("LTA should be greater then STA");return;}
+/*
+sta=parseFloat(f.elements[13-l3].value);
+if(isNaN(sta)||sta<=0){alert("Invalid Field Trigger Ratio");return;}
+lta=parseFloat(f.elements[14-l3].value);
+if(isNaN(lta)||lta<=0){alert("Invalid Field De-Trigger Ration");return;}
+if(lta>sta){alert("Trigger Ration should be greater then De-Trigger Ratio");return;}
+*/
+TarnsTrig+=mn+" ";
+for(i=0;i<6;i++)
+{
+TarnsTrig+=f.elements[7+i-l3].value;
+for(k=f.elements[7+i-l3].value.length;k<8;k++)TarnsTrig+=" ";
+if(i==3||i==5)TarnsTrig+="        ";
+}
+if(f.elements[13-l3].selectedIndex==0)
+{
+if(f.elements[8+6-l3].value.length>7){alert("Trigger Difference field too long!");return;}
+if(f.elements[8+7-l3].value.length>7){alert("De-Trigger Difference field too long!");return;}
+	for(i=6;i<8;i++)
+	{
+	TarnsTrig+="V";
+	TarnsTrig+=f.elements[8+i-l3].value;
+	for(k=f.elements[8+i-l3].value.length;k<7;k++)TarnsTrig+=" ";
+	}
+
+}
+else 
+{
+
+for(i=6;i<8;i++)
+{
+TarnsTrig+=f.elements[8+i-l3].value;
+for(k=f.elements[8+i-l3].value.length;k<8;k++)TarnsTrig+=" ";
+if(i==3||i==5)TarnsTrig+="        ";
+}
+
+}
+if(f.elements[16-l3].checked)TarnsTrig+="ON  ";
+else TarnsTrig+="OFF ";
+if(f.elements[18-l3].selectedIndex==1)TarnsTrig+="  12";
+else TarnsTrig+="OFF ";
+if(f.elements[17-l3].selectedIndex==2)TarnsTrig+="   2";
+else if(f.elements[17-l3].selectedIndex==1)TarnsTrig+=" 0.1";
+else TarnsTrig+="OFF ";
+for(i=0;i<52;i++)TarnsTrig+=" ";
+window.opener.document.forms['PDst'].elements[(num-1)*l1+l2].value=TarnsTrig;
+self.close();
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<FORM NAME="GO_DIF">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>
+d_w("Difference Trigger Description" +" DasId#"+dasid+"; "+"Stream# "+stream);
+</SCRIPT>
+</TH>
+<TD>
+<INPUT TYPE=BUTTON VALUE="APPLY" onclick="set_diftrig(document.forms['dif_trig'])">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON VALUE="CANCEL" onclick="cancel_contrig()">
+</TD>
+</TR>
+</table>
+</FORM>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="dif_trig">
+<TR>
+<TH>Description</TH>
+<TH>Value</TH>
+<TH>Type and Range</TH>
+</TR>
+<TR>
+<TD>Trigger channels</TD>
+<TD>
+<INPUT TYPE=CHECKBOX>1<INPUT TYPE=CHECKBOX>2<INPUT TYPE=CHECKBOX>3
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=CHECKBOX>4<INPUT TYPE=CHECKBOX>5<INPUT TYPE=CHECKBOX>6 
+</TD>
+<TD>&nbsp</TD>
+</TR><TR>
+<TD>Minimum channels</TD>
+<TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''></TD>
+<TD>1 - 6</TD>
+</TR><TR>
+<TD>Trigger window</TD> 
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<TD>FP 3 (seconds)</TD>
+</TR><TR>
+<TD>Pre-trigger length</TD>  
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<TD>FP 3 (seconds)</TD>
+</TR><TR>
+<TD>Post-trigger length</TD> 
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<TD>FP 3 (seconds)</TD>
+</TR><TR>
+<TD>Record length</TD>  
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<TD>FP 3 (seconds)</TD>
+</TR><TR>
+<TD>STA length</TD>  
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<TD>FP 3 (seconds)</TD>
+</TR><TR>
+<TD>LTA length</TD>  
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<TD>FP 3 (seconds)</TD>
+</TR>
+<TR>
+<TD>Units</TD>  
+<TD><SELECT NAME="ubit" onchange="checkunit(this.form)"><OPTION VALUE='V'>Volts<OPTION VALUE=''>Counts</SELECT></TD>
+<TD>Units</TD>  
+</TR>
+<TR>
+<TD>Trigger difference</TD>  
+<TD><INPUT TYPE=TEXT SIZE='7' MAXLENGTH='7' VALUE=''></TD>
+<TD>Vnn difference in FP 3 Volts  or A/D Integer counts (Units)</TD>
+</TR><TR>
+<TD>De-trigger difference</TD>  
+<TD><INPUT TYPE=TEXT SIZE='7' MAXLENGTH='7' VALUE=''></TD>
+<TD>Vnn difference in FP 3 Volts  or A/D Integer counts (Units)</TD>
+</TR><TR>
+<TD>LTA Hold</TD>  
+<TD><INPUT TYPE=CHECKBOX>LTA Hold</TD>
+<TD>ON, OFF</TD>
+</TR><TR>
+<TD>High-pass trigger filter</TD>
+<TD><SELECT><OPTION VALUE='OFF'>Off<OPTION VALUE='0.1'>0.1<OPTION VALUE='2'>2</SELECT></TD>
+<TD>Hz</TD>
+</TR><TR>
+<TD>Low-pass trigger filter</TD>
+<TD><SELECT><OPTION VALUE='OFF'>Off<OPTION VALUE='12'>12</SELECT></TD>
+<TD>Hz</TD></TR>
+</table>
+<SCRIPT language='JavaScript'>
+init_dif(document.forms['dif_trig']);
+</SCRIPT>
+<!-- CHANGES AT 17.12.2012 //-->
+</BODY>
+</HTML>

@@ -1,0 +1,85 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var contype="";
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+var MFStatus="";
+var dasid="";
+MFstatus="91810014MFD200MFD400";
+var SOFTWAREDEVINED;
+dasid=MFstatus.substring(0,4);
+function d_w(f)
+{
+document.write(f);
+}
+function refresh(f)
+{
+var tim=10000;
+var alarmId;
+if(MFstatus.substring(10,12)=="D1")d_w("<TR><TH>Format Status for Disk 1</TH></TR>");
+else if(MFstatus.substring(10,12)=="D2")d_w("<TR><TH>Format Status for Disk 2</TH></TR>");
+else if(MFstatus.substring(10,12)=="RM")d_w("<TR><TH>Clear Ram Status</TH></TR>");
+else {d_w("<TR><TH>Unknown Status</TH></TR>");f.elements[0].value="Done";return;}
+if(MFstatus.substring(12,14)=="FF"){d_w("<TR><TD>In Progress</TD></TR>");f.elements[0].value="Update";return;}
+f.elements[0].value="Done";
+if(MFstatus.substring(12,14)=="00")d_w("<TR><TD>Done</TD></TR>");
+else if(MFstatus.substring(12,14)=="02")d_w("<TR><TD>Rejected (busy)</TD></TR>");
+     else d_w("<TR><TD>Invalid Request</TD></TR>");
+}
+function done(f)
+{
+if(f.elements[0].value=="Done")
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[1].value=s_lbl;
+f.elements[1].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[1].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[1].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+else 
+{
+f.action= "http://"+self.location.host+"/media-format-"+dasid+contype;
+f.elements[1].value=s_lbl;
+f.elements[1].value+="MF&"+dasid+"&RQ"+"\n";
+f.elements[1].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<CENTER>
+<FORM NAME="FM" enctype="text/plain"  ACTION="" METHOD="POST">
+<INPUT TYPE=BUTTON VALUE="Update" onclick="done(this.form)">
+<INPUT TYPE=HIDDEN VALUE="" NAME="dskftm">
+</FORM>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<SCRIPT language='JavaScript'>
+var test;
+test=""+self.location;
+contype=test.substring(test.length-1,test.length);
+refresh(document.forms['FM']);
+</SCRIPT>
+</table>
+</CENTER>
+<!-- CHANGES AT 16.01.2012 //-->
+</BODY>
+<HTML>

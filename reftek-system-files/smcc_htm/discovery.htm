@@ -1,0 +1,154 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<META HTTP-EQUIV='Pragma' CONTENT="no-cache">
+<STYLE type='text/css'>
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #FF9D6F}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var ip="127.0.0.1";
+var port="2543";
+var type=0;
+var statusmsg="";
+var winstatus=null;
+
+
+function insertText() 
+{
+TITLEFLAG="titledefined";
+if(TitleNum==1)
+	document.getElementById('td1').innerHTML = "Das Discovery Page (SMCC TEST version 4.3.5.0 - 13May2019)";
+else
+  document.getElementById('td1').innerHTML = "Das Discovery Page (SMCC version 4.3.5.0 - 13May2019)";
+}
+
+function init_discovery(f)
+{
+LASTTYPE="softwaredefined";
+f.PORT.value=port;
+f.IP.value=ip;
+f.CONTYPE.selectedIndex=type;
+}
+
+function das_remove(f)
+{
+var test;
+test="http://"+self.location.host+"/";
+test+="remove-";
+if(confirm("Remove Das#"+f.elements[0].value.substring(0,4)+" Connection from Discovery List\n if ID command timeout?")==false)return;
+test+=f.elements[0].value;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location=test;
+}
+function das_control(f)
+{
+var test;
+test="http://"+self.location.host+"/";
+test+="status-control-";
+test+=f.elements[0].value;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location=test;
+}
+function das_parameters(f)
+{
+var test="";
+test+="http://"+self.location.host+"/";
+test+="parameters-";
+test+=f.elements[0].value;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location=test;
+}
+function das_table()
+{
+var k=0;
+var i;
+DASTABLE="softwaredefined";
+for(i=0;i<k;i++)
+	{
+document.writeln("<form >");
+document.writeln("<tr>");
+document.writeln("<td>"+DasId[i]+"("+NameId[i]+")"+"</td>");
+document.writeln("<td>"+HostId[i]+"</td>");
+document.writeln("<td>"+PortId[i]+"</td>");
+if(TypeId[i]==0)document.writeln("<td>"+"Rtpd"+"</td>");
+else if(TypeId[i]==1)document.writeln("<td>"+"Direct"+"</td>");
+else if(TypeId[i]==2)document.writeln("<td>"+"Serial"+"</td>");
+document.writeln("<td>");
+if(TypeId[i]==0)document.writeln("<input type=hidden "+ "VALUE="+"'"+DasId[i]+"?' "+"NAME="+"'"+"DasId"+i+"'>");
+else if(TypeId[i]==1)document.writeln("<input type=hidden "+ "VALUE="+"'"+DasId[i]+"!' "+"NAME="+"'"+"DasId"+i+"'>");
+else document.writeln("<input type=hidden "+ "VALUE="+"'"+DasId[i]+"-' "+"NAME="+"'"+"DasId"+i+"'>");
+
+document.writeln("<input type=button value='Status/Control' onclick='das_control(this.form)'>");
+document.writeln("<input type=button value='Parameters'     onclick='das_parameters(this.form)'>");
+document.writeln("&nbsp;&nbsp;&nbsp;<input type=button value='Remove From List (ID)'     onclick='das_remove(this.form)'>");
+document.writeln("</td>");
+document.writeln("</tr>");
+document.writeln("</form>");
+	}
+}
+function discovery(f)
+{
+var test="";
+if(f.CONTYPE.selectedIndex==2)f.IP.value="0.0.0.0";
+test+="http://"+self.location.host+"/"+"discovery.htm?ip="+'"'+f.IP.value+'"'+";port="+'"'+f.PORT.value+'"'+";type="+f.CONTYPE.selectedIndex+";";
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location=test;
+}
+//-->
+
+
+</SCRIPT>
+</HEAD>
+<body onload="insertText();">
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<FORM NAME='DISCOVERY'>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH id="td1"></TH>
+</TR>
+</TABLE>
+<BR>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TD>Host IP address:&nbsp;<INPUT TYPE=TEXT NAME='IP' VALUE=''></TD>
+<TD>Host PORT/SERIAL:&nbsp;<INPUT TYPE=TEXT NAME='PORT' VALUE=''></TD>
+<TD>Connection type:&nbsp;<SELECT NAME='CONTYPE'><OPTION VALUE='RTPD'>Rtpd<OPTION VALUE='DIRECT'>Direct<OPTION VALUE='SERIAL'>Serial</SELECT></TD>
+<TD><INPUT TYPE=BUTTON VALUE='DAS-DISCOVERY' onclick='discovery(this.form)'></TD>
+</TR>
+</TABLE>
+</FORM>
+<SCRIPT language='JavaScript'>
+<!--
+	init_discovery(document.forms['DISCOVERY']);
+//-->
+</SCRIPT>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<tr>
+<th>DasId</th><th>Host</th><th>Port</th><th>Type</th><th>Action</th>
+</tr>
+<SCRIPT language='JavaScript'>
+<!--
+das_table();
+//-->
+</SCRIPT>
+</TABLE>
+<SCRIPT language='JavaScript'>
+<!--
+//alert(statusmsg.substring(0,1));
+if(statusmsg.substring(0,1)=="W")
+document.write("<BR><table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'><TR><TD>"+statusmsg+"</TD></TR></TABLE>")
+//-->
+</SCRIPT>
+</BODY>
+</HTML>

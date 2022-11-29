@@ -1,0 +1,112 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #FF9D6F}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var contype="";
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+var MFStatus="";
+var dasid="";
+var SOFTWAREDEVINED;
+function get_resp_str(str,pos,nr) 
+{
+var nstr="";
+var i,k;
+var j=0;
+
+if(str.length<1)return nstr;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)=="}")j++;
+if(j==nr)break;
+}
+j=1;
+for(k=i+1;k<str.length;k++)
+{
+if(str.substring(k,k+1)==","){j+=1;}
+else if(pos==j)
+	{
+	nstr+=str.substring(k,k+1);
+
+	}
+}
+
+
+return nstr;
+}
+
+var dasid=get_resp_str(MFstatus,2,1).toUpperCase();
+function d_w(f)
+{
+document.write(f);
+}
+function refresh(f)
+{
+var tim=10000;
+var alarmId;
+if(get_resp_str(MFstatus,3,1).toUpperCase()=="D1")d_w("<TR><TH>Format Status for Disk 1</TH></TR>");
+else if(get_resp_str(MFstatus,3,1).toUpperCase()=="D2")d_w("<TR><TH>Format Status for Disk 2</TH></TR>");
+else if(get_resp_str(MFstatus,3,1).toUpperCase()=="RM")d_w("<TR><TH>Clear Ram Status</TH></TR>");
+else if(get_resp_str(MFstatus,3,1).toUpperCase()=="RQ")d_w("<TR><TH>Most Recent</TH></TR>");
+else {d_w("<TR><TH>Unknown Status</TH></TR>");f.elements[0].value="Done";return;}
+if(get_resp_str(MFstatus,4,1).toUpperCase()=="INPG"){d_w("<TR><TD>In Progress</TD></TR>");f.elements[0].value="Update";return;}
+
+f.elements[0].value="Done";
+if(get_resp_str(MFstatus,4,1).toUpperCase()=="OK")d_w("<TR><TD>Done</TD></TR>");
+else if(get_resp_str(MFstatus,4,1)=="BSY")d_w("<TR><TD>Rejected (busy)</TD></TR>");
+     else d_w("<TR><TD>Invalid Request</TD></TR>");
+}
+function done(f)
+{
+if(f.elements[0].value=="Done")
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[1].value=s_lbl;
+f.elements[1].value+="{SS,"+dasid+",DK,B"+"\r\n";
+f.elements[1].value+="{SS,"+dasid+",AQ,B"+"\r\n";
+f.elements[1].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+else 
+{
+f.action= "http://"+self.location.host+"/media-format-"+dasid+contype;
+f.elements[1].value=s_lbl;
+f.elements[1].value+="{MF,"+dasid+",RQ"+"\r\n";
+f.elements[1].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY>
+<CENTER>
+<FORM NAME="FM" enctype="text/plain"  ACTION="" METHOD="POST">
+<INPUT TYPE=BUTTON VALUE="Update" onclick="done(this.form)">
+<INPUT TYPE=HIDDEN VALUE="" NAME="dskftm">
+</FORM>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<SCRIPT language='JavaScript'>
+var test;
+test=""+self.location;
+contype=test.substring(test.length-1,test.length);
+refresh(document.forms['FM']);
+</SCRIPT>
+</table>
+</CENTER>
+</BODY>
+<HTML>

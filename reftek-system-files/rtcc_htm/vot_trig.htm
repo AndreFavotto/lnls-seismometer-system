@@ -1,0 +1,328 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+.hi  {font-family: Arial, Verdana,  Helvetica, sans-serif; font-weight:bold;font-size: 85%; color: #000000;text-align:left;background-color: #00f5dc}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var PD=window.opener.TarnsTrig;
+var dasid=PD.substring(0,4);
+var stream=PD.substring(12,14);
+function strip_string(str)
+{
+var i;
+var nstr="";
+var left=0;
+var right=0;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+left=i;
+for(i=str.length-1;i>=0;i--)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+right=i;
+if(left<=right)nstr=str.substring(left,right+1);
+return nstr;
+}
+function cancel_contrig()
+{
+var num;
+var k=0;
+var l1=12;
+var l2=9;
+/* MODEREN- *//* MODE130B- */l1=15;
+/* MODEREN- *//* MODE130B- */l2=12;
+num=parseInt(PD.substring(12,14),10);
+var trt=PD.substring(62,66);
+if(trt=="CON "||trt==" CON")k=0;
+else if(trt=="CRS "||trt==" CRS")k=1;
+else if(trt=="EVT "||trt==" EVT")k=2;
+else if(trt=="EXT "||trt==" EXT")k=3;
+else if(trt=="LEV "||trt==" LEV")k=4;
+else if(trt=="TIM "||trt==" TIM")k=5;
+else if(trt=="TML "||trt==" TML")k=6;
+else if(trt=="VOT "||trt==" VOT")k=7;
+else if(trt=="DIF "||trt==" DIF")k=8;
+window.opener.document.forms['PDst'].elements[(num-1)*l1+l2].selectedIndex=k;
+self.close();
+}
+function d_w(f)
+{
+document.write(f);
+}
+function init_vot(f)
+{
+var lfreq;
+var hfreq;
+var i;
+var chan;
+var skipv2=3;
+/* MODEREN- *//* MODE130B- */skipv2=0;
+if(PD.substring(62,66)=="VOT "||PD.substring(62,66)==" VOT")
+{
+f.elements[0].value=strip_string(PD.substring(66,74));
+f.elements[1].value=strip_string(PD.substring(74,82));
+f.elements[2].value=strip_string(PD.substring(82,90));
+if(PD.substring(90,91)=="G")f.elements[8].selectedIndex=0;
+else if(PD.substring(90,91)=="%")f.elements[8].selectedIndex=1;
+else f.elements[8].selectedIndex=2;
+f.elements[3].value=strip_string(PD.substring(156,164));
+f.elements[4].value=strip_string(PD.substring(154,156));
+f.elements[5].value=strip_string(PD.substring(218,220));
+lfreq=parseFloat(PD.substring(220,224));
+hfreq= parseFloat(PD.substring(224,228));
+if(isNaN(hfreq)||hfreq==0)f.elements[6].selectedIndex=0;
+else if(hfreq==0.1)  f.elements[6].selectedIndex=1;
+else       f.elements[6].selectedIndex=2;
+if(isNaN(lfreq)||lfreq==0)f.elements[7].selectedIndex=0;
+else  f.elements[7].selectedIndex=1;
+for(i=0;i<6-skipv2;i++)
+{
+chan=parseInt(PD.substring(94+i,95+i),10);
+if(isNaN(chan)||chan<1||chan>6)continue;
+chan-=1;
+f.elements[9+chan*4].value=strip_string(PD.substring(106+i*8,114+i*8));
+f.elements[10+chan*4].value=strip_string(PD.substring(100+i,101+i));
+f.elements[11+chan*4].value=strip_string(PD.substring(170+i*8,178+i*8));
+f.elements[12+chan*4].value=strip_string(PD.substring(164+i,165+i));
+}
+}
+else return;
+}
+function set_vottrig(f)
+{
+var num;
+var ptl;
+var potl;
+var rl;
+var vt;
+var vlt;
+var mv;
+var i;
+var k;
+var tw;
+var TarnsTrig="VOT ";
+var l1=12;
+var l2=11;
+/* MODEREN- *//* MODE130B- */l1=15;
+/* MODEREN- *//* MODE130B- */l2=14;
+var skipv2=3;
+var skipv1=12;
+/* MODEREN- *//* MODE130B- */skipv2=0;
+/* MODEREN- *//* MODE130B- */skipv1=15;
+num=parseInt(PD.substring(12,14),10);
+ptl=parseFloat(f.elements[0].value);
+if(isNaN(ptl)||ptl<0){alert("Invalid Pre-Trigger Length");return;}
+potl=parseFloat(f.elements[1].value);
+if(isNaN(potl)||potl<0){alert("Invalid Post-Trigger Length");return;}
+rl=parseFloat(f.elements[2].value);
+if(isNaN(rl)||rl<0){alert("Invalid Record Length");return;}
+TarnsTrig+=f.elements[0].value;
+for(i=f.elements[0].value.length;i<8;i++)TarnsTrig+=" ";
+TarnsTrig+=f.elements[1].value;
+for(i=f.elements[1].value.length;i<8;i++)TarnsTrig+=" ";
+TarnsTrig+=f.elements[2].value;
+for(i=f.elements[2].value.length;i<8;i++)TarnsTrig+=" ";
+if(f.elements[8].selectedIndex==0)TarnsTrig+="G   ";
+else if(f.elements[8].selectedIndex==1)TarnsTrig+="%   ";
+else  TarnsTrig+="C   ";
+TarnsTrig+="123456";
+for(i=0;i<6-skipv2;i++)
+{
+vt=parseInt(f.elements[10+i*4].value,10);
+if(isNaN(vt)||vt<0||vt>9)TarnsTrig+="0";
+else TarnsTrig+=""+vt;
+}
+for(i=0;i<skipv2;i++)TarnsTrig+="0";
+for(i=0;i<6-skipv2;i++)
+{
+vlt=parseFloat(f.elements[9+i*4].value);
+if(isNaN(vlt)||vlt<0)TarnsTrig+="0       ";
+else 	{TarnsTrig+=f.elements[9+i*4].value;
+	for(k=f.elements[9+i*4].value.length;k<8;k++)TarnsTrig+=" ";
+	}
+}
+for(i=0;i<skipv2;i++)
+{
+TarnsTrig+="0       ";
+}
+mv=parseInt(f.elements[4].value,10);
+if(isNaN(mv)||mv<=0||mv>99){alert("Invalid Field Trigger minimum votes");return;}
+TarnsTrig+=f.elements[4].value;
+for(k=f.elements[4].value.length;k<2;k++)TarnsTrig+=" ";
+tw=parseFloat(f.elements[3].value);
+if(isNaN(tw)||tw<0){alert("Invalid Field Trigger window");return;}
+TarnsTrig+=f.elements[3].value;
+for(k=f.elements[3].value.length;k<8;k++)TarnsTrig+=" ";
+for(i=0;i<6-skipv2;i++)
+{
+vt=parseInt(f.elements[12+i*4].value,10);
+if(isNaN(vt)||vt<0||vt>9)TarnsTrig+="0";
+else TarnsTrig+=""+vt;
+}
+for(i=0;i<skipv2;i++)TarnsTrig+="0";
+for(i=0;i<6-skipv2;i++)
+{
+vlt=parseFloat(f.elements[11+i*4].value);
+if(isNaN(vlt)||vlt<0)TarnsTrig+="0       ";
+else {TarnsTrig+=f.elements[11+i*4].value;
+for(k=f.elements[11+i*4].value.length;k<8;k++)TarnsTrig+=" ";}
+}
+for(i=0;i<skipv2;i++)
+{
+TarnsTrig+="0       ";
+}
+mv=parseInt(f.elements[5].value,10);
+if(isNaN(mv)||mv<=0||mv>99){alert("Invalid Field De-trigger minimum votes");return;}
+TarnsTrig+=f.elements[5].value;
+for(k=f.elements[5].value.length;k<2;k++)TarnsTrig+=" ";
+if(f.elements[7].selectedIndex==0)TarnsTrig+="OFF ";
+else TarnsTrig+="  12";
+if(f.elements[6].selectedIndex==0)TarnsTrig+="OFF ";
+else if(f.elements[6].selectedIndex==1)TarnsTrig+="0.1  ";
+else TarnsTrig+="   2";
+window.opener.document.forms['PDst'].elements[(num-1)*l1+l2].value=TarnsTrig;
+self.close();
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<FORM NAME="GO_VOT">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>
+<!--
+d_w("Vote Trigger Description" +" DasId#"+dasid+"; "+"Stream# "+stream);
+//-->
+</SCRIPT>
+</TH>
+<TD>
+<INPUT TYPE=BUTTON VALUE="APPLY" onclick="set_vottrig(document.forms['vot_trig'])">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON VALUE="CANCEL" onclick="cancel_contrig()">
+</TD>
+</TR>
+</table>
+</FORM>
+<FORM NAME="vot_trig">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>Description</TH>
+<TH>Value</TH>
+<TH>Type and Range</TH>
+</TR>
+<TR>
+<TD>Pre-trigger length</TD>
+<TD><INPUT TYPE=TEXT SIZE='8'  MAXLENGTH='8' VALUE=''></TD>
+<TD>ASCII digits: FP 3 (seconds)</TD>
+</TR><TR>
+<TD>Post-trigger length</TD>
+<TD><INPUT TYPE=TEXT SIZE='8'  MAXLENGTH='8' VALUE=''></TD>
+<TD>ASCII digits: FP 3 (seconds)</TD>
+</TR><TR>
+<TD>Record length</TD>
+<TD><INPUT TYPE=TEXT SIZE='8'  MAXLENGTH='8' VALUE=''></TD>
+<TD>ASCII digits: FP 3 (seconds)</TD>
+</TR>
+<TR>
+<TD>Trigger window</TD>
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE=''></TD>
+<TD>ASCII digits: FP 3 (seconds)</TD>
+</TR>
+<TR>
+<TD>Trigger minimum votes</TD>
+<TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''></TD>
+<TD>2 ASCII integer: 1 - 99</TD>
+</TR>
+<TR>
+<TD>De-trigger minimum votes</TD>
+<TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''></TD>
+<TD>2 ASCII integer: 1 - 99</TD>
+</TR>
+<TR><TD>High-pass trigger filter</TD>
+<TD><SELECT><OPTION VALUE='OFF'>Off<OPTION VALUE='0.1'>0.1<OPTION VALUE='2'>2</SELECT></TD>
+<TD>Hz</TD>
+</TR>
+<TR>
+<TD>Low-pass trigger filter</TD>
+<TD><SELECT><OPTION VALUE='OFF'>Off<OPTION VALUE='12'>12</SELECT></TD>
+<TD>Hz</TD>
+</TR>
+<TR>
+<TD>Level Units</TD>
+<TD><SELECT><OPTION VALUE='G'>G's<OPTION VALUE='%'>% Full Scale<OPTION VALUE='C'>Counts</SELECT></TD>
+<TD>G = Gs, % = percent of full-scale, C= counts</TD>
+</TR>
+</table>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>Channel#</TH>
+<TH>Trigger Levels/Votes</TH>
+<TH>De-Trigger Levels/Votes</TH>
+</TR>
+<TR>
+<TD>1</TD>
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+</TR>
+<TR>
+<TD>2</TD>
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+</TR>
+<TR>
+<TD>3</TD>
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+</TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>4</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>5</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TR>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD>6</TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--><TD><INPUT TYPE=TEXT SIZE='8' MAXLENGTH='8' VALUE='0.0'>
+<!-- MODEREN- //--><!-- MODE130B- //--><INPUT TYPE=TEXT SIZE='1' MAXLENGTH='1' VALUE='0'></TD>
+<!-- MODEREN- //--><!-- MODE130B- //--></TR>
+</table>
+</FORM>
+<SCRIPT language='JavaScript'>
+<!--
+init_vot(document.forms['vot_trig']);
+//-->
+</SCRIPT>
+<!-- CHANGES AT 28.01.2012 //-->
+</BODY>
+</HTML>

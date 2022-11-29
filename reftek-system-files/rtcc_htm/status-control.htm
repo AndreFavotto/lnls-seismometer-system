@@ -1,0 +1,1280 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+td.check {font-family: Arial, Verdana,  Helvetica, sans-serif; font-weight:bold;font-size: 85%; color: #000000;text-align:left;background-color: #F5f5dc}
+h1  {font-family: Arial, Verdana,  Helvetica, sans-serif; font-weight:bold;font-size: 85%; color: #000000;text-align:left;background-color: #F5f5dc}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var contype="";
+var AQstatus="";
+var DKstatus="";
+var USstaus="";
+var PRstatus="";
+var XCstatus=""
+var VSstatus="";
+var RTstatus1="";
+var RTstatus2="";
+var PNrequest1="";
+var PNrequest2="";
+var TSstatus="";
+var SIstatus1="";
+var SIstatus2="";
+var PZrequest="";
+var AQstatus="";
+var SkResp='0';
+var SOFTWAREDEVINED;
+
+
+
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+var dasid=AQstatus.substring(0,4);
+
+function check_ip_field(fip)
+{
+var i;
+var sb;
+var k=0;
+var p=0
+var ipv;
+for(i=0;i<fip.length;i++)
+{
+if(fip.charAt(i)!="."&&fip.charAt(i)!="0"&&fip.charAt(i)!="1"&&fip.charAt(i)!="2"&&fip.charAt(i)!="3"&&fip.charAt(i)!="4"&&fip.charAt(i)!="5"&&fip.charAt(i)!="6"&&fip.charAt(i)!="7"&&fip.charAt(i)!="8"&&fip.charAt(i)!="9"&&fip.charAt(i)!=" ")return -1;
+if(fip.charAt(i)==".")
+{
+sb=fip.substring(k,i);
+ipv=parseInt(sb,10);
+if(isNaN(ipv))return -1;
+if(ipv<0||ipv>999)return -1;
+p+=1;
+k=i+1;
+if(p==4)return -1;
+}
+}
+if(p!=3)return -1;
+sb=fip.substring(k,i);
+ipv=parseInt(sb,10);
+if(isNaN(ipv))return -1;
+if(ipv<0||ipv>999)return -1;
+return 1;
+}
+function strip_string(str)
+{
+var i;
+var nstr="";              
+var left=0;
+var right=0;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+
+left=i;
+for(i=str.length-1;i>=0;i--)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+right=i;
+if(left<=right)nstr=str.substring(left,right+1);
+return nstr;
+}
+function modem(f)
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.action=self.location;
+f.elements[5].value=s_lbl;
+f.elements[5].value+="PM&"+dasid+"&2&"+f.elements[0].value+"&"+f.elements[3].value +"&"+f.elements[1].value+"&"+f.elements[2].value+"\n";
+f.elements[5].value+="PR&"+dasid+"&PM&2"+"\n";
+f.elements[5].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[5].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function init_form_modem(f)
+{
+f.elements[0].value=strip_string(PMrequest.substring(16,64));
+f.elements[1].value=strip_string(PMrequest.substring(88,136));
+f.elements[2].value=strip_string(PMrequest.substring(136,184));
+f.elements[3].value=strip_string(PMrequest.substring(64,88));
+}
+function init_form_pz(f)
+{
+if(PZrequest.substring(18,19)=='Y')f.elements[0].selectedIndex=0;
+else f.elements[0].selectedIndex=1;
+f.elements[1].value=strip_string(PZrequest.substring(20,22));
+if(PZrequest.substring(26,27)=="Y")f.elements[2].selectedIndex=0;
+else f.elements[2].selectedIndex=1;
+f.elements[3].value=strip_string(PZrequest.substring(30,31));
+}
+
+
+function process_et(f)
+{
+f.action="http://"+self.location.host+"/eventt-status-"+dasid+contype;
+f.elements[10].value=s_lbl;
+f.elements[10].value+="SS&"+dasid+"&ET&"+(f.elements[5].selectedIndex+1)+f.elements[6].options[f.elements[6].selectedIndex].value+"\n";
+f.elements[10].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function process_lp(f)
+{
+f.action="http://"+self.location.host+"/parameter-file-"+dasid+contype;
+f.elements[10].value=s_lbl;
+f.elements[10].value+="LP&"+dasid+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Load Parameters from Disk?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function process_wp(f)
+{
+f.action="http://"+self.location.host+"/parameter-file-"+dasid+contype;
+f.elements[10].value=s_lbl;
+f.elements[10].value+="WP&"+dasid+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Care must be taken to ensure that all parameters, including Acquisition, are in the desired state when the WP command is issued.\n Write Parameters to Disk?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function process_pz(f)
+{
+var dth;
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[10].value=s_lbl;
+f.elements[10].value+="PZ&"+dasid+"&"+f.elements[0].value+"&"+f.elements[1].value +"&"+f.elements[2].options[f.elements[2].selectedIndex].value+"&"+f.elements[3].value+"\n";
+dth=parseInt(f.elements[1].value,10);
+if(isNaN(dth)||dth<0||dth>99){alert("Invalid Field Dump Threshold");return;}
+f.elements[10].value+="PR&"+dasid+"&PZ&"+"\n";
+f.elements[10].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[10].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[10].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function reset_das(f)
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[4].value=s_lbl;
+f.elements[4].value+="RS&"+dasid+"& "+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Reset")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function set_gps(f)
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[2].value=s_lbl;
+f.elements[2].value+="GC&"+dasid+"&"+f.elements[0].options[f.elements[0].selectedIndex].value+"\n";
+f.elements[2].value+="SS&"+dasid+"&XC&"+"\n";
+f.elements[2].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[2].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Set Gps Mode?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function init_gps(f)
+{
+if(XCstatus.substring(83,84)=="C")f.elements[0].selectedIndex=0;
+else if(XCstatus.substring(83,84)=="D")f.elements[0].selectedIndex=1;
+else f.elements[0].selectedIndex=2;
+}
+
+function aux_chan()
+{
+var k=0;
+var nan="";
+var i;
+k=parseInt(ADstatus.substring(30,31),10);
+nan+=k;
+if(k==0||nan=="NaN")return;
+d_w("Aux Channels");
+d_w("<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>");
+d_w("<TR><TH>Sensor Number</TH><TH>Count</TH><TH>Limit</TH><TH>Level</TH><TH>Aux1</TH><TH>Aux2</TH><TH>Aux3</TH></TR>");
+for(i=0;i<k;i++)
+{d_w("<TR>");
+d_w("<TD>"+ADstatus.substring(32+i*30,32+i*30+1)+"</TD>");
+d_w("<TD>"+ADstatus.substring(34+i*30,40+i*30)+"</TD>");
+d_w("<TD>"+ADstatus.substring(40+i*30,46+i*30)+"</TD>");
+d_w("<TD>"+ADstatus.substring(46+i*30,50+i*30)+"</TD>");
+d_w("<TD>"+ADstatus.substring(50+i*30,54+i*30)+"</TD>");
+d_w("<TD>"+ADstatus.substring(54+i*30,58+i*30)+"</TD>");
+d_w("<TD>"+ADstatus.substring(58+i*30,62+i*30)+"</TD>");
+d_w("</TR>");
+}
+d_w("</table>");
+}
+function go_parameters()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/"+"parameters-"+dasid+contype;
+}
+function done()
+{
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+self.location="http://"+self.location.host+"/";
+}
+function update_status(f)
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[4].value=s_lbl;
+f.elements[4].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[4].value+="SS&"+dasid+"&DK&"+"\n";
+f.elements[4].value+="SS&"+dasid+"&US&"+"\n";
+f.elements[4].value+="SS&"+dasid+"&PR&"+"\n";
+f.elements[4].value+="SS&"+dasid+"&XC&"+"\n";
+f.elements[4].value+="SS&"+dasid+"&VS&"+"\n";
+f.elements[4].value+="SS&"+dasid+"&AD&"+"\n";
+f.elements[4].value+="PR&"+dasid+"&PN&1"+"\n";
+f.elements[4].value+="PR&"+dasid+"&PN&2"+"\n";
+f.elements[4].value+="SS&"+dasid+"&RT&1"+"\n";
+f.elements[4].value+="SS&"+dasid+"&RT&2"+"\n";
+f.elements[4].value+="SS&"+dasid+"&SI&1"+"\n";
+f.elements[4].value+="SS&"+dasid+"&SI&2"+"\n";
+f.elements[4].value+="PR&"+dasid+"&PZ&"+"\n";
+f.elements[4].value+="PR&"+dasid+"&PM&2"+"\n";
+f.elements[4].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[4].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function time_set1(f)
+{
+var k=8;
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[k].value=s_lbl;
+f.elements[k].value+="TS&"+dasid+"&"+f.elements[0].value+"&M&"+"\n";
+f.elements[k].value+="TS&"+dasid+"&& &"+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Set Time?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function dump_ram(f)
+{
+var k=8;
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[k].value=s_lbl;
+f.elements[k].value+="FD&"+dasid+"\n";
+f.elements[k].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[k].value+="TS&"+dasid+"&& &"+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Dump Ram?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+
+function test_ram(f)
+{
+var k=8;
+f.action="http://"+self.location.host+"/ram-test-"+dasid+contype;
+f.elements[k].value+=s_lbl+"MT&"+dasid+"&RM"+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(
+confirm("WARNING:  Acquisition will be stopped temporarily and RAM will be overwritten!! This test may take up to 5 minutes!!")
+==false)
+return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+
+function clear_ram(f)
+{
+var k=8;
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[k].value=s_lbl;
+f.elements[k].value+="MF&"+dasid+"&RM"+"\n";
+f.elements[k].value+="MF&"+dasid+"&RQ"+"\n";
+f.elements[k].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[k].value+="TS&"+dasid+"&& &"+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Clear Ram?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function disk_fmt(f,num)
+{
+var k=8;
+var dmeg;
+var sdmeg;
+f.action="http://"+self.location.host+"/media-format-"+dasid+contype;
+if(num==1)
+{
+dmeg=parseFloat(DKstatus.substring(30,36));
+}
+else 
+{
+dmeg=parseFloat(DKstatus.substring(48,54));
+}
+sdmeg=""+dmeg;
+/*
+if(dmeg==0.||sdmeg=="NaN")
+{
+alert(""+"Disk"+" "+ num + " is Not Installed");return;
+}
+*/
+f.elements[k].value=s_lbl;
+f.elements[k].value+="MF&"+dasid+"&D"+num+"\n";
+f.elements[k].value+="MF&"+dasid+"&RQ"+"\n";
+f.elements[k].value+="TS&"+dasid+"&& &"+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Format Disk# "+num +"?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function process_pn(f,num)
+{
+var toss;
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+if(num==1||num==3)
+{
+f.elements[22].value=s_lbl;
+f.elements[22].value+="PN&"+dasid+"&";
+f.elements[22].value+=f.elements[0].value+"&";
+f.elements[22].value+=f.elements[1].value+"&";
+if(check_ip_field(f.elements[1].value)<0){alert("Invalid Field IP address");return;}
+f.elements[22].value+=f.elements[3].options[f.elements[3].selectedIndex].value+"&";
+f.elements[22].value+=f.elements[2].value+"&";
+if(check_ip_field(f.elements[2].value)<0){alert("Invalid Field IP Mask");return;}
+f.elements[22].value+=f.elements[6].value+"&";
+if(check_ip_field(f.elements[6].value)<0){alert("Invalid Field RTPD");return;}
+f.elements[22].value+=f.elements[7].value+"&";
+if(check_ip_field(f.elements[7].value)<0){alert("Invalid Field Gateway");return;}
+//if(num==1)
+if(f.elements[8].selectedIndex==0||f.elements[8].selectedIndex==1)
+f.elements[22].value+=f.elements[8].options[f.elements[8].selectedIndex].value+"&";
+//if(num==3)
+else f.elements[22].value+="B&";
+f.elements[22].value+=f.elements[4].value+"&";
+f.elements[22].value+=f.elements[5].value+"&";
+f.elements[22].value+=f.elements[9].value+"\n"
+toss=parseInt(f.elements[9].value,10);
+if(isNaN(toss)||toss<0||toss>99){alert("Invalid Field Toss Delay");return;}
+f.elements[22].value+="PR&"+dasid +"&PN&1"+"\n";
+f.elements[22].value+="TS&"+dasid+"&& &"+"\n";
+if(num==1)f.elements[22].value+=e_lbl;
+}
+if(num==2||num==3)
+{
+if(num==2)f.elements[22].value=s_lbl;
+f.elements[22].value+="PN&"+dasid+"&";
+f.elements[22].value+=f.elements[11].value+"&";
+f.elements[22].value+=f.elements[12].value+"&";
+if(check_ip_field(f.elements[12].value)<0){alert("Invalid Field IP address");return;}
+f.elements[22].value+=f.elements[14].value+"&";
+f.elements[22].value+=f.elements[13].value+"&";
+if(check_ip_field(f.elements[13].value)<0){alert("Invalid Field IP Mask");return;}
+f.elements[22].value+=f.elements[17].value+"&";
+if(check_ip_field(f.elements[17].value)<0){alert("Invalid Field RTPD");return;}
+f.elements[22].value+=f.elements[18].value+"&";
+if(check_ip_field(f.elements[18].value)<0){alert("Invalid Field Gateway");return;}
+//if(num==2)
+if(f.elements[19].selectedIndex==0||f.elements[19].selectedIndex==1)
+f.elements[22].value+=f.elements[19].options[f.elements[19].selectedIndex].value+"&";
+//if(num==3)
+else f.elements[22].value+="B&";
+f.elements[22].value+=f.elements[15].options[f.elements[15].selectedIndex].value+"&";
+f.elements[22].value+=f.elements[16].options[f.elements[16].selectedIndex].value+"&";
+f.elements[22].value+=f.elements[20].value+"\n";
+toss=parseInt(f.elements[20].value,10);
+if(isNaN(toss)||toss<0||toss>99){alert("Invalid Field Toss Delay");return;}
+f.elements[22].value+="PR&"+dasid +"&PN&2"+"\n";
+f.elements[22].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[22].value+=e_lbl;
+}
+//alert(f.elements[22].value);
+if(document.bgColor=="#7f7f7f")return;
+if(confirm("Change Network Parameters?")==false)return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function init_form_ntp(f)
+{
+var speed=new Array(9600, 19200, 57600, 115200);
+f.elements[1].value=strip_string(PNrequest1.substring(16,31));
+f.elements[2].value=strip_string(PNrequest1.substring(32,48));
+if(PNrequest1.substring(31,32)=="P")f.elements[3].selectedIndex=0;
+else  f.elements[3].selectedIndex=1;
+f.elements[4].value=strip_string(PNrequest1.substring(81,82));
+f.elements[5].value=strip_string(PNrequest1.substring(82,88));
+
+f.elements[6].value=strip_string(PNrequest1.substring(48,64));
+f.elements[7].value=strip_string(PNrequest1.substring(64,80));
+
+
+
+f.elements[9].value=strip_string(PNrequest1.substring(88,90));
+
+/* MODEMRF- *//* MODEREN- */if(PNrequest1.substring(80,81)=="T")f.elements[8].selectedIndex=1;
+/* MODEMRF- *//* MODEREN- */else f.elements[8].selectedIndex=0;
+
+
+f.elements[12].value=strip_string(PNrequest2.substring(16,31));
+f.elements[13].value=strip_string(PNrequest2.substring(32,48));
+f.elements[14].value=strip_string(PNrequest2.substring(31,32));
+for(i=0;i<4;i++)
+if(PNrequest2.substring(82,88)==speed[i])f.elements[16].selectedIndex=i;
+if(PNrequest2.substring(81,82)=="F")f.elements[15].selectedIndex=2;
+else if(PNrequest2.substring(81,82)=="A")f.elements[15].selectedIndex=1;
+else f.elements[15].selectedIndex=0;
+
+f.elements[17].value=strip_string(PNrequest2.substring(48,64));
+f.elements[18].value=strip_string(PNrequest2.substring(64,80));
+//f.elements[16].value=strip_string(PNrequest2.substring(31,32));
+
+/* MODEMRF- *//* MODEREN- */if(PNrequest2.substring(80,81)=="T")f.elements[19].selectedIndex=1;
+/* MODEMRF- *//* MODEREN- */else f.elements[19].selectedIndex=0;
+f.elements[20].value=strip_string(PNrequest2.substring(88,90));
+}
+function d_w(f)
+{
+document.write(f);
+}
+
+function d_w1(f)
+{
+document.write(f);
+}
+
+function g_parc()
+{
+var cn=0;
+var i;
+cn=parseInt(PRstatus.substring(30,32),10);
+d_w("CH:");
+for(i=38;i<38+cn;i++)
+	{
+	if(PRstatus.substring(i,i+1)==" ")d_w("-");
+	else d_w(PRstatus.substring(i,i+1));
+	}
+
+}
+function g_pars()
+{
+var c;
+var s;
+var i;
+c=parseInt(PRstatus.substring(30,32),10);
+s=parseInt(PRstatus.substring(32,33),10);
+d_w("ST:");
+for(i=38+c;i<38+c+s;i++)
+	{
+	if(PRstatus.substring(i,i+1)==" ")d_w("-");
+	else d_w(PRstatus.substring(i,i+1));
+}
+}
+function g_status()
+{
+var k1=AQstatus.charAt(30);
+var k2=AQstatus.charAt(31)
+var dmeg;
+var sdmeg;
+d_w("<TD>");
+if(k1=='Y'&&k2=='Y')document.write("Start On");
+else if(k1=='Y'&&k2=='N')d_w("Start Off");
+else if(k1=='N'&&k2=='Y')d_w("Stop On");
+else d_w("Stop Off");
+d_w("</TD>");
+d_w("<TD>"+AQstatus.substring(32,38));
+k1=AQstatus.charAt(38);
+k2=AQstatus.charAt(39);
+if(k1=='Y' || k2=='Y')d_w("*");
+d_w("</TD>");
+d_w("<TD>"+AQstatus.substring(46,52)+" of "+AQstatus.substring(40,46)+"Kb</TD>");
+dmeg=parseFloat(DKstatus.substring(30,36));
+sdmeg=""+dmeg;
+if(dmeg==0.||sdmeg=="NaN")d_w("<TD>Not Installed</TD>");
+else d_w("<TD>"+DKstatus.substring(36,42)+" of "+DKstatus.substring(30,36)+"Mb</TD>");
+dmeg=parseFloat(DKstatus.substring(48,54));
+sdmeg=""+dmeg;
+if(dmeg==0.||sdmeg=="NaN")d_w("<TD>Not Installed</TD>");
+else d_w("<TD>"+DKstatus.substring(54,60)+" of "+DKstatus.substring(48,54)+"Mb</TD>");
+d_w("<TD>Input="+USstatus.substring(30,34)+"V; Backup="+USstatus.substring(34,38)+"V; Charger="+USstatus.substring(44,48)+"V;"+"</TD>");
+d_w("<TD>"+USstatus.substring(38,44)+"degrees C"+"</TD>");
+d_w("<TD>");
+g_parc();
+d_w("</TD>");
+}
+var check_board=0;
+
+function g_version()
+{
+var bc=0;
+var k=0;
+d_w("CPU FW version="+VSstatus.substring(30,46));
+d_w("<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>");
+d_w("<TR>");
+d_w("<TH>Board Number</TH>");
+d_w("<TH>Revision</TH>");
+d_w("<TH>Acronym</TH>");
+d_w("<TH>Serial Number</TH>");
+d_w("<TH>FPGA Number</TH>");
+d_w("<TH>FPGA Min. rev.</TH>");
+d_w("<TH>FPGA Version</TH>");
+d_w("</TR>");
+bc=parseInt(VSstatus.substring(46,48),10);
+for(var i=0;i<bc;i++)
+{
+d_w("<TR>");
+k=48+i*20;
+if(VSstatus.substring(k,k+4)=='0527')check_board=1;
+if(VSstatus.substring(k,k+4)=='0649'&&VSstatus.substring(k+4,k+5)>='A'){if(check_board==0)check_board=2;}
+if(VSstatus.substring(k,k+4)=='0608'&&VSstatus.substring(k+4,k+5)>='D'){if(check_board==0)check_board=2;}
+
+d_w("<TD>"+"&nbsp;"+VSstatus.substring(k,k+4) +"</TD>");
+d_w("<TD>"+"&nbsp;"+VSstatus.substring(k+4,k+5) +"</TD>");
+d_w("<TD>"+"&nbsp;"+VSstatus.substring(k+5,k+8) +"</TD>");
+d_w("<TD>"+"&nbsp;"+VSstatus.substring(k+8,k+12) +"</TD>");
+d_w("<TD>"+"&nbsp;"+VSstatus.substring(k+12,k+16) +"</TD>");
+d_w("<TD>"+"&nbsp;"+VSstatus.substring(k+16,k+17) +"</TD>");
+d_w("<TD>"+"&nbsp;"+VSstatus.substring(k+17,k+20) +"</TD>");
+d_w("</TR>");
+}
+d_w("</table>");
+}
+function init_form_aqs(f)
+{
+var k1=AQstatus.charAt(30);
+if(k1=='Y')f.elements[2].value="Stop";
+else      f.elements[2].value="Start";
+	  f.elements[0].value=TSstatus.substring(10,27);
+}
+function go_status(f)
+{
+var stdelay="";
+var min=0;
+var sec=0;
+var k=8;
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+if(f.elements[2].value=="Stop")
+{
+f.elements[k].value=s_lbl+"AQ&"+dasid+"&H&0000"+"\n"+"SS&"+dasid+"&AQ&"+"\n";
+if(confirm("Stop Acquisition?")==false)return;
+}
+if(f.elements[2].value=="Start")
+{
+stdelay=prompt("Start Acquisition with (0-6000)seconds Delay:","0");
+sec=parseInt(stdelay,10);
+if(isNaN(sec))return;
+if(sec<0)return;
+min=Math.floor(sec/60);
+sec=sec-min*60;
+if(min<0||sec<0)return;
+if(min>99){min=99;sec=99;}
+if(sec>99)sec=99;
+stdelay="";
+if(min<10)stdelay+="0";
+stdelay+=min;
+if(sec<10)stdelay+=0;
+stdelay+=sec;
+f.elements[k].value=s_lbl+"AQ&"+dasid+"&S&"+stdelay+"\n"+"SS&"+dasid+"&AQ&"+"\n";
+
+//if(confirm("Start Acquisition?")==false)return;
+}
+f.elements[k].value+="TS&"+dasid+"&& &"+"\n"+e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function g_gps()
+{
+d_w("<TD>"+XCstatus.substring(30,38)+"</TD>");
+d_w("<TD>"+XCstatus.substring(38,49)+"</TD>");
+if(XCstatus.substring(49,50)=="L")
+d_w("<TD>Lock</TD>");
+else                       d_w("<TD>Unlock</TD>");
+if(XCstatus.substring(82,83)=="Y")
+d_w("<TD>Yes</TD>");
+else  d_w("<TD>No</TD>");
+d_w("<TD>"+XCstatus.substring(50,52)+"</TD>");
+d_w("<TD>"+XCstatus.substring(52,64)+"</TD>");
+d_w("<TD>"+XCstatus.substring(64,76)+"</TD>");
+d_w("<TD>"+XCstatus.substring(76,82)+"</TD>");
+
+}
+function g_sensor()
+{
+var k=0;
+var i;
+var nan="";
+d_w("<TR>");
+d_w("<TD>"+SIstatus1.substring(30,31)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus1.substring(32,62)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus1.substring(62,76)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus1.substring(76,90)+"&nbsp;</TD></TR>");
+k=parseInt(SIstatus1.substring(90,92),10);
+nan+=k;
+if(k!=0&&nan!="NaN")
+{
+d_w("<TR>");
+d_w("<TD>&nbsp;</TD>");
+d_w("<TH>Component:Orientation</TH>");
+d_w("<TH>Units</TH>");
+d_w("<TH>Volt per Unit</TH>");
+d_w("</TR>");
+for(i=0;i<k;i++)
+{
+d_w("<TR>");
+d_w("<TD>&nbsp;</TD>");
+d_w("<TD>"+SIstatus1.substring(92+i*30,94+i*30)+"&nbsp;:");
+d_w(SIstatus1.substring(94+i*30,98+i*30)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus1.substring(98+i*30,108+i*30)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus1.substring(108+i*30,122+i*30)+"&nbsp;</TD>");
+d_w("</TR>");
+ }
+}
+if(SIstatus1.substring(30,31)==SIstatus2.substring(30,31))return;
+d_w("<TR>");
+d_w("<TD>"+SIstatus2.substring(30,31)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus2.substring(32,62)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus2.substring(62,76)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus2.substring(76,90)+"&nbsp;</TD></TR>");
+k=parseInt(SIstatus2.substring(90,92),10);
+nan+=k;
+if(k!=0&&nan!="NaN")
+{
+d_w("<TR>");
+d_w("<TD>&nbsp;</TD>");
+d_w("<TH>Component:Orientation</TH>");
+d_w("<TH>Units</TH>");
+d_w("<TH>Volt per Unit</TH>");
+d_w("</TR>");
+for(i=0;i<k;i++)
+{
+d_w("<TR>");
+d_w("<TD>&nbsp;</TD>");
+d_w("<TD>"+SIstatus2.substring(92+i*30,94+i*30)+"&nbsp;:");
+d_w(SIstatus2.substring(94+i*30,98+i*30)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus2.substring(98+i*30,108+i*30)+"&nbsp;</TD>");
+d_w("<TD>"+SIstatus2.substring(108+i*30,122+i*30)+"&nbsp;</TD>");
+d_w("</TR>");
+ }
+}
+}
+
+function g_rtp()
+{
+var mode=1;
+var k;
+/* MODE130- *//* MODEMRF- *//* MODEREN- */mode=0;
+d_w("<TR>");
+if(mode==0)d_w("<TD>"+"Ethernet"+"</TD>");
+else      d_w("<TD>"+"RTP1"+"</TD>");
+k=parseInt(RTstatus1.substring(31,32),10);
+if(k==5)
+d_w("<TD>Connected</TD>");
+else    if(k<=1) d_w("<TD>Down</TD>");
+	else     d_w("<TD>Sync</TD>");
+if(RTstatus1.substring(32,33)=="K")d_w("<TD>Keep</TD>");
+else  d_w("<TD>Toss</TD>");
+d_w("<TD>"+parseInt(RTstatus1.substring(46,50),16)+"</TD>");
+d_w("<TD>"+parseInt(RTstatus1.substring(50,54),16)+"</TD>");
+d_w("<TD>"+RTstatus1.substring(54,70)+"</TD>");
+d_w("</TR>");
+d_w("<TR>");
+if(mode==0)
+d_w("<TD>"+"Serial PPP"+"</TD>");
+else d_w("<TD>"+"RTP2"+"</TD>");
+k=parseInt(RTstatus2.substring(31,32),10);
+if(k==5)
+d_w("<TD>Connected</TD>");
+else    if(k<=1) d_w("<TD>Down</TD>");
+	else     d_w("<TD>Sync</TD>");
+if(RTstatus2.substring(32,33)=="K")d_w("<TD>Keep</TD>");
+else  d_w("<TD>Toss</TD>");
+d_w("<TD>"+parseInt(RTstatus2.substring(46,50),16)+"</TD>");
+d_w("<TD>"+parseInt(RTstatus2.substring(50,54),16)+"</TD>");
+d_w("<TD>"+RTstatus2.substring(54,70)+"</TD>");
+d_w("</TR>");
+}
+
+
+function process_dm(f)
+{
+//var l=7+4+1;
+
+///* MODE130B- */l=8+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+var l="ofst";
+var k1="mntr1";
+var k2="mntr2";
+
+f.action="http://"+self.location.host+"/chan-monitor-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="DM&"+dasid+"&"+(f.elements[k1].selectedIndex+1)+"&"+f.elements[k2].options[f.elements[k2].selectedIndex].value+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+
+}
+
+
+
+
+function center(f)
+{
+//var l=7+4+1;
+//var k=3;
+
+///* MODE130B- */l=8+4+1;
+///* MODE130B- */k=4;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */k=5;
+
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+
+var l="ofst";
+var k="snst";
+
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="SK&"+dasid+"&"+(f.elements[k].selectedIndex+1)+"&M"+"\n";
+f.elements[l].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function sentest(f)
+{
+//var l=7+4+1;
+//var k=3;
+
+///* MODE130B- */l=8+4+1;
+///* MODE130B- */k=4;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */k=5;
+
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+var l="ofst";
+var k="snst";
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="SK&"+dasid+"&"+(f.elements[k].selectedIndex+1)+"&S"+"\n";
+f.elements[l].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function senlock(f)
+{
+//var l=7+4+1;
+//var k=3;
+///* MODE130B- */l=8+4+1;
+///* MODE130B- */k=4;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */k=5;
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+var l="ofst";
+var k="snst";
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="SK&"+dasid+"&"+(f.elements[k].selectedIndex+1)+"&L"+"\n";
+f.elements[l].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function senunlock(f)
+{
+//var l=7+4+1;
+//var k=3;
+///* MODE130B- */l=8+4+1;
+///* MODE130B- */k=4;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */k=5;
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+var l="ofst";
+var k="snst";
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="SK&"+dasid+"&"+(f.elements[k].selectedIndex+1)+"&U"+"\n";
+f.elements[l].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+
+function sendump(f)
+{
+
+//var l=7+4+1;
+//var k=3;
+///* MODE130B- */l=8+4+1;
+///* MODE130B- */k=4;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */k=5;
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+
+
+var k="snst";
+var l="ofst";
+
+f.action="http://"+self.location.host+"/sensor-dump-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="SS&"+dasid+"&CH&1\n";
+if(confirm("Start Damp? Otherwise Query!")==false)
+f.elements[l].value+="SD&"+dasid+"&"+(f.elements[k].selectedIndex+1)+"&Q"+"\n";
+else f.elements[l].value+="SD&"+dasid+"&"+(f.elements[k].selectedIndex+1)+"&S"+"\n";
+
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+
+
+
+
+function anss(f)
+{
+//var l=7+4+1;
+///* MODE130B- */l=8+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+var l="ofst";
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="ST&"+dasid+"&STEP&ANSS  &      &      &"+"\n";
+f.elements[l].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+
+
+function offset(f)
+{
+
+var len=0;
+var lnan;
+//var l=7+4+1;
+
+///* MODE130B- */l=8+4+1;
+///* MODEREN- *//* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+var l="ofst";
+len=parseInt(f.elements[1].value,10);
+lnan=""+len;
+if(lnan=="NaN"||len<0||len>99){alert("Length Value should be within 0-99");return;}
+f.action="http://"+self.location.host+"/offset-control-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="DO&"+dasid+"&"+(f.elements[0].selectedIndex+1)+"&S&"+f.elements[1].value+"\n";
+f.elements[l].value+="DO&"+dasid+"&"+(f.elements[0].selectedIndex+1)+"&R&"+f.elements[1].value+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function stati(f)
+{
+var len=0;
+var lnan;
+
+//var l=7+4+1;
+///* MODE130B- */l=8+4+1;
+///* MODE130B- *//* MODE130G- *//* MODE130- */l=9+4+1;
+///* MODE130B- *//* MODE130G- *//* MODE130- *//* MODE130Q- *//* MODE130QH- */l=l-4;
+///* MODEREN- */l=l-1;
+var l="ofst";
+len=parseInt(f.elements[1].value,10);
+lnan=""+len;
+if(lnan=="NaN"||len<0||len>99){alert("Length Value should be within 0-99");return;}
+f.action="http://"+self.location.host+"/stream-statistic-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="DS&"+dasid+"&"+(f.elements[0].selectedIndex+1)+"& &"+f.elements[1].value+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+
+
+
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="Upd" enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>
+<!--
+d_w("UNIT# "+dasid);
+//-->
+</SCRIPT> 
+</TH>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Parameters"  onclick="go_parameters()">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Update Status"  onclick="update_status(this.form)">
+</TD>
+<TD><INPUT TYPE=BUTTON VALUE="Reset Das" onclick="reset_das(this.form)"></TD>
+<TD><INPUT TYPE=BUTTON VALUE="Done" onclick="done()">
+<INPUT TYPE=HIDDEN NAME="Upd" VALUE="">
+</TD>
+</TR>
+</FORM>
+</TABLE>
+<H1>
+Acquisition Status
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM  ACTION="" enctype="text/plain"  NAME="Aqs" METHOD="POST">
+<TR>
+	<TH>Time</TH>
+	<TH>Acquisition</TH>
+	<TH>Event Count</TH>
+	<TH>Ram Usage</TH>
+	<TH>Disk 1 Usage</TH>
+	<TH>Disk 2 Usage</TH>
+	<TH>Power</TH>
+	<TH>Temperature</TH>
+	<TH>Parameter Status</TH>
+</TR>
+<TR>
+	<TD>
+	<INPUT TYPE=TEXT  VALUE=""  NAME="ctim" SIZE="17" MAXLENGTH="17">
+	</TD>
+	<SCRIPT language='JavaScript'>
+<!--
+g_status();
+//-->
+	</SCRIPT>
+</TR>
+	<TD><INPUT TYPE=BUTTON VALUE="Set Time" onclick="time_set1(this.form)"></TD>
+	<TD>
+	 <INPUT TYPE=BUTTON VALUE="TTTTTTTT"  onclick="go_status(this.form)">
+	</TD>
+	<TD>&nbsp;</TD>
+	<TD>
+	 <INPUT TYPE=BUTTON VALUE="Dump" onclick="dump_ram(this.form)">
+	 <INPUT TYPE=BUTTON VALUE="Clear" onclick="clear_ram(this.form)">
+	 <INPUT TYPE=BUTTON VALUE="RAM Test" onclick="test_ram(this.form)">
+	</TD>
+	<TD>
+	 <INPUT TYPE=BUTTON VALUE="Format Disk1" onclick="disk_fmt(this.form,1)">
+	</TD>
+	<TD>
+	 <INPUT TYPE=BUTTON VALUE="Format Disk2" onclick="disk_fmt(this.form,2)">
+	</TD>
+	<TD>
+	&nbsp; <INPUT TYPE=HIDDEN NAME="Aqgo" VALUE=""> 	
+	</TD>
+	<TD>&nbsp;</TD>
+	<TD>
+		<SCRIPT language='JavaScript'>
+<!--		
+		g_pars();
+//-->
+		</SCRIPT>
+	</TD>
+</TR>
+</FORM>
+</table>
+
+GPS Status
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="GPSMODE" ACTION="" enctype="text/plain" METHOD="POST">
+<TR>
+<TH>Min. since Last Lock</TH>
+<TH>Phase Error (usec)</TH>
+<TH>Lock Status</TH>
+<TH>GPS Awake</TH>
+<TH>SV</TH>
+<TH>Lattitude</TH>
+<TH>Longitude</TH>
+<TH>Altitude</TH>
+<TH>GPS Mode</TH>
+</TR>
+<TR>
+<SCRIPT language='JavaScript'>
+<!--
+g_gps();
+//-->
+</SCRIPT>
+<TD>
+<SELECT>
+<OPTION VALUE='C'>Continuous<OPTION VALUE='D'>Duty-Cycle<OPTION VALUE='O'>Off</SELECT>
+<INPUT TYPE=BUTTON VALUE="Set" onclick="set_gps(this.form)">
+</SELECT>
+<INPUT TYPE=HIDDEN NAME="SetGPS" VALUE="">
+</TD>
+</TR>
+</FORM>
+</table>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="Ntp" ACTION="" enctype="text/plain" METHOD="POST"> 
+<TR>
+<TD class="check" colspan='6'><b>Network Parameters</b></TD>
+<TD class="check" colspan='6'><b>Rtp</b></TD>
+</TR>
+<TR>
+<TH>Port</TH>
+<TH>IP Address</TH>
+<TH>IP Mask</TH>
+<TH>Device Power</TH>
+<TH>Line Mode</TH>
+<TH>Speed</TH>
+<!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><TH>Host</TH>
+<TH>RTPD</TH>
+<TH>Gateway</TH>
+<TH>Line Down</TH>
+<!-- MODEMRF- //--><!-- MODEREN- //--><TH>Toss Delay (Min.)</TH>
+<!-- MODEMRF+ //--><!-- MODE130- //--><!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><TH>Backfill Purge (Days)</TH>
+
+
+<TH>Action</TH>
+</TR>
+<TD><INPUT TYPE=HIDDEN VALUE='1' NAME="PNHID1">Ethernet</TD>
+<TD><INPUT TYPE=TEXT SIZE='15' MAXLENGTH='15' VALUE=''></TD>
+<TD><INPUT TYPE=TEXT SIZE='16' MAXLENGTH='16' VALUE=''></TD>
+<TD><SELECT><OPTION VALUE='P'>continuous<OPTION VALUE='T'>toggle</SELECT></TD>
+<TD><INPUT TYPE=HIDDEN VALUE='' NAME="PNHIDD">&nbsp;</TD>
+<TD><INPUT TYPE=HIDDEN VALUE='' NAME="PNHIDS">&nbsp;</TD>
+<!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><TD>RTP1</TD>
+<TD><INPUT TYPE=TEXT SIZE='16' MAXLENGTH='16' VALUE=''></TD>
+<TD><INPUT TYPE=TEXT SIZE='16' MAXLENGTH='16' VALUE=''></TD>
+<!-- MODEMRF- //--><!-- MODEREN- //--><TD><SELECT><OPTION VALUE='K'>keep<OPTION VALUE='T'>toss</SELECT></TD>
+<!-- MODEMRF+ //--><!-- MODE130- //--><!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><TD><INPUT TYPE=HIDDEN SIZE='1' MAXLENGTH='1' VALUE='B' name='renbf1'>Backfill</TD>
+<TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''></TD>
+<!-- MODE130- //--><!-- MODEREN- //--><TD><INPUT TYPE=BUTTON  VALUE="Apply" onclick="process_pn(this.form,1)"></TD>
+<!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><TD rowspan=2><INPUT TYPE=BUTTON  VALUE="Apply" onclick="process_pn(this.form,3)"></TD>
+
+</TR>
+<TR>
+<TD><INPUT TYPE=HIDDEN VALUE='2' NAME="PNHID2">Serial PPP</TD>
+<TD><INPUT TYPE=TEXT SIZE='15' MAXLENGTH='15' VALUE=''></TD>
+<TD><INPUT TYPE=TEXT SIZE='16' MAXLENGTH='16' VALUE=''></TD>
+<TD><INPUT TYPE=HIDDEN VALUE='' NAME="Ppow">&nbsp;</TD>
+<TD><SELECT><OPTION VALUE='D'>Direct<OPTION VALUE='A'>AT/modem<OPTION VALUE='F'>FW/Multi</SELECT></TD>
+<TD><SELECT>
+<OPTION VALUE='9600'>9600
+<OPTION VALUE='19200'>19200
+<OPTION VALUE='57600'>57600
+<OPTION VALUE='115200'>115200
+</SELECT></TD>
+<!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><TD>RTP2</TD>
+<TD><INPUT TYPE=TEXT SIZE='16' MAXLENGTH='16' VALUE=''></TD>
+<TD><INPUT TYPE=TEXT SIZE='16' MAXLENGTH='16' VALUE=''></TD>
+<!-- MODEMRF- //--><!-- MODEREN- //--><TD><SELECT><OPTION VALUE='K'>keep<OPTION VALUE='T'>toss</SELECT></TD>
+<!-- MODEMRF+ //--><!-- MODE130- //--><!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><TD><INPUT TYPE=HIDDEN SIZE='1' MAXLENGTH='1' VALUE='B' name='renbf2'>Backfill</TD>
+<TD><INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''>
+<!-- MODE130B- //--><!-- MODE130G- //--><!-- MODE130Q- //--><!-- ALL- //--><INPUT TYPE=HIDDEN  VALUE="" name='renp2'>
+<!-- MODE130- //--><!-- MODEREN- //--></TD><TD><INPUT TYPE=BUTTON  VALUE="Apply" onclick="process_pn(this.form,2)">
+<INPUT TYPE=HIDDEN VALUE='' NAME="ntpgo">
+</TD>
+</TR>
+</FORM>
+</table>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="Mdm" ACTION="" enctype="text/plain" METHOD="POST"> 
+<TR>
+<TD>Modem Init:<BR><INPUT TYPE=TEXT SIZE='40' MAXLENGTH='48' VALUE=""></TD>
+<TD>Dial String #1:<BR><INPUT TYPE=TEXT SIZE='40' MAXLENGTH='48' VALUE=""></TD>
+<TD>Dial String #2:<BR><INPUT TYPE=TEXT SIZE='40' MAXLENGTH='48' VALUE=""></TD>
+<TD>Hangup:<BR><INPUT TYPE=TEXT SIZE='24' MAXLENGTH='24' VALUE=""></TD>
+<TD><BR><INPUT TYPE=BUTTON VALUE="Apply" onclick="modem(this.form)">
+<INPUT TYPE=HIDDEN NAME="modma" VALUE=""></TD>
+</TR>
+</FORM>
+</table>
+Version Status&nbsp;
+<SCRIPT language='JavaScript'>
+<!--
+g_version();
+//-->
+</SCRIPT>
+<!-- MODE130B- //-->Sensor Information
+<!-- MODE130B- //--><table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<!-- MODE130B- //--><TR>
+<!-- MODE130B- //--><TH>Sensor Number</TH>
+<!-- MODE130B- //--><TH>Manufacturer</TH>
+<!-- MODE130B- //--><TH>Model</TH>
+<!-- MODE130B- //--><TH>Serial Number</TH>
+<!-- MODE130B- //--></TR>
+<!-- MODE130B- //--><SCRIPT language='JavaScript'>g_sensor();</SCRIPT>
+<!-- MODE130B- //--></table>
+RTP Status
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>Interface</TH>
+<TH>RTP State</TH>
+<TH>Line State</TH>
+<TH>Toss Count</TH>
+<TH>Toss Threshold</TH>
+<TH>Server IP</TH>
+</TR>
+<SCRIPT language='JavaScript'>
+<!-- 
+g_rtp();
+//-->
+</SCRIPT>
+</table>
+Options
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="Addit" ACTION="" enctype="text/plain" METHOD="POST">
+<TR>
+<TH>Disk Parameters</TH>
+<TH>Event Trigger Status</TH>
+<TH>Parameters</TH>
+</TR>
+<TR>
+<TD>
+Dump on ET:<SELECT><OPTION VALUE='Y'>enable<OPTION VALUE='N'>disable</SELECT>
+Dump Threshold(%)
+	<INPUT TYPE=TEXT SIZE='2' MAXLENGTH='2' VALUE=''>
+Disk Wrap
+<SELECT><OPTION VALUE='Y'>enable<OPTION VALUE='N'>disable</SELECT>
+	<INPUT TYPE=HIDDEN VALUE='0' NAME="pzdwr">
+        <INPUT TYPE=BUTTON VALUE="Apply" onclick="process_pz(this.form)">
+</TD>
+<TD>
+Stream
+<SELECT>
+<OPTION VALUE='1'>1<OPTION VALUE='2'>2<OPTION VALUE='3'>3<OPTION VALUE='4'>4
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE='5'>5<OPTION VALUE='6'>6<OPTION VALUE='7'>7<OPTION VALUE='8'>8
+</SELECT>
+Channel
+<SELECT>
+<OPTION VALUE=' 1'>1<OPTION VALUE=' 2'>2<OPTION VALUE=' 3'>3
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE=' 4'>4<OPTION VALUE=' 5'>5<OPTION VALUE=' 6'>6
+</SELECT>
+	<INPUT TYPE=BUTTON VALUE="View" onclick="process_et(this.form)">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON VALUE="Load" ID="loadbutton" onclick="process_lp(this.form)">
+<INPUT TYPE=BUTTON VALUE="Write" ID="writebutton" onclick="process_wp(this.form)">
+</TD>
+
+<INPUT TYPE=HIDDEN VALUE="" NAME="pzdmet">
+
+</TR>
+</FORM>
+</TABLE>
+Sensor Test
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="Stest" ACTION="" enctype="text/plain" METHOD="POST">
+<TR>
+<TH>Offset</TH>
+<!-- MODE130B- //--><TH>ANSS Test</TH>
+<TH>Sensor Control</TH>
+<TH>Data Monitor</TH>
+</TR>
+<TD>
+Stream:
+<SELECT><OPTION VALUE='1'>1<OPTION VALUE='2'>2<OPTION VALUE='3'>3<OPTION VALUE='4'>4
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE='5'>5<OPTION VALUE='6'>6<OPTION VALUE='7'>7<OPTION VALUE='8'>8
+</SELECT>
+Length(Sec.)
+<INPUT TYPE=TEXT VALUE="10" SIZE="2" MAXLENGTH="2">
+<BR><INPUT TYPE=BUTTON VALUE="Offset" onclick="offset(this.form)">
+<!-- MODEREN- //--><!-- MODE130B- //--><!-- MODE130- //--><!-- MODE130G- //--><INPUT TYPE=BUTTON VALUE="Statistics" onclick="stati(this.form)">
+</TD>
+<!-- MODE130B- //--><TD>
+<!-- MODE130B- //--><BR><INPUT TYPE=BUTTON VALUE="ANSS" onclick="anss(this.form)">
+<!-- MODE130B- //--></TD>
+<TD>
+<SELECT NAME="snst">
+<OPTION VALUE='1'>Group 1-3
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE='2'>Group 4-6
+</SELECT>
+<BR>
+
+<SCRIPT language='JavaScript'>
+<!--
+/* MODEREN- */
+if(check_board==1)
+{
+d_w1("<INPUT TYPE=BUTTON VALUE='LOCK SENSOR' onclick='senlock(this.form)'><INPUT TYPE=BUTTON VALUE='UNLOCK SENSOR' onclick='senunlock(this.form)'>");
+d_w1("<INPUT TYPE=BUTTON VALUE='CALIBRATION SIGNAL' onclick='sentest(this.form)'><INPUT TYPE=BUTTON VALUE='MASS RE-CENTER' onclick='center(this.form)'>");
+}
+/* MODE130Q- *//* MODE130QH- *//* MODE130- *//* MODE130G- *//* MODE130B- */
+else if(check_board==2)d_w1("<INPUT TYPE=BUTTON VALUE='Damp/Undamp' onclick='sendump(this.form)'>");
+
+else d_w1("Control Board Not Installed");
+
+//-->
+</SCRIPT>
+</TD>
+<TD>
+Stream
+<SELECT NAME="mntr1"><OPTION VALUE='1'>1<OPTION VALUE='2'>2<OPTION VALUE='3'>3<OPTION VALUE='4'>4
+<!-- MODE130- //--><!-- MODEMRF- //--><!-- MODEREN- //--><OPTION VALUE='5'>5<OPTION VALUE='6'>6<OPTION VALUE='7'>7<OPTION VALUE='8'>8
+</SELECT>
+Channel
+<SELECT NAME="mntr2">
+<OPTION VALUE=' 1'>1<OPTION VALUE=' 2'>2<OPTION VALUE=' 3'>3
+<!-- MODEREN- //--><!-- MODE130B- //--><OPTION VALUE=' 4'>4<OPTION VALUE=' 5'>5<OPTION VALUE=' 6'>6
+</SELECT>
+<BR><INPUT TYPE=BUTTON VALUE="Monitor" onclick="process_dm(this.form)">
+<INPUT TYPE=HIDDEN VALUE="" NAME="ofst">
+</TD>
+</TR>
+</FORM>
+</table>
+<SCRIPT language='JavaScript'>
+<!--
+if(check_board==1)aux_chan();
+var test1;
+test1=""+self.location;
+contype=test1.substring(test1.length-1,test1.length);
+init_form_ntp(document.forms['Ntp']);
+init_form_aqs(document.forms['Aqs']);
+init_form_pz(document.forms['Addit']);
+init_form_modem(document.forms['Mdm']);
+init_gps(document.forms['GPSMODE']);
+if(SkResp==' ')alert("SK: Invalid Command.\nThe DAS firmware version does not support this command.");
+else if(SkResp=='1')alert("SK: Invalid Sensor");
+else if(SkResp=='2')alert("SK: Missing Hardware\nRT527 Sensor Control Board NOT installed.");
+else if(SkResp=='3')alert("SK: Command Not Supported by Hardware.\nRT527 Rev A-C does NOT support Lock and Unlock commands");
+//-->
+</SCRIPT>
+<!-- CHANGES AT 19May2014 //-->
+</BODY>
+</HTML>

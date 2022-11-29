@@ -1,0 +1,133 @@
+#!/bin/sh
+#*******************************************************
+# RTI Example installation script for Ubuntu.  
+#
+# 2019Nov22 (jig) changed directory structure for common
+#                 to support rtwc WebUI files.
+# 2016Apr01 (tld) changed directory structure to support
+#                 new mrf and bst archives as well as new
+#                 programs.
+#*******************************************************
+
+#-------------------------------------------------------
+# Set the user and the install (user home) directory
+#-------------------------------------------------------
+RTI_USR=reftek
+RTI_DIR=`grep "^$RTI_USR" /etc/passwd | /usr/bin/awk -F: '{ print $6; }'`
+RTI_SCR=/etc
+
+#-------------------------------------------------------
+# Make sure we are root
+#-------------------------------------------------------
+CUR_USER_NAME=`/usr/bin/id|/usr/bin/awk -F\( '{print $2}'|/usr/bin/awk -F\) '{print $1}'`
+if [ $CUR_USER_NAME != "root" ] 
+then
+   echo Must be run as root!
+   exit 1
+fi
+
+#-------------------------------------------------------
+# See if the install directory exists
+#-------------------------------------------------------
+if [ -d $RTI_DIR ]
+then
+  echo Installing files to $RTI_DIR ...
+else
+  echo $RTI_DIR does not exist!  Exiting ...
+  exit 1
+fi
+
+#-------------------------------------------------------
+# Create needed subdirectories; adjust owner & attributes
+#-------------------------------------------------------
+for sub in bin documents log arc_pas arc_mrf arc_bst ringfolder sms demfiles sg_ringfolder sg_sms
+do
+  if ! [ -d $RTI_DIR/$sub ]
+  then
+    mkdir $RTI_DIR/$sub
+    chown $RTI_USR $RTI_DIR/$sub
+    chmod       755 $RTI_DIR/$sub
+  fi
+done
+
+#-------------------------------------------------------
+# Try not to overwrite the rtpd.ini file 
+#-------------------------------------------------------
+for numtry in 1 2 3 4 5 6 7 8 9
+do
+ if [ -f $RTI_DIR/bin/rtpd.ini ] 
+ then
+  if [  -f $RTI_DIR/bin/rtpd$numtry.ini ]
+  then
+    :
+  else
+    mv $RTI_DIR/bin/rtpd.ini $RTI_DIR/bin/rtpd$numtry.ini
+    RENAME_MSG="Saved old rtpd.ini as $RTI_DIR/bin/rtpd$numtry.ini"
+    break
+  fi
+ else
+  break
+ fi
+done
+ 
+#-------------------------------------------------------
+# Copy executable files; adjust owner & attributes
+#-------------------------------------------------------
+cp -R ../common/demfiles/* $RTI_DIR/demfiles
+cp -R ./*         $RTI_DIR/bin
+rm $RTI_DIR/bin/install
+chown -R $RTI_USR $RTI_DIR/bin/*
+chmod -R     4555 $RTI_DIR/bin/*
+chmod -R      644 $RTI_DIR/bin/*.ini
+chmod -R      777 $RTI_DIR/bin/rtp
+chmod -R      444 $RTI_DIR/bin/rt_display_install.txt
+ 
+#-------------------------------------------------------
+# Copy RTWC WebUI files; adjust owner
+#-------------------------------------------------------
+cp -R ../common/rtwc_htm/* $RTI_DIR/bin/rtwc_htm
+chown -R $RTI_USR $RTI_DIR/bin/rtwc_htm/*
+
+#-------------------------------------------------------
+# Copy document files; adjust owner & attributes
+#-------------------------------------------------------
+cp -R ../documents/* $RTI_DIR/documents
+chown -R   $RTI_USR $RTI_DIR/documents/*
+chmod -R        a+r $RTI_DIR/documents/*
+
+#-------------------------------------------------------
+# Install initialization script and runlevel links
+# this approach for automatic start-up does not work 
+# on newer linux installations. 
+#-------------------------------------------------------
+#echo Installing scripts ...
+#cp       $RTI_DIR/bin/rtp $RTI_SCR/init.d/rtp
+#chown           root:root $RTI_SCR/init.d/rtp
+#chmod                 555 $RTI_SCR/init.d/rtp
+#ln -s $RTI_SCR/init.d/rtp $RTI_SCR/rc0.d/K20rtp
+#ln -s $RTI_SCR/init.d/rtp $RTI_SCR/rc1.d/K20rtp
+#ln -s $RTI_SCR/init.d/rtp $RTI_SCR/rc2.d/K20rtp
+#ln -s $RTI_SCR/init.d/rtp $RTI_SCR/rc3.d/S80rtp
+#ln -s $RTI_SCR/init.d/rtp $RTI_SCR/rc4.d/K20rtp
+#ln -s $RTI_SCR/init.d/rtp $RTI_SCR/rc5.d/S80rtp
+#ln -s $RTI_SCR/init.d/rtp $RTI_SCR/rc6.d/K20rtp
+
+#-------------------------------------------------------
+# Done
+#-------------------------------------------------------
+echo Done
+echo
+echo Be sure to add $RTI_DIR/bin to the execution path!
+echo
+echo Be sure to edit $RTI_DIR/bin/*.ini!
+echo
+#-------------------------------------------------------
+echo "Special Instructions for rt_display are"
+echo "contained in the file rt_display_install.txt"
+echo
+echo To implement Automatic Start-up of RTPD at boot,
+echo refer to RTPD Manual for setting up a crontab 
+echo
+
+echo $RENAME_MSG 
+echo

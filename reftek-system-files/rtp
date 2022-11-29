@@ -1,0 +1,170 @@
+#!/bin/sh
+#*******************************************************
+# script to control RTPD under Linux
+#*******************************************************
+#*******************************************************
+# Linux Standard Base (LSB) for Init Scripts
+#*******************************************************
+### BEGIN INIT INFO
+# Provides:          rtpd
+# Required-Start:    $local_fs $network $syslog $time
+# Required-Stop:     $local_fs $network $syslog $time
+# Should-Start:      
+# Should-Stop:       
+# Default-Start:     3 5
+# Default-Stop:      0 1 2 4 6
+# Short-Description: Start Trimble RTPD 
+# Description:       Start Trimble Real Time data Protocol
+### END INIT INFO
+#*******************************************************
+#*******************************************************
+# Crontab example settings
+#*******************************************************
+# */3 * * * * /home/reftek/bin/rtp autostart
+#*******************************************************
+
+RTPD_USR=reftek
+RTPD_DIR1=`grep "^$RTPD_USR" /etc/passwd | /usr/bin/awk -F: '{print $6}'`
+RTPD_DIR=$RTPD_DIR1/bin
+RTPD_DIRLOG=$RTPD_DIR1/log
+RTP_CTRL="rtp_ctrl.log"
+#echo "RTPD_DIR $RTPD_DIR"
+#echo "RTPD_DIRLOG $RTPD_DIRLOG"
+RTPD_LOCK_FILE=rtp_locked.txt
+RTPD_LOCK=$RTPD_DIRLOG/$RTPD_LOCK_FILE
+
+NOW=`date`
+
+RTPD_INI=$RTPD_DIR/rtpd.ini
+RTPD_OPT=-bd
+
+# Make sure bin directories are in our path
+PATH=$RTPD_DIR
+export PATH
+
+#*******************************************************
+# autostart RTPD
+#-------------------------------------------------------
+rtpd_autostart() {
+
+    # Check to see if RTPD is already Running 
+    id=`/bin/ps -e | /bin/grep rtpd | /usr/bin/awk '{print $1}'`
+    # Check for lock file 
+    FOUND=`/bin/ls $RTPD_DIRLOG* | /bin/grep $RTPD_LOCK_FILE`
+    # Check to see if we are locked out
+    if [ -n "$FOUND" ]
+    then
+        echo "$NOW RTPD Autostart - Suspended by Lock File." >> $RTPD_DIRLOG/$RTP_CTRL
+        #echo "$NOW RTPD Autostart - Suspended by Lock File."
+    elif test -n "$id"
+    then
+        #echo "$NOW RTPD Autostart - Already running." >> $RTPD_DIRLOG/$RTP_CTRL
+        echo "$NOW RTPD Autostart - Already running."
+    else
+        echo "$NOW RTPD Autostart - Executed." >> $RTPD_DIRLOG/$RTP_CTRL
+        #echo "$NOW RTPD Autostart - Executed."
+        $RTPD_DIR/rtpd $RTPD_OPT ini=$RTPD_INI
+    fi
+
+}
+
+#*******************************************************
+# start RTPD
+#-------------------------------------------------------
+rtpd_start() {
+
+    # Check to see if RTPD is already Running 
+    id=`/bin/ps -e | /bin/grep rtpd | /usr/bin/awk '{print $1}'`
+    # Check for lock file 
+    FOUND=`/bin/ls $RTPD_DIRLOG | /bin/grep $RTPD_LOCK_FILE`
+    if test -n "$id"
+    then
+        echo "$NOW RTPD Start - Already running" >> $RTPD_DIRLOG/$RTP_CTRL
+        echo "$NOW RTPD Start - Already running"
+    elif [ -n "$FOUND" ]
+    then 
+        $RTPD_DIR/rtpd $RTPD_OPT ini=$RTPD_INI
+        /bin/rm $RTPD_LOCK
+        echo "$NOW RTPD Start Executed - Lock File Removed." >> $RTPD_DIRLOG/$RTP_CTRL
+        echo "$NOW RTPD Start Executed - Lock File Removed."
+    else 
+        $RTPD_DIR/rtpd $RTPD_OPT ini=$RTPD_INI
+        echo "$NOW RTPD Start Executed - Lock File Not Found." >> $RTPD_DIRLOG/$RTP_CTRL
+        echo "$NOW RTPD Start Executed - Lock File Not Found."
+
+     fi
+}
+
+#*******************************************************
+# stop RTPD
+#-------------------------------------------------------
+rtpd_stop() {
+
+    # get rtpd process id 
+    pid=`/bin/ps -eo pid,args |
+         /bin/grep -w rtpd | /bin/grep -v grep |
+         /bin/sed -e 's/^  *//' -e 's/ .*//' | /usr/bin/awk 'NR==1'`
+    # Stop the processes
+    [ "$pid" != "" ] && kill -9 $pid
+    # create lock file and write it out
+    echo "$NOW RTPD LOCKED." >> $RTPD_LOCK
+    # write to log file
+    echo "$NOW RTPD Stopped - Lock File set." >> $RTPD_DIRLOG/$RTP_CTRL
+    echo "$NOW RTPD Stopped - Lock File set."
+}
+
+#*******************************************************
+# Get satus of RTPD
+#-------------------------------------------------------
+rtpd_stat() {
+
+    # check for rtpd process
+    id=`/bin/ps -e | /bin/grep rtpd | /usr/bin/awk '{print $1}'`
+    # check for lock file 
+    FOUND=`/bin/ls $RTPD_DIRLOG/* | /bin/grep $RTPD_LOCK_FILE`
+    if test -n "$id"
+    then
+        # write to log file
+        echo "$NOW RTPD Status - running." >> $RTPD_DIRLOG/$RTP_CTRL
+        echo "$NOW RTPD Status - running."
+    elif [ -n "$FOUND" ]
+        then 
+            # write to log file
+            echo "$NOW RTPD Status - NOT running, Lock File Found $FOUND" >> $RTPD_DIRLOG/$RTP_CTRL
+            echo "$NOW RTPD Status - NOT running, Lock File Found $FOUND"
+        else 
+            # write to log file
+            echo "$NOW RTPD Status - NOT running, Lock File NOT Found." >> $RTPD_DIRLOG/$RTP_CTRL
+            echo "$NOW RTPD Status - NOT running, Lock File NOT Found."
+   fi
+}
+
+#*******************************************************
+# Select the operation to perform
+#-------------------------------------------------------
+case "$1" in
+    'autostart')
+        rtpd_autostart
+        ;;
+
+   'start')
+        rtpd_start
+        ;;
+
+    'stop')
+        rtpd_stop
+        ;;
+
+    'status')
+        rtpd_stat
+        ;;
+
+    'restart')
+        rtpd_stop
+        rtpd_start
+        ;;
+
+    *)
+        echo "Usage: rtpd { autostart | start | stop | status | restart }"
+        ;;
+esac

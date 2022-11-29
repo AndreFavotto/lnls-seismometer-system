@@ -1,0 +1,55 @@
+version: "3.9"
+services:
+  reftek-seism:
+    container_name: reftek-seism
+    image: reftek-seism
+    stdin_open: true
+    tty: true
+    network_mode: host
+    env_file: 
+      - ./.env
+    volumes:
+      - app-volume:/home/reftek/bin
+    build: 
+      context: "." 
+      args:
+        DAS_IP: ${DAS_IP}
+        DAS_UNIT_ID: ${DAS_UNIT_ID}
+        SERVER_IP: ${SERVER_IP}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "10"
+        mode: "non-blocking"
+    restart: unless-stopped
+
+  ioc-seism:
+    container_name: ioc-seism
+    image: ioc-seism
+    depends_on:
+      - reftek-seism
+    stdin_open: true
+    tty: true
+    network_mode: host
+    env_file: 
+      - ./.env
+    volumes:
+      - app-volume:/home/reftek/bin
+    build: 
+      context: "./lnls-seismometer-epics-ioc"
+      args:
+        DAS_IP: ${DAS_IP}
+        DAS_UNIT_ID: ${DAS_UNIT_ID}
+        DAS_DATA_STREAM: ${DAS_DATA_STREAM}
+        DAS_PATH: /home/reftek/bin
+        PV_PREFIX: ${PV_PREFIX}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "1m"
+        max-file: "10"
+        mode: "non-blocking"
+    restart: unless-stopped
+volumes:
+     app-volume: 

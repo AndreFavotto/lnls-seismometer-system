@@ -1,0 +1,116 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var contype="";
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+var DMstatus="9F530014DM 1 1DM6418";
+var SOFTWAREDEVINED;
+dasid=DMstatus.substring(0,4);
+stream=DMstatus.substring(11,12);
+channel=DMstatus.substring(12,14);
+var c2=parseInt(DMstatus.substring(12,14),10);
+function d_w(f)
+{
+document.write(f);
+}
+function done(f)
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[4].value=s_lbl;
+f.elements[4].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[4].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[4].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+function init_dm(f)
+{
+var s1;
+var c1;
+s1=parseInt(DMstatus.substring(11,12),10);
+f.elements[0].selectedIndex=s1-1;
+c1=parseInt(DMstatus.substring(12,14),10);
+f.elements[1].selectedIndex=c1-1;
+}
+
+function update_dm(f)
+{
+var l=4;
+f.action="http://"+self.location.host+"/chan-monitor-"+dasid+contype;
+f.elements[l].value=s_lbl;
+f.elements[l].value+="DM&"+dasid+"&"+(f.elements[0].selectedIndex+1)+"&"+f.elements[1].options[f.elements[1].selectedIndex].value+"\n";
+f.elements[l].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="DMmonitor" enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>d_w("Data Monitor:"+"UNIT# "+dasid);</SCRIPT> 
+</TH>
+<TD>
+Stream
+<SELECT><OPTION VALUE='1'>1<OPTION VALUE='2'>2<OPTION VALUE='3'>3<OPTION VALUE='4'>4<OPTION VALUE='5'>5<OPTION VALUE='6'>6<OPTION VALUE='7'>7<OPTION VALUE='8'>8</SELECT>
+Channel
+<SELECT>
+<OPTION VALUE=' 1'>1<OPTION VALUE=' 2'>2<OPTION VALUE=' 3'>3
+<!-- MODE130B- //--><OPTION VALUE=' 4'>4<OPTION VALUE=' 5'>5<OPTION VALUE=' 6'>6
+</SELECT>
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Update"  onclick="update_dm(this.form)">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Done"  onclick="done(this.form)">
+<INPUT TYPE=HIDDEN NAME="setDM" VALUE="">
+</TD>
+</TR>
+</FORM>
+</TABLE>
+<BR>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TD>
+<SCRIPT language='JavaScript'>
+<!--
+var currentDate = new Date();
+d_w("<IMG SRC=\""+"DM"+dasid+"."+stream+"."+c2+"."+currentDate.getTime()+".png\">");
+//-->
+</SCRIPT> 
+
+</TD>
+</TR>
+</TABLE>
+<SCRIPT language='JavaScript'>
+<!--
+var test;
+test=""+self.location;
+contype=test.substring(test.length-1,test.length);
+init_dm(document.forms['DMmonitor']);
+
+//-->
+</SCRIPT>
+<!-- CHANGES AT 16.01.2012 //-->
+</BODY>
+</HTML>

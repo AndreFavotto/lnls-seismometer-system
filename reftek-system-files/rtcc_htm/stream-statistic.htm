@@ -1,0 +1,154 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV='Pragma' CONTENT="no-cache">
+<STYLE type='text/css'>
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var contype="";
+var s_lbl="$$$STARTstatus$$$";
+var e_lbl="$$$END$$$";
+var hex = new Array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F");
+function 
+DectoHex(A) 
+{
+var i=0;
+fin="";
+trn="";
+if(A<0){ A+=(0xFFFFFFFF)+1;}
+s = "";
+while (A >= 16) {
+s += hex[A % 16];  
+A = Math.floor(A / 16); 
+}
+trn=transpose(s += hex[A]);
+for(i=0;i<8-trn.length;i++)
+{
+fin+="0";
+}
+return fin+trn;
+}
+function transpose(s) {
+N = s.length;
+for (i = 0,t = ""; i < N; i++)
+t += s.substring(N-i-1, N-i); 
+return t;
+}
+var DS;
+var DSl;
+var SOFTWAREDEVINED;
+var dasid=DSl.substring(0,4);
+var stream=DSl.substring(10,11);
+var length=DSl.substring(12,14);
+var chann= DS.substring(14,16);
+var cnum=parseInt(chann,10);
+function d_w(f)
+{
+document.write(f);
+}
+function fill_values(f)
+{
+var i;
+var minr;
+var maxr;
+var ovvr;
+var range;
+var midp;
+
+var siga="";
+var sigmin="";
+var sigmax="";
+var newo="0";
+for(i=0;i<cnum;i++)
+{
+ maxr=parseInt("0x"+DS.substring(18+22*i,26+22*i));
+ minr=parseInt("0x"+DS.substring(26+22*i,34+22*i));
+ ovvr=parseInt("0x"+DS.substring(34+22*i,38+22*i));
+
+sigmin="";
+sigmax="";
+if(minr&0x80000000){minr^=0xFFFFFFFF;minr+=1;sigmin="-";}
+if(maxr&0x80000000){maxr^=0xFFFFFFFF;maxr+=1;sigmax="-";}
+midp=(parseInt(""+sigmin+minr,10)+parseInt(""+sigmax+maxr,10))/2;
+range=parseInt(""+sigmax+maxr,10)-parseInt(""+sigmin+minr,10);
+d_w("<TR>");
+d_w("<TD>"+parseInt(DS.substring(16+22*i,18+22*i),10)+"</TD>");
+d_w("<TD>"+sigmin+minr+"</TD>");
+d_w("<TD>"+sigmax+maxr+"</TD>");
+d_w("<TD>"+midp+"</TD>");
+d_w("<TD>"+range+"</TD>");
+d_w("<TD>"+ovvr+"</TD>");
+d_w("</TR>");
+}
+}
+function done(f)
+{
+f.action="http://"+self.location.host+"/status-control-"+dasid+contype;
+f.elements[2].value=s_lbl;
+f.elements[2].value+="SS&"+dasid+"&AQ&"+"\n";
+f.elements[2].value+="TS&"+dasid+"&& &"+"\n";
+f.elements[2].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+function  update_statistic(f)
+{
+if(cnum<=0)return;
+f.action="http://"+self.location.host+"/stream-statistic-"+dasid+contype;
+f.elements[2].value=s_lbl;
+f.elements[2].value+="DS&"+dasid+"&"+stream+"& &"+length+"\n";
+f.elements[2].value+=e_lbl;
+if(document.bgColor=="#7f7f7f")return;
+document.bgColor="#7F7F7F";
+f.submit();
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="Statistic" enctype="text/plain"  ACTION="" METHOD="POST">
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>d_w("UNIT# "+dasid+";stream#"+stream);</SCRIPT> 
+</TH>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Update"  onclick="update_statistic(this.form)">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON  VALUE="Done"  onclick="done(this.form)">
+<INPUT TYPE=HIDDEN NAME="Stati" VALUE="">
+</TD>
+</TR>
+</FORM>
+</TABLE>
+<BR>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>Channel#</TH>
+<TH>Minimum</TH>
+<TH>Maximum</TH>
+<TH>MidPoint</TH>
+<TH>Range</TH>
+<TH>Overscale</TH>
+</TR>
+<SCRIPT language='JavaScript'>
+<!--
+var test;
+test=""+self.location;
+contype=test.substring(test.length-1,test.length);
+fill_values(this.from);
+//-->
+</SCRIPT>
+</TABLE>
+<!-- CHANGES AT 16.01.2012 //-->
+</BODY>
+</HTML>

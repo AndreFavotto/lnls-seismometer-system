@@ -1,0 +1,209 @@
+HTTP/1.0 200 OK
+Content-Type: text/html
+
+<HTML>
+<HEAD>
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<STYLE type="text/css">
+input {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%;color: #000000}
+select {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000}
+th {font-family: Arial, Verdana,  Helvetica, sans-serif;font-weight:bold; font-size: 90%; color: #000000;text-align:center;background-color: #6699CC}
+td {font-family: Arial, Verdana,  Helvetica, sans-serif; font-size: 80%; color: #000000;text-align:center;background-color: #FFFFFF}
+.hi  {font-family: Arial, Verdana,  Helvetica, sans-serif; font-weight:bold;font-size: 85%; color: #000000;text-align:left;background-color: #00f5dc}
+</STYLE>
+<SCRIPT language='JavaScript'>
+<!--
+var PD=window.opener.TarnsTrig;
+var dasid=PD.substring(0,4);
+var stream=PD.substring(12,14);
+function strip_string(str)
+{
+var i;
+var nstr="";
+var left=0;
+var right=0;
+for(i=0;i<str.length;i++)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+left=i;
+for(i=str.length-1;i>=0;i--)
+{
+if(str.substring(i,i+1)!=" ")break;
+}
+right=i;
+if(left<=right)nstr=str.substring(left,right+1);
+return nstr;
+}
+function cancel_contrig()
+{
+var num;
+var k=0;
+num=parseInt(PD.substring(12,14),10);
+var trt=PD.substring(62,66);
+var l1=12;
+var l2=9;
+/* MODEREN- *//* MODE130B- */l1=15;
+/* MODEREN- *//* MODE130B- */l2=12;
+if(trt=="CON "||trt==" CON")k=0;
+else if(trt=="CRS "||trt==" CRS")k=1;
+else if(trt=="EVT "||trt==" EVT")k=2;
+else if(trt=="EXT "||trt==" EXT")k=3;
+else if(trt=="LEV "||trt==" LEV")k=4;
+else if(trt=="TIM "||trt==" TIM")k=5;
+else if(trt=="TML "||trt==" TML")k=6;
+else if(trt=="VOT "||trt==" VOT")k=7;
+else if(trt=="DIF "||trt==" DIF")k=8;
+window.opener.document.forms['PDst'].elements[(num-1)*l1+l2].selectedIndex=k;
+self.close();
+}
+function d_w(f)
+{
+document.write(f);
+}
+function init_tim(f)
+{
+var t;
+var k=0;
+if(PD.substring(62,66)=="TIM "||PD.substring(62,66)==" TIM")
+{
+if(PD.substring(66,67)==" ")k=1;
+t=PD.substring(66+k,70+k);
+t+=":";
+t+=PD.substring(70+k,73+k);
+t+=":";
+t+=PD.substring(73+k,75+k);
+t+=":";
+t+=PD.substring(75+k,77+k);
+t+=":";
+t+=PD.substring(77+k,79+k);
+f.elements[0].value=t;
+t=PD.substring(80,82);
+t+=":";
+t+=PD.substring(82,84);
+t+=":";
+t+=PD.substring(84,86);
+t+=":";
+t+=PD.substring(86,88);
+f.elements[1].value=t;
+f.elements[2].value=strip_string(PD.substring(88,92));
+f.elements[3].value=strip_string(PD.substring(100,108));
+}
+else return;
+}
+function set_timtrig(f)
+{
+var YY,DD,HH,MI,SS;
+var TT;
+var ni;
+var rl;
+var i;
+var num;
+var l1=12;
+var l2=11;
+/* MODEREN- *//* MODE130B- */l1=15;
+/* MODEREN- *//* MODE130B- */l2=14;
+TT=f.elements[0].value;
+if(TT.charAt(4)!=':'||TT.charAt(8)!=':'||TT.charAt(11)!=':'||TT.charAt(14)!=':'){alert("Valid Date-Time format: YYYY:DDD:HH:MM:SS");return;}
+YY=parseInt(TT.substring(0,4),10);
+if(isNaN(YY)||YY<2000||YY>3000){alert("Invalid Year");return;}
+DD=parseInt(TT.substring(5,8),10);
+if(isNaN(DD)||DD<=0||DD>366){alert("Invalid Day Of Year");return;}
+HH=parseInt(TT.substring(9,11),10);
+if(isNaN(HH)||HH<0||HH>=24){alert("Invalid Hour");return;}
+MI=parseInt(TT.substring(12,14),10);
+if(isNaN(MI)||MI<0||MI>=60){alert("Invalid Minute");return;}
+SS=parseInt(TT.substring(15,17),10);
+if(isNaN(SS)||SS<0||SS>=60){alert("Invalid Second");return;}
+num=parseInt(PD.substring(12,14),10);
+TarnsTrig="TIM ";
+TarnsTrig+=TT.substring(0,4);
+TarnsTrig+=TT.substring(5,8);
+TarnsTrig+=TT.substring(9,11);
+TarnsTrig+=TT.substring(12,14);
+TarnsTrig+=TT.substring(15,17);
+TarnsTrig+=" ";
+TT=f.elements[1].value;
+if(TT.charAt(2)!=':'||TT.charAt(5)!=':'||TT.charAt(8)!=':'){alert("Valid Repeat Interval format: DD:HH:MM:SS");return;}
+DD=parseInt(TT.substring(0,2),10);
+if(isNaN(DD)||DD<0||DD>99){alert("Invalid Repeat Interval DD");return;}
+HH=parseInt(TT.substring(3,5),10);
+if(isNaN(HH)||HH<0||HH>99){alert("Invalid Repeat Interval HH");return;}
+MI=parseInt(TT.substring(6,8),10);
+if(isNaN(MI)||MI<0||MI>99){alert("Invalid Repeat Interval MM");return;}
+SS=parseInt(TT.substring(9,11),10);
+if(isNaN(SS)||SS<0||SS>99){alert("Invalid Repeat Interval SS");return;}
+TarnsTrig+=TT.substring(0,2);
+TarnsTrig+=TT.substring(3,5);
+TarnsTrig+=TT.substring(6,8);
+TarnsTrig+=TT.substring(9,11);
+ni=parseInt(f.elements[2].value,10);
+if(isNaN(ni)||ni<0||ni>9999){alert("Invalid Number of Intervals");return;}
+TarnsTrig+=""+f.elements[2].value;
+for(i=f.elements[2].value.length;i<4;i++)TarnsTrig+=" ";
+TarnsTrig+="        ";
+rl=parseFloat(f.elements[3].value);
+if(isNaN(rl)||rl<0){alert("Invalid Record Length");return;}
+TarnsTrig+=f.elements[3].value;
+for(i=f.elements[3].value.length;i<8;i++)TarnsTrig+=" ";
+for(i=0;i<120;i++)TarnsTrig+=" ";
+window.opener.document.forms['PDst'].elements[(num-1)*l1+l2].value=TarnsTrig;
+self.close();
+}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR="#F5F5DC" MARGINHEIGHT="0" MARGINWIDTH="0" LEFTMARGIN="0" TOPMARGIN="0" BORDER="0" TEXT="#000000" LINK="#000000" ALINK="#000000" VLINK="#000000">
+<FORM NAME="GO_TIM">
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<TR>
+<TH>
+<SCRIPT language='JavaScript'>
+<!--
+d_w("Time Interval Trigger Description" +" DasId#"+dasid+"; "+"Stream# "+stream);
+//-->
+</SCRIPT>
+</TH>
+<TD>
+<INPUT TYPE=BUTTON VALUE="APPLY" onclick="set_timtrig(document.forms['tim_trig'])">
+</TD>
+<TD>
+<INPUT TYPE=BUTTON VALUE="CANCEL" onclick="cancel_contrig()">
+</TD>
+</TR>
+</table>
+</FORM>
+<table width='100%' border='1' cellspacing='0' cellpadding='0' align='center'>
+<FORM NAME="tim_trig">
+<TR>
+<TH>Description</TH>
+<TH>Value</TH>
+<TH>Type and Range</TH>
+</TR>
+<TR>
+<TD>Start time</TD>
+<TD><INPUT TYPE=TEXT SIZE='17'  MAXLENGTH='17' VALUE='2001:001:00:00:00'></TD>
+<TD>YYYY:DDD:HH:MM:SS</TD>
+</TR><TR>
+<TD>Repeat interval</TD>
+<TD><INPUT TYPE=TEXT SIZE='11'  MAXLENGTH='11' VALUE=''></TD>
+<TD>DD:HH:MM:SS</TD>
+</TR><TR>
+<TD>Number of intervals</TD>
+<TD><INPUT TYPE=TEXT SIZE='4'  MAXLENGTH='4' VALUE=''></TD>
+<TD>1-9999, and 0=Infinite</TD>
+</TR><TR>
+<TD>Record length</TD>
+<TD><INPUT TYPE=TEXT SIZE='8'  MAXLENGTH='8' VALUE=''></TD>
+<TD>FP 3 (seconds)</TD>
+</TR>
+</FORM>
+</table>
+<SCRIPT language='JavaScript'>
+<!--
+init_tim(document.forms['tim_trig']);
+//-->
+</SCRIPT>
+<!-- CHANGES AT 28.11.2012 //-->
+</BODY>
+</HTML>
