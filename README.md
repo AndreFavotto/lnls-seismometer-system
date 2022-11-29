@@ -23,24 +23,6 @@ PV_PREFIX= #PV prefix before S-Mon: (e.g.: RR-09S:SS-Seism-Ax13:)
 2. On the top directory of this repository, run `docker compose build`. 
 3. When finished, run `docker compose up -d` 
 
-and the IOC should be UP and running.
+and both IOC and reftek systems should be UP and running.
 
-## Executing IOC locally:
-
-To start IOC locally (outside container), one must install manually the pcaspy library:
-
-`pip3 install pcaspy`
-
-For this application, pcaspy 0.7.3. was used.
-
-After this, one can run the following line from project's main directory:
-
-`python3 ./scripts/main.py -p [DAS_PATH] -P [PV_PREFIX] -i [UNIT_ID] -s [DATA_STREAM]`
-
-Where:
-```
--p P        Path to DAS-130 files (e.g.: /home/reftek/bin)
--P P        Seismometer's PV prefix (e.g.: RR-09S:SS-Seism-Ax13:)
--i I        Unit ID (e.g.: B67D)
--s S        Unit's data stream to hear data (e.g.: 1)
-```
+Reftek container runs under the name reftek-seism, while IOC's container is named ioc-seism.
