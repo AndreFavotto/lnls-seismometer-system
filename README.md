@@ -28,3 +28,10 @@ PV_PREFIX= #PV prefix before S-Mon: (e.g.: RR-09S:SS-Seism-Ax13:)
 and both IOC and reftek systems should be UP and running.
 
 Reftek container runs under the name reftek-seism, while IOC's container is named ioc-seism.
+
+# PV names
+The seismometer sensor reads ground velocity in 3 axis: North (channel 1, Z axis in Sirius coordinate system), East(2, X axis) and Vertical (3, Y axis)
+For this application, each axis has it's own PV, whose unit is given in m/s:
+    - RR-09S:SS-Seism-Ax13:SX-Mon
+    - RR-09S:SS-Seism-Ax13:SY-Mon
+    - RR-09S:SS-Seism-Ax13:SZ-Mon
