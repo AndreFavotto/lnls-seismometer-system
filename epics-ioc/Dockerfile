@@ -51,3 +51,4 @@ ENV DAS_UNIT_ID ${DAS_UNIT_ID}
 ENV DAS_DATA_STREAM ${DAS_DATA_STREAM}
 
 CMD python3 ./scripts/main.py -p ${DAS_PATH} -P ${PV_PREFIX} -i ${DAS_UNIT_ID} -s ${DAS_DATA_STREAM} 
+# CMD tail -f /dev/null

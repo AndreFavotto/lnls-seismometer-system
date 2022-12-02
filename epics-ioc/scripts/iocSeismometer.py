@@ -8,12 +8,16 @@ from globalScripts import globalScripts
 
 prefix = f'{globalScripts.getArgs().P}'
 pvdb   = {
-    'S-Mon': {
+    'SZ-Mon': {
         'unit' : 'm/s'
     },
-    'Ch-Mon': {
-        'type' : 'string'
+    'SX-Mon': {
+        'unit' : 'm/s'
     },
+    'SY-Mon': {
+        'unit' : 'm/s'
+    },
+
 }
 
 class ioc(Driver):
@@ -23,13 +27,14 @@ class ioc(Driver):
 
     def write(self, reason, value):
         self.setParam(reason, value)
-        self.updatePVs()
         return True
 
     def read(self, reason):
         value = self.getParam(reason)
-        self.updatePVs()
         return value
+
+    def update(self):
+        self.updatePVs()
 
 try:
     server = SimpleServer()

@@ -37,7 +37,7 @@ services:
     volumes:
       - app-volume:/home/reftek/bin
     build: 
-      context: "./lnls-seismometer-epics-ioc"
+      context: "./epics-ioc"
       args:
         DAS_IP: ${DAS_IP}
         DAS_UNIT_ID: ${DAS_UNIT_ID}

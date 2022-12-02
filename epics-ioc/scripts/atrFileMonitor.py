@@ -13,18 +13,25 @@ class atrFileMonitor():
                         
     def searchFiles(self):
         arquivos = set(os.listdir(self.path_in))
-        return arquivos
+        return sorted(arquivos)
                 
     def run(self):
         try:
             content = self.searchFiles()
             for filename in content:
-                if '.atr' in filename:
-                    file = open(self.path_in + filename, 'r')
-                    data = file.read()
-                    file.close()
-                    pdf.processFile(data, filename[-5])
-                    os.remove(self.path_in + filename)        
+                if '1.atr' in filename:
+                    with open(self.path_in + filename, 'r') as file:
+                        data1 = file.read()
+                        os.remove(self.path_in + filename)
+                elif '2.atr' in filename:
+                    with open(self.path_in + filename, 'r') as file:
+                        data2 = file.read()
+                        os.remove(self.path_in + filename)
+                elif '3.atr' in filename:
+                    with open(self.path_in + filename, 'r') as file:
+                        data3 = file.read()
+                        os.remove(self.path_in + filename)
+            pdf.processFile(data1, data2, data3) 
         except Exception:
             _traceback.print_exc(file=sys.stdout)
             os._exit(0)
