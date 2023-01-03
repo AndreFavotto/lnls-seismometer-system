@@ -22,7 +22,7 @@ class rawFileMonitor(threading.Thread):
         today = datetime.datetime.now()
         year = today.year
         dayOfYear = (today - datetime.datetime(year, 1, 1)).days + 1
-        filesPath = f'{self.pathIn}/{year}{dayOfYear}/{self.unitId}/{self.dataStream}/'
+        filesPath = f'{self.pathIn}/{year}{dayOfYear:0>3}/{self.unitId}/{self.dataStream}/'
         arquivos = set(os.listdir(filesPath))
         return (filesPath, arquivos)
     
@@ -31,7 +31,7 @@ class rawFileMonitor(threading.Thread):
             lastMonth = datetime.datetime.now() - datetime.timedelta(days=30)
             lmYear = lastMonth.year
             lmDayOfYear = (lastMonth- datetime.datetime(lmYear, 1, 1)).days + 1
-            oldPath = f'{self.pathIn}/{lmYear}{lmDayOfYear}'
+            oldPath = f'{self.pathIn}/{lmYear}{lmDayOfYear:0>3}'
             shutil.rmtree(oldPath)
         except FileNotFoundError:
             pass
@@ -53,6 +53,7 @@ class rawFileMonitor(threading.Thread):
                 newFiles = newContent.difference(content)
                 # Converts data if new file found
                 if newFiles:
+                    print(f'File found at {filesPath}: {newFiles}')
                     self.convert(filesPath,newFiles)
                 content = newContent
         except Exception:
